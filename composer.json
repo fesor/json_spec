@@ -1,0 +1,24 @@
+{
+    "name": "fesor/json_spec",
+    "description": "Easily handle JSON Structures with PhpSpec and Behat",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sergey Protko",
+            "email": "fesors@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {"JsonSpec\\": "src/"}
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "require": {
+        "php": ">=5.3.4"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.1.*@dev"
+    }
+}
