@@ -5,6 +5,12 @@ namespace JsonSpec;
 class JsonHelper
 {
 
+    /**
+     * Parses JSON string to PHP objects
+     *
+     * @param string $json
+     * @return mixed
+     */
     public function parse($json)
     {
         $data = json_decode($json);
@@ -15,6 +21,12 @@ class JsonHelper
         return $data;
     }
 
+    /**
+     * Validates JSON string
+     *
+     * @param string $json
+     * @return bool
+     */
     public function isValid($json)
     {
         try {
@@ -26,11 +38,23 @@ class JsonHelper
         return true;
     }
 
+    /**
+     * Normalizes JSON string
+     *
+     * @param string $json
+     * @return string
+     */
     public function normalize($json)
     {
         return $this->generateNormalizedJson($this->parse($json));
     }
 
+    /**
+     * Generate normalized JSON string from PHP objectмл
+     *
+     * @param mixed $data
+     * @return string
+     */
     public function generateNormalizedJson($data)
     {
         return rtrim(json_encode(
