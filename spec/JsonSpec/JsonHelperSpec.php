@@ -8,30 +8,51 @@ use Prophecy\Argument;
 class JsonHelperSpec extends ObjectBehavior
 {
 
-    function it_should_parse_json()
+    function it_parse_json()
     {
         $result = new \stdClass();
         $result->json = ['spec'];
         $this->parse('{"json":["spec"]}')->shouldBeLike($result);
     }
 
-    function it_should_pars_JSON_values()
+    function it_pars_JSON_values()
     {
         $this->parse('"json_spec"')->shouldBe('json_spec');
+        $this->parse('10')->shouldBe(10);
+        $this->parse('null')->shouldBe(null);
     }
 
-    function it_should_raises_a_parser_error_for_invalid_JSON()
+    function it_raises_a_parser_error_for_invalid_JSON()
     {
         $this->shouldThrow()->duringParse('json_spec');
     }
 
-    function it_should_correctly_validate_json()
+    function it_parses_at_a_path_if_given()
+    {
+        $json = '{"json": ["spec"]}';
+        $this->parse($json, 'json')->shouldBeLike(["spec"]);
+        $this->parse($json, 'json/0')->shouldBe('spec');
+    }
+
+    function it_raises_an_error_for_a_missing_path()
+    {
+        $json = '{"json": ["spec"]}';
+        $this->shouldThrow()->duringParse($json, 'json/1');
+    }
+
+    function it_parses_at_a_numeric_string_path()
+    {
+        $json = '{"1": "json"}';
+        $this->parse($json, '1')->shouldBe('json');
+    }
+
+    function it_correctly_validate_json_value()
     {
         $this->isValid('"json_spec"')->shouldBe(true);
         $this->isValid('json_spec')->shouldBe(false);
     }
 
-    function it_should_normalize_json()
+    function it_normalize_json()
     {
         $normalizedJson =
 '{
@@ -43,12 +64,27 @@ class JsonHelperSpec extends ObjectBehavior
         $this->normalize('{"json":["spec"]}')->shouldBe(rtrim($normalizedJson));
     }
 
-    function it_should_normalize_json_value()
+    function it_normalize_json_value()
     {
         $this->normalize('1e+1')->shouldBe('10');
     }
 
-    function it_should_generates_a_normalized_json_document()
+    function it_normalizes_at_a_path()
+    {
+        $this->normalize('{"json":["spec"]}', "json/0")->shouldBe('"spec"');
+    }
+
+    function it_accept_a_json_value()
+    {
+        $this->normalize('1e+1')->shouldBe('10');
+    }
+
+    function it_normalizes_a_json_value()
+    {
+        $this->normalize('"json_spec"')->shouldBe('"json_spec"');
+    }
+
+    function it_generates_a_normalized_json_document()
     {
         $normalizedJson =
 '{

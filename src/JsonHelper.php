@@ -2,20 +2,37 @@
 
 namespace JsonSpec;
 
+use Seld\JsonLint\JsonParser;
+
 class JsonHelper
 {
+
+    /**
+     * @var JsonParser
+     */
+    private $parser;
+
+    /**
+     * todo: move JsonParser initialization from constructor
+     */
+    public function __construct()
+    {
+        $this->parser = new JsonParser();
+    }
 
     /**
      * Parses JSON string to PHP objects
      *
      * @param string $json
+     * @param string|null $path
      * @return mixed
      */
-    public function parse($json)
+    public function parse($json, $path = null)
     {
-        $data = json_decode($json);
-        if (null === $data) {
-            throw new \InvalidArgumentException(json_last_error_msg());
+        $data = $this->parser->parse($json);
+
+        if (null !== $path) {
+            return $this->getAtPath($data, $path);
         }
 
         return $data;
@@ -29,28 +46,23 @@ class JsonHelper
      */
     public function isValid($json)
     {
-        try {
-            $this->parse($json);
-        } catch(\InvalidArgumentException $e) {
-            return false;
-        }
-
-        return true;
+        return null === $this->parser->lint($json);
     }
 
     /**
      * Normalizes JSON string
      *
      * @param string $json
+     * @param string|null $path
      * @return string
      */
-    public function normalize($json)
+    public function normalize($json, $path = null)
     {
-        return $this->generateNormalizedJson($this->parse($json));
+        return $this->generateNormalizedJson($this->parse($json, $path));
     }
 
     /**
-     * Generate normalized JSON string from PHP objectмл
+     * Generate normalized JSON string from PHP object
      *
      * @param mixed $data
      * @return string
@@ -61,5 +73,22 @@ class JsonHelper
             $data,
             JSON_PRETTY_PRINT
         ));
+    }
+
+    private function getAtPath($json, $path)
+    {
+        $pathSegments = explode('/', $path);
+        foreach ($pathSegments as $key) {
+
+            if ($json instanceof \stdClass && isset($json->$key)) {
+                $json = $json->$key;
+            } else if (is_array($json) && preg_match('/^\d+$/', $key) && isset($json[intval($key)])) {
+                $json = $json[$key];
+            } else {
+                throw new \InvalidArgumentException(sprintf('Missing JSON path "%s"', $path));
+            }
+        }
+
+        return $json;
     }
 }

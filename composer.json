@@ -16,7 +16,8 @@
         "bin-dir": "bin"
     },
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+        "seld/jsonlint": "~1.1.2"
     },
     "require-dev": {
         "phpspec/phpspec": "2.1.*@dev"
