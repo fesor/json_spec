@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\JsonSpec;
+namespace spec\JsonSpec\Matcher;
 
 use JsonSpec\Exception\NotIncludedException;
 use JsonSpec\Helper\JsonHelper;
