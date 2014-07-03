@@ -10,14 +10,14 @@ use Prophecy\Argument;
 class JsonHelperSpec extends ObjectBehavior
 {
 
-    function it_parse_json()
+    function it_parses_json()
     {
         $result = new \stdClass();
         $result->json = ['spec'];
         $this->parse('{"json":["spec"]}')->shouldBeLike($result);
     }
 
-    function it_pars_JSON_values()
+    function it_parses_JSON_values()
     {
         $this->parse('"json_spec"')->shouldBe('json_spec');
         $this->parse('10')->shouldBe(10);
@@ -106,7 +106,7 @@ class JsonHelperSpec extends ObjectBehavior
             new NotIncludedException('"spec"')
         )->duringIsIncludes('["no-json", "no-spec"]', '"spec"');
     }
-    
+
     function it_checks_is_json_part_is_included_at_given_path()
     {
         $this->shouldNotThrow()->duringIsIncludes('{"json": ["spec"]}', '"spec"', 'json');
