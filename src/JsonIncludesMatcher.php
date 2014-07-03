@@ -5,7 +5,7 @@ namespace JsonSpec;
 use JsonSpec\Exception\NotIncludedException;
 use JsonSpec\Helper\JsonHelper;
 
-class JsonMatcher
+class JsonIncludesMatcher
 {
     /**
      * @var JsonHelper

@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Seld\JsonLint\JsonParser;
 
-class JsonMatcherSpec extends ObjectBehavior
+class JsonIncludesMatcherSpec extends ObjectBehavior
 {
     function let()
     {
