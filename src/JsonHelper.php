@@ -2,7 +2,9 @@
 
 namespace JsonSpec;
 
+use JsonSpec\Exception\JsonSpecException;
 use JsonSpec\Exception\MissingPathException;
+use JsonSpec\Exception\NotIncludedException;
 use Seld\JsonLint\JsonParser;
 
 class JsonHelper
@@ -32,7 +34,7 @@ class JsonHelper
     {
         $data = $this->parser->parse($json);
 
-        if (null !== $path) {
+        if ($path) {
             return $this->getAtPath($data, $path);
         }
 
@@ -74,6 +76,19 @@ class JsonHelper
             $data,
             JSON_PRETTY_PRINT
         ));
+    }
+
+    public function isIncludes($json, $expected, $path = null)
+    {
+        $expected = $this->normalize($expected);
+        $data = (array) $this->parse($json, $path);
+        foreach ($data as $value) {
+            if ($this->generateNormalizedJson($value) === $expected) {
+                return true;
+            }
+        }
+
+        throw new NotIncludedException($this->normalize($expected), $path);
     }
 
     private function getAtPath($json, $path)
