@@ -2,6 +2,7 @@
 
 namespace JsonSpec;
 
+use JsonSpec\Exception\MissingPathException;
 use Seld\JsonLint\JsonParser;
 
 class JsonHelper
@@ -77,7 +78,7 @@ class JsonHelper
 
     private function getAtPath($json, $path)
     {
-        $pathSegments = explode('/', $path);
+        $pathSegments = explode('/', trim($path, '/'));
         foreach ($pathSegments as $key) {
 
             if ($json instanceof \stdClass && isset($json->$key)) {
@@ -85,7 +86,7 @@ class JsonHelper
             } else if (is_array($json) && preg_match('/^\d+$/', $key) && isset($json[intval($key)])) {
                 $json = $json[$key];
             } else {
-                throw new \InvalidArgumentException(sprintf('Missing JSON path "%s"', $path));
+                throw new MissingPathException($path);
             }
         }
 

@@ -2,6 +2,7 @@
 
 namespace spec\JsonSpec;
 
+use JsonSpec\Exception\MissingPathException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -37,7 +38,9 @@ class JsonHelperSpec extends ObjectBehavior
     function it_raises_an_error_for_a_missing_path()
     {
         $json = '{"json": ["spec"]}';
-        $this->shouldThrow()->duringParse($json, 'json/1');
+        $this->shouldThrow(
+            new MissingPathException('json/1')
+        )->duringParse($json, 'json/1');
     }
 
     function it_parses_at_a_numeric_string_path()
