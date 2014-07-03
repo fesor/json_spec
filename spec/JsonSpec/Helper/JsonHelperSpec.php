@@ -1,14 +1,19 @@
 <?php
 
-namespace spec\JsonSpec;
+namespace spec\JsonSpec\Helper;
 
 use JsonSpec\Exception\MissingPathException;
-use JsonSpec\Exception\NotIncludedException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Seld\JsonLint\JsonParser;
 
 class JsonHelperSpec extends ObjectBehavior
 {
+
+    function let()
+    {
+        $this->beConstructedWith(new JsonParser());
+    }
 
     function it_parses_json()
     {
@@ -59,7 +64,7 @@ class JsonHelperSpec extends ObjectBehavior
     function it_normalize_json()
     {
         $normalizedJson =
-'{
+            '{
     "json": [
         "spec"
     ]
@@ -91,7 +96,7 @@ class JsonHelperSpec extends ObjectBehavior
     function it_generates_a_normalized_json_document()
     {
         $normalizedJson =
-'{
+            '{
     "json": [
         "spec"
     ]
@@ -99,19 +104,4 @@ class JsonHelperSpec extends ObjectBehavior
         $this->generateNormalizedJson(['json'=>['spec']])->shouldBe(rtrim($normalizedJson));
     }
 
-    function it_checks_is_json_part_is_included()
-    {
-        $this->shouldNotThrow()->duringIsIncludes('["json", "spec"]', '"spec"');
-        $this->shouldThrow(
-            new NotIncludedException('"spec"')
-        )->duringIsIncludes('["no-json", "no-spec"]', '"spec"');
-    }
-
-    function it_checks_is_json_part_is_included_at_given_path()
-    {
-        $this->shouldNotThrow()->duringIsIncludes('{"json": ["spec"]}', '"spec"', 'json');
-        $this->shouldThrow(
-            new NotIncludedException('"spec"')
-        )->duringIsIncludes('{"json": ["no-spec"]}', '"spec"');
-    }
 }
