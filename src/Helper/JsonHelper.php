@@ -38,7 +38,7 @@ class JsonHelper
     {
         $data = $this->parser->parse($json);
 
-        if (!$path) {
+        if (!$path && $path !== '0') {
             return $data;
         }
 
