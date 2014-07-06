@@ -104,4 +104,25 @@ class JsonHelperSpec extends ObjectBehavior
         $this->generateNormalizedJson(['json'=>['spec']])->shouldBe(rtrim($normalizedJson));
     }
 
+    public function it_should_exclude_keys()
+    {
+        $data = (object) array(
+            'id' => 1,
+            'collection' => array(
+                (object) array(
+                    'id' => 1,
+                    'json' => 'spec'
+                )
+            )
+        );
+
+        $this->excludeKeys($data, array('id'))->shouldBeLike((object) array(
+            'collection' => array(
+                (object) array(
+                    'json' => 'spec'
+                )
+            )
+        ));
+    }
+
 }
