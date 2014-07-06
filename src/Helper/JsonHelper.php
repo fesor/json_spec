@@ -120,9 +120,9 @@ class JsonHelper
         $pathSegments = explode('/', trim($path, '/'));
         foreach ($pathSegments as $key) {
 
-            if ($data instanceof \stdClass && isset($data->$key)) {
+            if ($data instanceof \stdClass && property_exists($data, $key)) {
                 $data = $data->$key;
-            } else if (is_array($data) && preg_match('/^\d+$/', $key) && isset($data[intval($key)])) {
+            } else if (is_array($data) && preg_match('/^\d+$/', $key) && array_key_exists(intval($key), $data)) {
                 $data = $data[$key];
             } else {
                 throw new MissingPathException($path);

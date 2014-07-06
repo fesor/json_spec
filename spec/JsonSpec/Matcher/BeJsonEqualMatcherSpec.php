@@ -82,5 +82,5 @@ class BeJsonEqualMatcherSpec extends ObjectBehavior
         $this->match('{"id":1,"json":"spec"}', '{"id":2,"json":"different"}')->shouldBe(true);
     }
 
-    
+
 }
