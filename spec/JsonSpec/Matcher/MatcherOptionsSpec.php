@@ -5,7 +5,7 @@ namespace spec\JsonSpec\Matcher;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class MatcherConfigurationSpec extends ObjectBehavior
+class MatcherOptionsSpec extends ObjectBehavior
 {
     function let()
     {

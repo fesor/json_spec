@@ -4,9 +4,7 @@
 namespace JsonSpec\PhpSpec;
 
 use Seld\JsonLint\JsonParser;
-use JsonSpec\Helper\ExclusionHelper;
 use JsonSpec\Helper\JsonHelper;
-use JsonSpec\Helper\MemoryHelper;
 use JsonSpec\PhpSpec\Runner\Maintainer\DelayedMatcherMaintainer;
 use JsonSpec\PhpSpec\Runner\Maintainer\JsonSpecMaintainer;
 use PhpSpec\Extension\ExtensionInterface;
@@ -51,7 +49,7 @@ class Extension implements ExtensionInterface
 
             $json_spec = $c->getParam('json_spec');
             $excludedKeys = array('id');
-            if (isset($json_spec['excluded_keys'])) {
+            if (isset($json_spec['excluded_keys']) && is_array($json_spec['excluded_keys'])) {
                 $excludedKeys = $json_spec['excluded_keys'];
             }
             $c->setParam('json_spec.excluded_keys', $excludedKeys);
@@ -64,12 +62,8 @@ class Extension implements ExtensionInterface
             return new JsonParser();
         });
 
-        $container->setShared('json_spec.helper.key_excluder', function (ServiceContainer $container) {
-            return new ExclusionHelper($container->getParam('json_spec.excluded_keys'));
-        });
-
-        $container->setShared('json_spec.helper.memory', function () {
-            return new MemoryHelper();
+        $container->setShared('json_spec.matcher_options_factory', function (ServiceContainer $container) {
+            return new MatcherOptionsFactory($container->getParam('json_spec.excluded_keys'));
         });
 
         $container->setShared('json_spec.helper.json', function (ServiceContainer $container) {

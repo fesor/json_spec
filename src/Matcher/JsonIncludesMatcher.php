@@ -5,29 +5,50 @@ namespace JsonSpec\Matcher;
 use JsonSpec\Exception\NotIncludedException;
 use JsonSpec\Helper\JsonHelper;
 
-class JsonIncludesMatcher
+class JsonIncludesMatcher extends Matcher
 {
-    /**
-     * @var JsonHelper
-     */
-    private $jsonHelper;
 
-
-    public function __construct(JsonHelper $jsonHelper)
+    public function match($actual, $expected)
     {
-        $this->jsonHelper = $jsonHelper;
+        $actual = $this->scrub($actual, $this->options->getPath());
+        $expected = $this->scrub($expected);
+
+        return $this->isIncludes($this->helper->parse($actual), $expected);
     }
 
-    public function isIncludes($json, $expected, $path = null)
+    /**
+     * @param $data
+     * @param $json
+     * @return bool
+     */
+    private function isIncludes($data, $json)
     {
-        $expected = $this->jsonHelper->normalize($expected);
-        $data = (array) $this->jsonHelper->parse($json, $path);
-        foreach ($data as $value) {
-            if ($this->jsonHelper->generateNormalizedJson($value) === $expected) {
+        if (!is_object($data) && !is_array($data) && $data !== $json) {
+            return false;
+        }
+
+        if (is_object($data)) {
+            if ($this->helper->generateNormalizedJson($data) === $json) {
                 return true;
+            }
+
+            foreach (get_object_vars($data) as $value) {
+                if ($this->isIncludes($value, $json)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        if (is_array($data)) {
+            foreach ($data as $value) {
+                if ($this->isIncludes($value, $json)) {
+                    return true;
+                }
             }
         }
 
-        throw new NotIncludedException($expected, $path);
+        return false;
     }
 }

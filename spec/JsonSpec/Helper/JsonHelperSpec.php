@@ -64,13 +64,12 @@ class JsonHelperSpec extends ObjectBehavior
     function it_normalize_json()
     {
         $normalizedJson =
-            '{
-    "json": [
-        "spec"
-    ]
+        '{
+    "json": "spec",
+    "laser": "lemon"
 }';
 
-        $this->normalize('{"json":["spec"]}')->shouldBe(rtrim($normalizedJson));
+        $this->normalize('{"laser":"lemon","json":"spec"}')->shouldBe(rtrim($normalizedJson));
     }
 
     function it_normalize_json_value()
@@ -93,6 +92,17 @@ class JsonHelperSpec extends ObjectBehavior
         $this->normalize('"json_spec"')->shouldBe('"json_spec"');
     }
 
+    function it_does_not_change_collection_order()
+    {
+        $normalizedJson =
+            '[
+    "spec",
+    "json"
+]';
+
+        $this->generateNormalizedJson(['spec', 'json'])->shouldBe(rtrim($normalizedJson));
+    }
+
     function it_generates_a_normalized_json_document()
     {
         $normalizedJson =
@@ -101,7 +111,7 @@ class JsonHelperSpec extends ObjectBehavior
         "spec"
     ]
 }';
-        $this->generateNormalizedJson(['json'=>['spec']])->shouldBe(rtrim($normalizedJson));
+        $this->generateNormalizedJson((object)['json'=>['spec']])->shouldBe(rtrim($normalizedJson));
     }
 
     public function it_should_exclude_keys()

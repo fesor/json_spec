@@ -73,7 +73,7 @@ class JsonHelper
     public function generateNormalizedJson($data)
     {
         return rtrim(json_encode(
-            $data,
+            $this->sortObjectKeys($data),
             JSON_PRETTY_PRINT
         ));
     }
@@ -87,6 +87,7 @@ class JsonHelper
      */
     public function excludeKeys($data, array $excludedKeys = array())
     {
+
         if (is_object($data)) {
             $object = new \stdClass();
             foreach(get_object_vars($data) as $key => $value) {
@@ -126,6 +127,24 @@ class JsonHelper
             } else {
                 throw new MissingPathException($path);
             }
+        }
+
+        return $data;
+    }
+
+    private function sortObjectKeys($data)
+    {
+        if (is_array($data)) {
+            return array_map(function ($data) {
+                return $this->sortObjectKeys($data);
+            }, $data);
+        }
+
+        if (is_object($data)) {
+            $values = get_object_vars($data);
+            ksort($values);
+
+            return (object) $values;
         }
 
         return $data;

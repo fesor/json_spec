@@ -2,7 +2,7 @@
 
 namespace JsonSpec\Matcher;
 
-class MatcherConfiguration
+class MatcherOptions
 {
 
     /**
