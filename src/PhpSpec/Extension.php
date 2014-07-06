@@ -3,6 +3,7 @@
 
 namespace JsonSpec\PhpSpec;
 
+use JsonSpec\Matcher\BeJsonEqualMatcher;
 use Seld\JsonLint\JsonParser;
 use JsonSpec\Helper\JsonHelper;
 use JsonSpec\PhpSpec\Runner\Maintainer\DelayedMatcherMaintainer;
@@ -27,8 +28,7 @@ class Extension implements ExtensionInterface
 
             return new JsonSpecMaintainer(
                 $c->get('json_spec.helper.json'),
-                $c->get('json_spec.helper.key_excluder'),
-                $c->get('json_spec.helper.memory')
+                $c->get('json_spec.matcher_options_factory')
             );
         });
 

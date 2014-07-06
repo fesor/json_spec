@@ -58,8 +58,6 @@ class MatcherOptions
      */
     public function atPath($path)
     {
-        $i = 0;
-        $i++;
         $this->path = $path;
     }
 

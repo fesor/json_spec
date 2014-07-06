@@ -20,7 +20,7 @@ class MatcherOptionsFactory
     /**
      * @return MatcherOptions
      */
-    public function createConfiguration()
+    public function createOptions()
     {
         return new MatcherOptions($this->excludedKeys);
     }
