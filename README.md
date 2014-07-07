@@ -63,7 +63,48 @@ extensions:
 
 That's it.
 
+## Exclusions
+Json Spec ingores `id` hash key by default when comparing JSON. It's oftentimes helpful when evaluating JSON representations of newly-created records so that certain values don't have to be known. For example, if you store data in MongoDB, then ID will be always uniqe string. If you want to chane set of excluded keys, you may do this in `phpspec.yml`:
+```
+json_spec:
+    excluded_keys: ['created_at', 'updated_at']
+```
+With this configuration, the `id` key will be included in JSON comparison, while `created_at` and `updated_at` won't. Keys can also be excluded/included per matcher by chaining the `excluding` or `including` methods (as shown above) which will add or subtract from the globally excluded keys, respectively.
+
+## Paths
+Each of JsonSpec matchers deal with JSON "paths." These are simple strings of "/" separated hash keys and array indexes. For instance, with the following JSON:
+```javascript
+{
+  "first_name": "Steve",
+  "last_name": "Richert",
+  "friends": [
+    {
+      "first_name": "Catie",
+      "last_name": "Richert"
+    }
+  ]
+}
+
+```
+We could access the first friend's first name with the path `"friends/0/first_name"`.
+
+## Behat
+Behat support coming soon.
+
+## Contributing
+If you come across any issues, please [tell me](https://github.com/fesor/json_spec/issues) . Pull requests (with tests) are appreciated. No pull request is too small. Please help with:
+
+- Reporting bugs
+- Suggesting features
+- Writing or improving documentation
+- Fixing typos
+- Cleaning whitespace
+- Refactoring code
+- Adding tests
+- Closing [issues](https://github.com/fesor/json_spec/issues)
+
+If you report a bug and don't include a fix, please include a failing test.
+
 ## Inspired By
-- [json_spec](https://github.com/collectiveidea/json_spec) - Ruby's gem for handling JSON with RSpec and Cucumber
- 
+- [json_spec](https://github.com/collectiveidea/json_spec) - Ruby's gem for handling JSON in RSpec and Cucumber
 
