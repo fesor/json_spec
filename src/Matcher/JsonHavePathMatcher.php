@@ -21,15 +21,15 @@ class JsonHavePathMatcher
     }
 
     /**
-     * @param string $json
-     * @param string $path
+     * @param  string $json
+     * @param  string $path
      * @return bool
      */
     public function match($json, $path)
     {
         try {
             $this->helper->parse($json, $path);
-        } catch(MissingPathException $e) {
+        } catch (MissingPathException $e) {
             return false;
         }
 

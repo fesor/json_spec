@@ -30,10 +30,9 @@ class DelayedDecorator implements ExpectationInterface
 
     private $arguments;
 
-
     /**
-     * @param ExpectationInterface $expectation
-     * @param MatcherInterface $matcher
+     * @param ExpectationInterface      $expectation
+     * @param MatcherInterface          $matcher
      * @param DelayedExpectationManager $manager
      */
     public function __construct(ExpectationInterface $expectation, MatcherInterface $matcher, DelayedExpectationManager $manager)
@@ -45,8 +44,8 @@ class DelayedDecorator implements ExpectationInterface
 
     /**
      * @param string $alias
-     * @param mixed $subject
-     * @param array $arguments
+     * @param mixed  $subject
+     * @param array  $arguments
      *
      * @return mixed
      */
@@ -73,6 +72,5 @@ class DelayedDecorator implements ExpectationInterface
     {
         return $this->expectation->match($this->alias, $this->subject, $this->arguments);
     }
-
 
 }

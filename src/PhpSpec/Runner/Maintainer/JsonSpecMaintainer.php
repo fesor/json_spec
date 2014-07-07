@@ -26,7 +26,7 @@ class JsonSpecMaintainer implements MaintainerInterface
     private $optionsFactory;
 
     /**
-     * @param JsonHelper $helper
+     * @param JsonHelper            $helper
      * @param MatcherOptionsFactory $optionsFactory
      */
     public function __construct(JsonHelper $helper, MatcherOptionsFactory $optionsFactory)
@@ -34,7 +34,6 @@ class JsonSpecMaintainer implements MaintainerInterface
         $this->helper = $helper;
         $this->optionsFactory = $optionsFactory;
     }
-
 
     /**
      * @param ExampleNode $example
@@ -47,10 +46,10 @@ class JsonSpecMaintainer implements MaintainerInterface
     }
 
     /**
-     * @param ExampleNode $example
+     * @param ExampleNode            $example
      * @param SpecificationInterface $context
-     * @param MatcherManager $matchers
-     * @param CollaboratorManager $collaborators
+     * @param MatcherManager         $matchers
+     * @param CollaboratorManager    $collaborators
      */
     public function prepare(ExampleNode $example, SpecificationInterface $context,
                             MatcherManager $matchers, CollaboratorManager $collaborators)
@@ -74,10 +73,10 @@ class JsonSpecMaintainer implements MaintainerInterface
     }
 
     /**
-     * @param ExampleNode $example
+     * @param ExampleNode            $example
      * @param SpecificationInterface $context
-     * @param MatcherManager $matchers
-     * @param CollaboratorManager $collaborators
+     * @param MatcherManager         $matchers
+     * @param CollaboratorManager    $collaborators
      */
     public function teardown(ExampleNode $example, SpecificationInterface $context,
                              MatcherManager $matchers, CollaboratorManager $collaborators)
@@ -91,6 +90,5 @@ class JsonSpecMaintainer implements MaintainerInterface
     {
         return 50;
     }
-
 
 }

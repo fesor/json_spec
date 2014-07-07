@@ -2,9 +2,6 @@
 
 namespace JsonSpec\Matcher;
 
-use JsonSpec\Exception\MissingPathException;
-use JsonSpec\Helper\JsonHelper;
-
 class JsonHaveSizeMatcher extends Matcher
 {
 

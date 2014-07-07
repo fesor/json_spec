@@ -4,7 +4,6 @@ namespace JsonSpec\PhpSpec\Matcher;
 
 use JsonSpec\Matcher\MatcherOptions;
 use PhpSpec\Exception\Example\FailureException;
-use PhpSpec\Formatter\Presenter\PresenterInterface;
 
 class JsonIncludesMatcher implements DelayedMatcherInterface
 {
@@ -19,13 +18,12 @@ class JsonIncludesMatcher implements DelayedMatcherInterface
         $this->matcher = $matcher;
     }
 
-
     /**
      * Checks if matcher supports provided subject and matcher name.
      *
      * @param string $name
-     * @param mixed $subject
-     * @param array $arguments
+     * @param mixed  $subject
+     * @param array  $arguments
      *
      * @return boolean
      */
@@ -47,9 +45,9 @@ class JsonIncludesMatcher implements DelayedMatcherInterface
     /**
      * Evaluates positive match.
      *
-     * @param string $name
-     * @param mixed $subject
-     * @param array $arguments
+     * @param  string                                      $name
+     * @param  mixed                                       $subject
+     * @param  array                                       $arguments
      * @throws \PhpSpec\Exception\Example\FailureException
      */
     public function positiveMatch($name, $subject, array $arguments)
@@ -60,9 +58,9 @@ class JsonIncludesMatcher implements DelayedMatcherInterface
     }
 
     /**
-     * @param string $name
-     * @param mixed $subject
-     * @param array $arguments
+     * @param  string                                      $name
+     * @param  mixed                                       $subject
+     * @param  array                                       $arguments
      * @throws \PhpSpec\Exception\Example\FailureException
      */
     public function negativeMatch($name, $subject, array $arguments)

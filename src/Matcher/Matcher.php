@@ -18,7 +18,7 @@ class Matcher
     protected $options;
 
     /**
-     * @param JsonHelper $helper
+     * @param JsonHelper     $helper
      * @param MatcherOptions $options
      */
     public function __construct(JsonHelper $helper, MatcherOptions $options)
@@ -37,7 +37,7 @@ class Matcher
 
     /**
      * @param $json
-     * @param null $path
+     * @param  null   $path
      * @return string
      */
     protected function scrub($json, $path = null)

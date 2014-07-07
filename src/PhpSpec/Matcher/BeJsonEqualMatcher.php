@@ -19,19 +19,17 @@ class BeJsonEqualMatcher implements DelayedMatcherInterface
      */
     private $stringPresenter;
 
-
     public function __construct(\JsonSpec\Matcher\BeJsonEqualMatcher $matcher)
     {
         $this->matcher = $matcher;
     }
 
-
     /**
      * Checks if matcher supports provided subject and matcher name.
      *
      * @param string $name
-     * @param mixed $subject
-     * @param array $arguments
+     * @param mixed  $subject
+     * @param array  $arguments
      *
      * @return boolean
      */
@@ -54,8 +52,8 @@ class BeJsonEqualMatcher implements DelayedMatcherInterface
      * Evaluates positive match.
      *
      * @param string $name
-     * @param mixed $subject
-     * @param array $arguments
+     * @param mixed  $subject
+     * @param array  $arguments
      */
     public function positiveMatch($name, $subject, array $arguments)
     {
@@ -68,8 +66,8 @@ class BeJsonEqualMatcher implements DelayedMatcherInterface
      * Evaluates negative match.
      *
      * @param string $name
-     * @param mixed $subject
-     * @param array $arguments
+     * @param mixed  $subject
+     * @param array  $arguments
      */
     public function negativeMatch($name, $subject, array $arguments)
     {

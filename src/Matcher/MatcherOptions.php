@@ -15,7 +15,6 @@ class MatcherOptions
      */
     protected $path;
 
-
     /**
      * @param array $excludedKeys
      */
@@ -23,7 +22,6 @@ class MatcherOptions
     {
         $this->excludedKeys = $excludedKeys;
     }
-
 
     /**
      * @return $this

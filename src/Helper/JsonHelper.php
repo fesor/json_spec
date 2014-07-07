@@ -30,8 +30,8 @@ class JsonHelper
     /**
      * Returns parsed JSON data or its part by given path
      *
-     * @param string $json
-     * @param string|null $path
+     * @param  string      $json
+     * @param  string|null $path
      * @return mixed
      */
     public function parse($json, $path = null)
@@ -48,7 +48,7 @@ class JsonHelper
     /**
      * Checks is given JSON string is valid or not
      *
-     * @param string $json
+     * @param  string  $json
      * @return boolean
      */
     public function isValid($json)
@@ -58,7 +58,7 @@ class JsonHelper
 
     /**
      * @param $json
-     * @param null $path
+     * @param  null   $path
      * @return string
      */
     public function normalize($json, $path = null)
@@ -67,7 +67,7 @@ class JsonHelper
     }
 
     /**
-     * @param mixed $data
+     * @param  mixed  $data
      * @return string
      */
     public function generateNormalizedJson($data)
@@ -90,7 +90,7 @@ class JsonHelper
 
         if (is_object($data)) {
             $object = new \stdClass();
-            foreach(get_object_vars($data) as $key => $value) {
+            foreach (get_object_vars($data) as $key => $value) {
                 if (in_array($key, $excludedKeys)) continue;
                 $object->$key = $this->excludeKeys($value, $excludedKeys);
             }
@@ -99,7 +99,6 @@ class JsonHelper
         }
 
         if (is_array($data)) {
-
             return array_map(function ($data) use ($excludedKeys) {
                 return $this->excludeKeys($data, $excludedKeys);
             }, $data);
@@ -111,8 +110,8 @@ class JsonHelper
     /**
      * Get data by given JSON path
      *
-     * @param mixed $data
-     * @param string $path
+     * @param  mixed  $data
+     * @param  string $path
      * @return mixed
      */
     private function getAtPath($data, $path)
@@ -122,7 +121,7 @@ class JsonHelper
 
             if ($data instanceof \stdClass && property_exists($data, $key)) {
                 $data = $data->$key;
-            } else if (is_array($data) && preg_match('/^\d+$/', $key) && array_key_exists(intval($key), $data)) {
+            } elseif (is_array($data) && preg_match('/^\d+$/', $key) && array_key_exists(intval($key), $data)) {
                 $data = $data[$key];
             } else {
                 throw new MissingPathException($path);

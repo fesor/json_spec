@@ -26,7 +26,6 @@ class DelayedExpectationFactory
      */
     private $matchers;
 
-
     /**
      * @var ExpectationFactory
      */
@@ -50,7 +49,6 @@ class DelayedExpectationFactory
         $this->expectationFactory = new ExpectationFactory($example, $dispatcher, $matchers);
         $this->manager = $manager;
     }
-
 
     /**
      * @param string $expectation

@@ -22,8 +22,8 @@ class JsonHavePathMatcher implements MatcherInterface
      * Checks if matcher supports provided subject and matcher name.
      *
      * @param string $name
-     * @param mixed $subject
-     * @param array $arguments
+     * @param mixed  $subject
+     * @param array  $arguments
      *
      * @return Boolean
      */
@@ -35,9 +35,9 @@ class JsonHavePathMatcher implements MatcherInterface
     /**
      * Evaluates positive match.
      *
-     * @param string $name
-     * @param mixed $subject
-     * @param array $arguments
+     * @param  string           $name
+     * @param  mixed            $subject
+     * @param  array            $arguments
      * @throws FailureException
      */
     public function positiveMatch($name, $subject, array $arguments)
@@ -50,9 +50,9 @@ class JsonHavePathMatcher implements MatcherInterface
     /**
      * Evaluates negative match.
      *
-     * @param string $name
-     * @param mixed $subject
-     * @param array $arguments
+     * @param  string           $name
+     * @param  mixed            $subject
+     * @param  array            $arguments
      * @throws FailureException
      */
     public function negativeMatch($name, $subject, array $arguments)
