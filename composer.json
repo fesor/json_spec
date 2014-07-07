@@ -20,6 +20,7 @@
         "seld/jsonlint": "~1.1.2"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.1.*@dev"
+        "phpspec/phpspec": "2.1.*@dev",
+        "behat/behat": "~3.0"
     }
 }
