@@ -21,6 +21,7 @@
     },
     "require-dev": {
         "phpspec/phpspec": "2.1.*@dev",
-        "behat/behat": "~3.0"
+        "behat/behat": "~3.0",
+        "fabpot/php-cs-fixer": "~0.5"
     }
 }
