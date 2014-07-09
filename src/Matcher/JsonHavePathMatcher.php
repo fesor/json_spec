@@ -5,20 +5,8 @@ namespace JsonSpec\Matcher;
 use JsonSpec\Exception\MissingPathException;
 use JsonSpec\Helper\JsonHelper;
 
-class JsonHavePathMatcher
+class JsonHavePathMatcher extends Matcher
 {
-    /**
-     * @var JsonHelper
-     */
-    private $helper;
-
-    /**
-     * @param JsonHelper $helper
-     */
-    public function __construct(JsonHelper $helper)
-    {
-        $this->helper = $helper;
-    }
 
     /**
      * @param  string $json
@@ -27,6 +15,10 @@ class JsonHavePathMatcher
      */
     public function match($json, $path)
     {
+        // get base path
+        $basePath = $this->getOptions()->getPath();
+        $path = ltrim($basePath . '/' . $path, '/');
+
         try {
             $this->helper->parse($json, $path);
         } catch (MissingPathException $e) {

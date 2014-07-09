@@ -3,6 +3,7 @@
 namespace spec\JsonSpec\Matcher;
 
 use JsonSpec\Helper\JsonHelper;
+use JsonSpec\Matcher\MatcherOptions;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Seld\JsonLint\JsonParser;
@@ -10,9 +11,11 @@ use Seld\JsonLint\JsonParser;
 class JsonHavePathMatcherSpec extends ObjectBehavior
 {
 
-    function let()
+    function let(MatcherOptions $options)
     {
-        $this->beConstructedWith(new JsonHelper(new JsonParser()));
+        $options->getPath()->willReturn('');
+
+        $this->beConstructedWith(new JsonHelper(new JsonParser()), $options);
     }
 
     function it_matches_hash_keys()
@@ -38,6 +41,12 @@ class JsonHavePathMatcherSpec extends ObjectBehavior
     function it_matches_hash_keys_and_array_indexes()
     {
         $this->match('{"one":[1,2,{"three":4}]}', 'one/2/three')->shouldBe(true);
+    }
+
+    function it_matches_hash_keys_with_given_base_path(MatcherOptions $options)
+    {
+        $options->getPath()->willReturn('one');
+        $this->match('{"one":{"two":{"three":4}}}', 'two/three')->shouldBe(true);
     }
 
 }
