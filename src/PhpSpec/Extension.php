@@ -8,6 +8,7 @@ use JsonSpec\PhpSpec\Runner\Maintainer\DelayedMatcherMaintainer;
 use JsonSpec\PhpSpec\Runner\Maintainer\JsonSpecMaintainer;
 use PhpSpec\Extension\ExtensionInterface;
 use PhpSpec\ServiceContainer;
+use JsonSpec\MatcherOptionsFactory;
 
 class Extension implements ExtensionInterface
 {

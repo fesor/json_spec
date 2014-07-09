@@ -5,7 +5,7 @@ namespace JsonSpec\PhpSpec\Runner\Maintainer;
 use JsonSpec\Helper\JsonHelper;
 use \JsonSpec\PhpSpec\Matcher;
 use \JsonSpec\Matcher as BaseMatcher;
-use JsonSpec\PhpSpec\MatcherOptionsFactory;
+use JsonSpec\MatcherOptionsFactory;
 use PhpSpec\Loader\Node\ExampleNode;
 use PhpSpec\Runner\CollaboratorManager;
 use PhpSpec\Runner\Maintainer\MaintainerInterface;
@@ -55,21 +55,21 @@ class JsonSpecMaintainer implements MaintainerInterface
                             MatcherManager $matchers, CollaboratorManager $collaborators)
     {
         // add matchers
-        $matchers->add(new Matcher\BeJsonEqualMatcher(new BaseMatcher\BeJsonEqualMatcher(
-            $this->helper, $this->optionsFactory->createOptions()
-        )));
-        $matchers->add(new Matcher\JsonHaveSizeMatcher(new BaseMatcher\JsonHaveSizeMatcher(
-            $this->helper, $this->optionsFactory->createOptions()
-        )));
-        $matchers->add(new Matcher\JsonHaveTypeMatcher(new BaseMatcher\JsonHaveTypeMatcher(
-            $this->helper, $this->optionsFactory->createOptions()
-        )));
-        $matchers->add(new Matcher\JsonIncludesMatcher(new BaseMatcher\JsonIncludesMatcher(
-            $this->helper, $this->optionsFactory->createOptions()
-        )));
-        $matchers->add(new Matcher\JsonHavePathMatcher(new BaseMatcher\JsonHavePathMatcher(
-            $this->helper
-        )));
+        $matchers->add(new Matcher\BeJsonEqualMatcher($this->createMatcher('JsonSpec\\Matcher\\BeJsonEqualMatcher')));
+        $matchers->add(new Matcher\JsonHaveSizeMatcher($this->createMatcher('JsonSpec\\Matcher\\JsonHaveSizeMatcher')));
+        $matchers->add(new Matcher\JsonHaveTypeMatcher($this->createMatcher('JsonSpec\\Matcher\\JsonHaveTypeMatcher')));
+        $matchers->add(new Matcher\JsonIncludesMatcher($this->createMatcher('JsonSpec\\Matcher\\JsonIncludesMatcher')));
+        $matchers->add(new Matcher\JsonHavePathMatcher($this->createMatcher('JsonSpec\\Matcher\\JsonHavePathMatcher')));
+    }
+
+    private function createMatcher($className)
+    {
+        $matcher = new $className($this->helper);
+        if ($matcher instanceof BaseMatcher\Matcher) {
+            $matcher->setOptions($this->optionsFactory->createOptions());
+        }
+
+        return $matcher;
     }
 
     /**

@@ -21,10 +21,19 @@ class Matcher
      * @param JsonHelper     $helper
      * @param MatcherOptions $options
      */
-    public function __construct(JsonHelper $helper, MatcherOptions $options)
+    public function __construct(JsonHelper $helper, MatcherOptions $options = null)
+    {
+        $this->options = $options ?
+            $options : new MatcherOptions();
+        $this->helper = $helper;
+    }
+
+    /**
+     * @param MatcherOptions $options
+     */
+    public function setOptions(MatcherOptions $options)
     {
         $this->options = $options;
-        $this->helper = $helper;
     }
 
     /**
