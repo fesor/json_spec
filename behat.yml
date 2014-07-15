@@ -1,0 +1,9 @@
+default:
+    suites:
+        default:
+            contexts:
+                - FeatureContext
+                - JsonSpec\Behat\Context\JsonSpecContext
+    extensions:
+        JsonSpec\Behat\Extension:
+
