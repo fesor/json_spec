@@ -43,12 +43,12 @@ class JsonSpecContext implements Context
     private $haveJsonType;
 
     /**
-     * @param Matcher\BeJsonEqualMatcher $beJsonEqual
+     * @param Matcher\BeJsonEqualMatcher  $beJsonEqual
      * @param Matcher\JsonHavePathMatcher $haveJsonPath
      * @param Matcher\JsonHaveTypeMatcher $haveJsonSize
      * @param Matcher\JsonHaveTypeMatcher $haveJsonType
      * @param Matcher\JsonIncludesMatcher $includeJson
-     * @param MemoryHelper $memoryHelper
+     * @param MemoryHelper                $memoryHelper
      */
     public function __construct(
         Matcher\BeJsonEqualMatcher $beJsonEqual,

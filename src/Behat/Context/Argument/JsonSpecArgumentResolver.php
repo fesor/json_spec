@@ -40,8 +40,8 @@ class JsonSpecArgumentResolver implements ArgumentResolver
 
     /**
      * @param MatcherOptionsFactory $optionsFactory
-     * @param MemoryHelper $memory
-     * @param JsonHelper $helper
+     * @param MemoryHelper          $memory
+     * @param JsonHelper            $helper
      */
     public function __construct(MatcherOptionsFactory $optionsFactory, MemoryHelper $memory, JsonHelper $helper)
     {
@@ -54,7 +54,7 @@ class JsonSpecArgumentResolver implements ArgumentResolver
      * Resolves context constructor arguments.
      *
      * @param ReflectionClass $classReflection
-     * @param mixed[] $arguments
+     * @param mixed[]         $arguments
      *
      * @return mixed[]
      */
@@ -68,7 +68,7 @@ class JsonSpecArgumentResolver implements ArgumentResolver
     }
 
     /**
-     * @param \ReflectionParameter[] $arguments
+     * @param  \ReflectionParameter[] $arguments
      * @return array
      */
     private function getArguments($arguments)
@@ -90,6 +90,7 @@ class JsonSpecArgumentResolver implements ArgumentResolver
     private function createMatchers($matchers)
     {
         $self = $this;
+
         return array_map(function ($className) use ($self) {
             return new $className($self->helper, $self->optionsFactory->createOptions());
         }, $matchers);
