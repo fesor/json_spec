@@ -3,75 +3,38 @@
 namespace JsonSpec\PhpSpec\Matcher;
 
 use PhpSpec\Exception\Example\FailureException;
-use PhpSpec\Matcher\MatcherInterface;
 
-class JsonHavePathMatcher implements MatcherInterface
+class JsonHavePathMatcher extends JsonSpecMatcher
 {
 
     /**
-     * @var \JsonSpec\Matcher\JsonHavePathMatcher
+     * @inheritdoc
      */
-    private $matcher;
-
-    public function __construct(\JsonSpec\Matcher\JsonHavePathMatcher $matcher)
+    protected function getSupportedNames()
     {
-        $this->matcher = $matcher;
+        return array('haveJsonPath');
     }
 
     /**
-     * Checks if matcher supports provided subject and matcher name.
-     *
-     * @param string $name
-     * @param mixed  $subject
-     * @param array  $arguments
-     *
-     * @return Boolean
+     * @inheritdoc
      */
-    public function supports($name, $subject, array $arguments)
+    protected function createPositiveError($expected, $actual)
     {
-        return in_array($name, array('haveJsonPath'));
+        return $this->createError(sprintf('Expected JSON path "%s"', $expected));
     }
 
     /**
-     * Evaluates positive match.
-     *
-     * @param  string           $name
-     * @param  mixed            $subject
-     * @param  array            $arguments
-     * @throws FailureException
+     * @inheritdoc
      */
-    public function positiveMatch($name, $subject, array $arguments)
+    protected function createNegativeError($expected, $actual)
     {
-        if (!$this->matcher->match($subject, $arguments[0])) {
-            throw $this->createError(sprintf('Expected JSON path "%s"', $arguments[0]));
-        }
+        return $this->createError(sprintf('Expected no JSON path "%s"', $expected));
     }
 
     /**
-     * Evaluates negative match.
-     *
-     * @param  string           $name
-     * @param  mixed            $subject
-     * @param  array            $arguments
-     * @throws FailureException
+     * @param $message
+     * @return FailureException
      */
-    public function negativeMatch($name, $subject, array $arguments)
-    {
-        if ($this->matcher->match($subject, $arguments[0])) {
-            throw $this->createError(sprintf('Expected no JSON path "%s"', $arguments[0]));
-        }
-    }
-
-    /**
-     * Returns matcher priority.
-     *
-     * @return integer
-     */
-    public function getPriority()
-    {
-        return 50;
-    }
-
     private function createError($message)
     {
         return new FailureException($message);

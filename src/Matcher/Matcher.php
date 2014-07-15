@@ -4,7 +4,7 @@ namespace JsonSpec\Matcher;
 
 use JsonSpec\Helper\JsonHelper;
 
-class Matcher
+abstract class Matcher
 {
 
     /**
@@ -27,6 +27,13 @@ class Matcher
             $options : new MatcherOptions();
         $this->helper = $helper;
     }
+
+    /**
+     * @param  string $json
+     * @param  string $expected
+     * @return bool
+     */
+    abstract public function match($json, $expected);
 
     /**
      * @param MatcherOptions $options

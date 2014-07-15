@@ -5,9 +5,9 @@ namespace JsonSpec\Matcher;
 class JsonIncludesMatcher extends Matcher
 {
 
-    public function match($actual, $expected)
+    public function match($json, $expected)
     {
-        $actual = $this->scrub($actual, $this->options->getPath());
+        $actual = $this->scrub($json, $this->options->getPath());
         $expected = $this->scrub($expected);
 
         return $this->isIncludes($this->helper->parse($actual), $expected);

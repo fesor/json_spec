@@ -2,90 +2,39 @@
 
 namespace JsonSpec\PhpSpec\Matcher;
 
-use JsonSpec\Matcher\MatcherOptions;
 use PhpSpec\Exception\Example\FailureException;
-use PhpSpec\Formatter\Presenter\PresenterInterface;
 
-class BeJsonEqualMatcher implements DelayedMatcherInterface
+class BeJsonEqualMatcher extends JsonSpecMatcher
 {
 
     /**
-     * @var \JsonSpec\Matcher\BeJsonEqualMatcher
+     * @inheritdoc
      */
-    private $matcher;
-
-    /**
-     * @var PresenterInterface
-     */
-    private $stringPresenter;
-
-    public function __construct(\JsonSpec\Matcher\BeJsonEqualMatcher $matcher)
+    protected function getSupportedNames()
     {
-        $this->matcher = $matcher;
+        return array('beJsonEqual');
     }
 
     /**
-     * Checks if matcher supports provided subject and matcher name.
-     *
-     * @param string $name
-     * @param mixed  $subject
-     * @param array  $arguments
-     *
-     * @return boolean
+     * @inheritdoc
      */
-    public function supports($name, $subject, array $arguments)
+    protected function createPositiveError($expected, $actual)
     {
-        return in_array($name, array('beJsonEqual'))
-            && 1 === count($arguments)
-        ;
+        return $this->createError('Expected equivalent JSON');
     }
 
     /**
-     * @return MatcherOptions
+     * @inheritdoc
      */
-    public function promise()
+    protected function createNegativeError($expected, $actual)
     {
-        return $this->matcher->getOptions();
+        return $this->createError('Expected inequivalent JSON');
     }
 
     /**
-     * Evaluates positive match.
-     *
-     * @param string $name
-     * @param mixed  $subject
-     * @param array  $arguments
+     * @param $message
+     * @return FailureException
      */
-    public function positiveMatch($name, $subject, array $arguments)
-    {
-        if (!$this->matcher->match($subject, $arguments[0])) {
-            throw $this->createError('Expected equivalent JSON');
-        }
-    }
-
-    /**
-     * Evaluates negative match.
-     *
-     * @param string $name
-     * @param mixed  $subject
-     * @param array  $arguments
-     */
-    public function negativeMatch($name, $subject, array $arguments)
-    {
-        if ($this->matcher->match($subject, $arguments[0])) {
-            throw $this->createError('Expected inequivalent JSON');
-        }
-    }
-
-    /**
-     * Returns matcher priority.
-     *
-     * @return integer
-     */
-    public function getPriority()
-    {
-        return 50;
-    }
-
     private function createError($message)
     {
         return new FailureException($message);

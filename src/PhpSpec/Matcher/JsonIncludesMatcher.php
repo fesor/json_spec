@@ -2,87 +2,42 @@
 
 namespace JsonSpec\PhpSpec\Matcher;
 
-use JsonSpec\Matcher\MatcherOptions;
 use PhpSpec\Exception\Example\FailureException;
 
-class JsonIncludesMatcher implements DelayedMatcherInterface
+class JsonIncludesMatcher extends JsonSpecMatcher
 {
 
     /**
-     * @var \JsonSpec\Matcher\JsonIncludesMatcher
+     * @return array of names
      */
-    private $matcher;
-
-    public function __construct(\JsonSpec\Matcher\JsonIncludesMatcher $matcher)
+    protected function getSupportedNames()
     {
-        $this->matcher = $matcher;
+        return array('includeJson');
     }
 
     /**
-     * Checks if matcher supports provided subject and matcher name.
-     *
-     * @param string $name
-     * @param mixed  $subject
-     * @param array  $arguments
-     *
-     * @return boolean
+     * @inheritdoc
      */
-    public function supports($name, $subject, array $arguments)
+    protected function createPositiveError($expected, $actual)
     {
-        return in_array($name, array('includeJson'))
-            && 1 === count($arguments)
-        ;
+        return $this->createError('Expected included JSON');
     }
 
     /**
-     * @return MatcherOptions
+     * @inheritdoc
      */
-    public function promise()
+    protected function createNegativeError($expected, $actual)
     {
-        return $this->matcher->getOptions();
+        return $this->createError('Expected excluded JSON');
     }
 
     /**
-     * Evaluates positive match.
-     *
-     * @param  string                                      $name
-     * @param  mixed                                       $subject
-     * @param  array                                       $arguments
-     * @throws \PhpSpec\Exception\Example\FailureException
+     * @param $message
+     * @return FailureException
      */
-    public function positiveMatch($name, $subject, array $arguments)
-    {
-        if (!$this->matcher->match($subject, $arguments[0])) {
-            throw $this->createError('Expected included JSON');
-        }
-    }
-
-    /**
-     * @param  string                                      $name
-     * @param  mixed                                       $subject
-     * @param  array                                       $arguments
-     * @throws \PhpSpec\Exception\Example\FailureException
-     */
-    public function negativeMatch($name, $subject, array $arguments)
-    {
-        if ($this->matcher->match($subject, $arguments[0])) {
-            throw $this->createError('Expected excluded JSON');
-        }
-    }
-
-    /**
-     * Returns matcher priority.
-     *
-     * @return integer
-     */
-    public function getPriority()
-    {
-        return 50;
-    }
-
     private function createError($message)
     {
-        $path = $this->matcher->getOptions()->getPath();
+        $path = $this->getOptions()->getPath();
         if ($path !== null) {
             $message .= sprintf(' at path \'%s\'', $path);
         }

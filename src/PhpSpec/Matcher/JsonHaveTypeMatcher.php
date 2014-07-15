@@ -2,89 +2,42 @@
 
 namespace JsonSpec\PhpSpec\Matcher;
 
-use JsonSpec\Matcher\MatcherOptions;
 use PhpSpec\Exception\Example\FailureException;
 
-class JsonHaveTypeMatcher implements DelayedMatcherInterface
+class JsonHaveTypeMatcher extends JsonSpecMatcher
 {
 
     /**
-     * @var \JsonSpec\Matcher\JsonHaveTypeMatcher
+     * @inheritdoc
      */
-    private $matcher;
-
-    public function __construct(\JsonSpec\Matcher\JsonHaveTypeMatcher $matcher)
+    protected function getSupportedNames()
     {
-        $this->matcher = $matcher;
+        return array('haveJsonType');
     }
 
     /**
-     * Checks if matcher supports provided subject and matcher name.
-     *
-     * @param string $name
-     * @param mixed  $subject
-     * @param array  $arguments
-     *
-     * @return boolean
+     * @inheritdoc
      */
-    public function supports($name, $subject, array $arguments)
+    protected function createPositiveError($expected, $actual)
     {
-        return in_array($name, array('haveJsonType'))
-            && 1 === count($arguments)
-        ;
+        return $this->createError(sprintf('Expected JSON value type to be %s', $expected));
     }
 
     /**
-     * @return MatcherOptions
+     * @inheritdoc
      */
-    public function promise()
+    protected function createNegativeError($expected, $actual)
     {
-        return $this->matcher->getOptions();
+        return $this->createError(sprintf('Expected JSON value type to not be %s', $expected));
     }
 
     /**
-     * Evaluates positive match.
-     *
-     * @param  string                                      $name
-     * @param  mixed                                       $subject
-     * @param  array                                       $arguments
-     * @throws \PhpSpec\Exception\Example\FailureException
+     * @param $message
+     * @return FailureException
      */
-    public function positiveMatch($name, $subject, array $arguments)
-    {
-        if (!$this->matcher->match($subject, $arguments[0])) {
-            throw $this->createError(sprintf('Expected JSON value type to be %s', $arguments[0]));
-        }
-    }
-
-    /**
-     * Evaluates negative match.
-     *
-     * @param  string                                      $name
-     * @param  mixed                                       $subject
-     * @param  array                                       $arguments
-     * @throws \PhpSpec\Exception\Example\FailureException
-     */
-    public function negativeMatch($name, $subject, array $arguments)
-    {
-        if ($this->matcher->match($subject, $arguments[0])) {
-            throw $this->createError(sprintf('Expected JSON value type to not be %s', $arguments[0]));
-        }
-    }
-
-    /**
-     * Returns matcher priority.
-     *
-     * @return integer
-     */
-    public function getPriority()
-    {
-        return 50;
-    }
-
     private function createError($message)
     {
-        $path = $this->matcher->getOptions()->getPath();
+        $path = $this->getOptions()->getPath();
         if ($path !== null) {
             $message .= sprintf(' at path \'%s\'', $path);
         }
