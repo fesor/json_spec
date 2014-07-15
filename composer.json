@@ -19,6 +19,9 @@
         "php": ">=5.4.0",
         "seld/jsonlint": "~1.1.2"
     },
+    "conflict": {
+        "behat/behat": "<3.0.11"
+    },
     "require-dev": {
         "phpspec/phpspec": "2.1.*@dev",
         "behat/behat": "~3.0",
