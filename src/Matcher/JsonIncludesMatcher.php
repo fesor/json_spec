@@ -20,8 +20,14 @@ class JsonIncludesMatcher extends Matcher
      */
     private function isIncludes($data, $json)
     {
-        if (!is_object($data) && !is_array($data) && $data !== $json) {
-            return false;
+
+        $normalizedData = $this->helper->generateNormalizedJson($data);
+        if (!is_object($data) && !is_array($data)) {
+            return  $normalizedData === $json;
+        }
+
+        if ($normalizedData === $json) {
+            return true;
         }
 
         if (is_object($data)) {
