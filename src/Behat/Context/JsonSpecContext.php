@@ -7,6 +7,7 @@ use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use JsonSpec\Behat\Provider\JsonProvider;
+use JsonSpec\Helper\JsonHelper;
 use JsonSpec\Helper\MemoryHelper;
 use JsonSpec\Matcher;
 
@@ -17,6 +18,11 @@ class JsonSpecContext implements Context
      * @var MemoryHelper
      */
     private $memoryHelper;
+
+    /**
+     * @var JsonHelper
+     */
+    private $jsonHelper;
 
     /**
      * @var Matcher\BeJsonEqualMatcher
@@ -34,7 +40,7 @@ class JsonSpecContext implements Context
     private $haveJsonPath;
 
     /**
-     * @var Matcher\JsonHaveTypeMatcher
+     * @var Matcher\JsonHaveSizeMatcher
      */
     private $haveJsonSize;
 
@@ -55,14 +61,16 @@ class JsonSpecContext implements Context
      * @param Matcher\JsonHaveTypeMatcher $haveJsonType
      * @param Matcher\JsonIncludesMatcher $includeJson
      * @param MemoryHelper                $memoryHelper
+     * fixme: remove contructor...
      */
     public function __construct(
         Matcher\BeJsonEqualMatcher $beJsonEqual,
         Matcher\JsonHavePathMatcher $haveJsonPath,
-        Matcher\JsonHaveTypeMatcher $haveJsonSize,
+        Matcher\JsonHaveSizeMatcher $haveJsonSize,
         Matcher\JsonHaveTypeMatcher $haveJsonType,
         Matcher\JsonIncludesMatcher  $includeJson,
         MemoryHelper $memoryHelper,
+        JsonHelper $jsonHelper,
         JsonProvider $jsonProvider
     )
     {
@@ -72,6 +80,7 @@ class JsonSpecContext implements Context
         $this->haveJsonType = $haveJsonType;
         $this->includeJson = $includeJson;
         $this->memoryHelper = $memoryHelper;
+        $this->jsonHelper = $jsonHelper;
         $this->jsonProvider = $jsonProvider;
     }
 
@@ -80,7 +89,8 @@ class JsonSpecContext implements Context
      */
     public function keepJson($path, $key)
     {
-        throw new PendingException();
+        $json = $this->jsonProvider->getJson();
+        $this->memoryHelper->memorize($key, $this->jsonHelper->normalize($json, $path));
     }
 
     /**
@@ -88,7 +98,7 @@ class JsonSpecContext implements Context
      */
     public function checkEquality($path = null, $isNegative = null, PyStringNode $json = null)
     {
-        throw new PendingException();
+        $this->checkEqualityInline($path, $isNegative, $json->getRaw());
     }
 
     /**
@@ -96,7 +106,15 @@ class JsonSpecContext implements Context
      */
     public function checkEqualityInline($path, $isNegative, $json)
     {
-        throw new PendingException();
+        $options = $this->beJsonEqual->getOptions();
+        $options->atPath($path);
+        $matches = $this->beJsonEqual->match(
+            $this->memoryHelper->remember($this->jsonProvider->getJson()),
+            $this->memoryHelper->remember($json)
+        );
+        if ($matches xor !$isNegative) {
+            throw new \RuntimeException(sprintf('Expected JSON%s to be equal', $isNegative ? ' not' : ''));
+        }
     }
 
     /**
@@ -104,7 +122,7 @@ class JsonSpecContext implements Context
      */
     public function checkInclusion($path, $isNegative, $json)
     {
-        throw new PendingException();
+        $this->checkInclusionInline($path, $isNegative, $json);
     }
 
     /**
@@ -112,7 +130,11 @@ class JsonSpecContext implements Context
      */
     public function checkInclusionInline($path, $isNegative, $json)
     {
-        throw new PendingException();
+        $actual = $this->memoryHelper->remember($this->jsonProvider->getJson());
+        $this->includeJson->getOptions()->atPath($path);
+        if ($this->includeJson->match($actual, $this->memoryHelper->remember($json)) xor !$isNegative) {
+            throw new \RuntimeException(sprintf('Expected JSON to be %s', $isNegative ? 'included' : 'excluded'));
+        }
     }
 
     /**
@@ -120,7 +142,20 @@ class JsonSpecContext implements Context
      */
     public function hasKeys($base, TableNode $table)
     {
-        throw new PendingException();
+        $actual = $this->jsonHelper->normalize(
+            $this->memoryHelper->remember($this->jsonProvider->getJson()),
+            $base
+        );
+        foreach($table->getRows() as $row) {
+            if (count ($row) == 2) {
+                $this->checkEqualityInline(ltrim($base . '/' .$row[0], '/'), false, $row[1]);
+            } else {
+                if (!$this->haveJsonPath->match($actual, $row[0])) {
+                    throw new \RuntimeException(sprintf('Expected JSON to have path "%s"', $row[0]));
+                }
+            }
+
+        }
     }
 
     /**
@@ -128,7 +163,11 @@ class JsonSpecContext implements Context
      */
     public function hasKeysInline($isNegative, $path)
     {
-        throw new PendingException();
+        $json = $this->memoryHelper->remember($this->jsonProvider->getJson());
+        if ($this->haveJsonPath->match($json, $path) xor !$isNegative) {
+            throw new \RuntimeException(sprintf('Expected JSON%s to have path "%s"', $isNegative ?
+                ' not' : '', $path));
+        }
     }
 
     /**
@@ -136,7 +175,12 @@ class JsonSpecContext implements Context
      */
     public function haveType($path, $isNegative, $type)
     {
-        throw new PendingException();
+        $json = $this->memoryHelper->remember($this->jsonProvider->getJson());
+        $this->haveJsonType->getOptions()->atPath($path);
+        if ($this->haveJsonType->match($json, $type) xor !$isNegative) {
+            throw new \RuntimeException(sprintf('Expected JSON%s to have type "%s"', $isNegative ?
+                ' not' : '', $type));
+        }
     }
 
     /**
@@ -144,7 +188,12 @@ class JsonSpecContext implements Context
      */
     public function haveSize($path, $isNegative, $size)
     {
-        throw new PendingException();
+        $json = $this->memoryHelper->remember($this->jsonProvider->getJson());
+        $this->haveJsonSize->getOptions()->atPath($path);
+        if ($this->haveJsonSize->match($json, intval($size, 10)) xor !$isNegative) {
+            throw new \RuntimeException(sprintf('Expected JSON%s to have size "%d"', $isNegative ?
+                ' not' : '', $size));
+        }
     }
 
 }

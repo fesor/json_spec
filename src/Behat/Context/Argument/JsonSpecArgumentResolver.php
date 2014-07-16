@@ -92,6 +92,7 @@ class JsonSpecArgumentResolver implements ArgumentResolver
 
         $matchers = $this->createMatchers(array_intersect($types, $this->matchers));
         $matchers[] = $this->memory;
+        $matchers[] = $this->helper;
         $matchers[] = $this->jsonProvider;
 
         return $matchers;
