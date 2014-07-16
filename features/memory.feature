@@ -20,15 +20,15 @@ Feature: Memory
 
   Scenario: Entire JSON
     When I keep the JSON as "JSON"
-    Then the JSON should be %{JSON}
+    Then the JSON should be {$JSON}
     And the JSON should be:
     """
-    %{JSON}
+    {$JSON}
     """
 
   Scenario: String
     When I keep the JSON at "string" as "STRING"
-    Then the JSON at "string" should be %{STRING}
+    Then the JSON at "string" should be {$STRING}
     And the JSON should be:
     """
     {
@@ -41,14 +41,14 @@ Feature: Memory
       },
       "integer": 10,
       "null": null,
-      "string": %{STRING},
+      "string": {$STRING},
       "true": true
     }
     """
 
   Scenario: Integer
     When I keep the JSON at "integer" as "INTEGER"
-    Then the JSON at "integer" should be %{INTEGER}
+    Then the JSON at "integer" should be {$INTEGER}
     And the JSON should be:
     """
     {
@@ -59,7 +59,7 @@ Feature: Memory
       "float": 10.0,
       "hash": {
       },
-      "integer": %{INTEGER},
+      "integer": {$INTEGER},
       "null": null,
       "string": "json_spec",
       "true": true
@@ -68,7 +68,7 @@ Feature: Memory
 
   Scenario: Float
     When I keep the JSON at "float" as "FLOAT"
-    Then the JSON at "float" should be %{FLOAT}
+    Then the JSON at "float" should be {$FLOAT}
     And the JSON should be:
     """
     {
@@ -76,7 +76,7 @@ Feature: Memory
 
       ],
       "false": false,
-      "float": %{FLOAT},
+      "float": {$FLOAT},
       "hash": {
       },
       "integer": 10,
@@ -88,11 +88,11 @@ Feature: Memory
 
   Scenario: Array
     When I keep the JSON at "array" as "ARRAY"
-    Then the JSON at "array" should be %{ARRAY}
+    Then the JSON at "array" should be {$ARRAY}
     And the JSON should be:
     """
     {
-      "array": %{ARRAY},
+      "array": {$ARRAY},
       "false": false,
       "float": 10.0,
       "hash": {
@@ -106,7 +106,7 @@ Feature: Memory
 
   Scenario: Hash
     When I keep the JSON at "hash" as "HASH"
-    Then the JSON at "hash" should be %{HASH}
+    Then the JSON at "hash" should be {$HASH}
     And the JSON should be:
     """
     {
@@ -115,7 +115,7 @@ Feature: Memory
       ],
       "false": false,
       "float": 10.0,
-      "hash": %{HASH},
+      "hash": {$HASH},
       "integer": 10,
       "null": null,
       "string": "json_spec",
@@ -125,7 +125,7 @@ Feature: Memory
 
   Scenario: True
     When I keep the JSON at "true" as "TRUE"
-    Then the JSON at "true" should be %{TRUE}
+    Then the JSON at "true" should be {$TRUE}
     And the JSON should be:
     """
     {
@@ -139,20 +139,20 @@ Feature: Memory
       "integer": 10,
       "null": null,
       "string": "json_spec",
-      "true": %{TRUE}
+      "true": {$TRUE}
     }
     """
 
   Scenario: False
     When I keep the JSON at "false" as "FALSE"
-    Then the JSON at "false" should be %{FALSE}
+    Then the JSON at "false" should be {$FALSE}
     And the JSON should be:
     """
     {
       "array": [
 
       ],
-      "false": %{FALSE},
+      "false": {$FALSE},
       "float": 10.0,
       "hash": {
       },
@@ -165,7 +165,7 @@ Feature: Memory
 
   Scenario: Null
     When I keep the JSON at "null" as "NULL"
-    Then the JSON at "null" should be %{NULL}
+    Then the JSON at "null" should be {$NULL}
     And the JSON should be:
     """
     {
@@ -177,7 +177,7 @@ Feature: Memory
       "hash": {
       },
       "integer": 10,
-      "null": %{NULL},
+      "null": {$NULL},
       "string": "json_spec",
       "true": true
     }
@@ -193,14 +193,14 @@ Feature: Memory
     And I keep the JSON at "false" as "FALSE"
     And I keep the JSON at "null" as "NULL"
     Then the JSON should have the following:
-      | string  | %{STRING}  |
-      | integer | %{INTEGER} |
-      | float   | %{FLOAT}   |
-      | array   | %{ARRAY}   |
-      | hash    | %{HASH}    |
-      | true    | %{TRUE}    |
-      | false   | %{FALSE}   |
-      | null    | %{NULL}    |
+      | string  | {$STRING}  |
+      | integer | {$INTEGER} |
+      | float   | {$FLOAT}   |
+      | array   | {$ARRAY}   |
+      | hash    | {$HASH}    |
+      | true    | {$TRUE}    |
+      | false   | {$FALSE}   |
+      | null    | {$NULL}    |
 
   Scenario: Inclusion
     When I keep the JSON at "string" as "STRING"
@@ -211,11 +211,11 @@ Feature: Memory
     And I keep the JSON at "true" as "TRUE"
     And I keep the JSON at "false" as "FALSE"
     And I keep the JSON at "null" as "NULL"
-    Then the JSON should include %{STRING}
-    And the JSON should include %{INTEGER}
-    And the JSON should include %{FLOAT}
-    And the JSON should include %{ARRAY}
-    And the JSON should include %{HASH}
-    And the JSON should include %{TRUE}
-    And the JSON should include %{FALSE}
-    And the JSON should include %{NULL}
+    Then the JSON should include {$STRING}
+    And the JSON should include {$INTEGER}
+    And the JSON should include {$FLOAT}
+    And the JSON should include {$ARRAY}
+    And the JSON should include {$HASH}
+    And the JSON should include {$TRUE}
+    And the JSON should include {$FALSE}
+    And the JSON should include {$NULL}
