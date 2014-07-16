@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use JsonSpec\Behat\Provider\JsonProvider;
 use JsonSpec\Helper\MemoryHelper;
 use JsonSpec\Matcher;
 
@@ -43,6 +44,11 @@ class JsonSpecContext implements Context
     private $haveJsonType;
 
     /**
+     * @var JsonProvider
+     */
+    private $jsonProvider;
+
+    /**
      * @param Matcher\BeJsonEqualMatcher  $beJsonEqual
      * @param Matcher\JsonHavePathMatcher $haveJsonPath
      * @param Matcher\JsonHaveTypeMatcher $haveJsonSize
@@ -56,7 +62,8 @@ class JsonSpecContext implements Context
         Matcher\JsonHaveTypeMatcher $haveJsonSize,
         Matcher\JsonHaveTypeMatcher $haveJsonType,
         Matcher\JsonIncludesMatcher  $includeJson,
-        MemoryHelper $memoryHelper
+        MemoryHelper $memoryHelper,
+        JsonProvider $jsonProvider
     )
     {
         $this->beJsonEqual = $beJsonEqual;
@@ -65,6 +72,7 @@ class JsonSpecContext implements Context
         $this->haveJsonType = $haveJsonType;
         $this->includeJson = $includeJson;
         $this->memoryHelper = $memoryHelper;
+        $this->jsonProvider = $jsonProvider;
     }
 
     /**

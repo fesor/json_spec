@@ -63,6 +63,8 @@ final class Extension implements ExtensionInterface
 
         $this->registerHelpers($container);
         $this->registerArgumentResolvers($container);
+        $this->registerJsonProvider($container);
+        $this->registerContextInitializers($container);
     }
 
     public function registerHelpers(ContainerBuilder $container)
@@ -89,10 +91,26 @@ final class Extension implements ExtensionInterface
         $definition = new Definition('JsonSpec\\Behat\\Context\\Argument\JsonSpecArgumentResolver', array(
             new Reference('json_spec.matcher_options_factory'),
             new Reference('json_spec.helper.memory_helper'),
-            new Reference('json_spec.helper.json_helper')
+            new Reference('json_spec.helper.json_helper'),
+            new Reference('json_spec.provider.json_provider'),
         ));
         $definition->addTag(ContextExtension::ARGUMENT_RESOLVER_TAG);
         $container->setDefinition('json_spec.argument_resolver', $definition);
+    }
+
+    private function registerJsonProvider(ContainerBuilder $container)
+    {
+        $definition = new Definition('JsonSpec\\Behat\\Consumer\\JsonConsumer');
+        $container->setDefinition('json_spec.provider.json_provider', $definition);
+    }
+
+    private function registerContextInitializers(ContainerBuilder $container)
+    {
+        $definition = new Definition('JsonSpec\\Behat\\Context\\Initializer\\JsonSpecInitializer', array(
+            new Reference('json_spec.provider.json_provider'),
+        ));
+        $definition->addTag(ContextExtension::INITIALIZER_TAG);
+        $container->setDefinition('json_spec.context_initializer', $definition);
     }
 
 }

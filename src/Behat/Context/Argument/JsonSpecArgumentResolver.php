@@ -3,6 +3,7 @@
 namespace JsonSpec\Behat\Context\Argument;
 
 use \Behat\Behat\Context\Argument\ArgumentResolver;
+use JsonSpec\Behat\Provider\JsonProvider;
 use JsonSpec\Helper\JsonHelper;
 use JsonSpec\Helper\MemoryHelper;
 use JsonSpec\Matcher;
@@ -28,6 +29,11 @@ class JsonSpecArgumentResolver implements ArgumentResolver
     private $memory;
 
     /**
+     * @var JsonProvider
+     */
+    private $jsonProvider;
+
+    /**
      * @var array of available matchers
      */
     private $matchers = array(
@@ -42,12 +48,19 @@ class JsonSpecArgumentResolver implements ArgumentResolver
      * @param MatcherOptionsFactory $optionsFactory
      * @param MemoryHelper          $memory
      * @param JsonHelper            $helper
+     * @param JsonProvider            $jsonProvider
      */
-    public function __construct(MatcherOptionsFactory $optionsFactory, MemoryHelper $memory, JsonHelper $helper)
+    public function __construct(
+        MatcherOptionsFactory $optionsFactory,
+        MemoryHelper $memory,
+        JsonHelper $helper,
+        JsonProvider $jsonProvider
+    )
     {
         $this->optionsFactory = $optionsFactory;
         $this->memory = $memory;
         $this->helper = $helper;
+        $this->jsonProvider = $jsonProvider;
     }
 
     /**
@@ -79,6 +92,7 @@ class JsonSpecArgumentResolver implements ArgumentResolver
 
         $matchers = $this->createMatchers(array_intersect($types, $this->matchers));
         $matchers[] = $this->memory;
+        $matchers[] = $this->jsonProvider;
 
         return $matchers;
     }
