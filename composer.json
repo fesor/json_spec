@@ -20,11 +20,13 @@
         "seld/jsonlint": "~1.1.2"
     },
     "conflict": {
-        "behat/behat": "<3.0.11"
+        "behat/behat": ">3.0.0 | <3.0.11"
     },
     "require-dev": {
         "phpspec/phpspec": "2.1.*@dev",
         "behat/behat": "~3.0",
-        "fabpot/php-cs-fixer": "~0.5"
+        "fabpot/php-cs-fixer": "~0.5",
+        "behat/mink-extension": "2.0.*@dev",
+        "behat/web-api-extension": "1.0.*@dev"
     }
 }
