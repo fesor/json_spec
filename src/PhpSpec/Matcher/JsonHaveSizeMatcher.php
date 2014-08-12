@@ -18,6 +18,15 @@ class JsonHaveSizeMatcher extends JsonSpecMatcher implements DelayedMatcherInter
     /**
      * @inheritdoc
      */
+    protected function match($subject, $argument)
+    {
+        return $this->matcher->haveSize($subject, $argument);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
     protected function createPositiveError($expected, $actual)
     {
         $this->createError(sprintf('Expected JSON value size to be %d', $expected));

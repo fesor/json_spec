@@ -18,6 +18,14 @@ class JsonHaveTypeMatcher extends JsonSpecMatcher
     /**
      * @inheritdoc
      */
+    protected function match($subject, $argument)
+    {
+        return $this->matcher->haveType($subject, $argument);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function createPositiveError($expected, $actual)
     {
         return $this->createError(sprintf('Expected JSON value type to be %s', $expected));

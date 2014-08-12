@@ -2,7 +2,7 @@
 
 namespace JsonSpec;
 
-use JsonSpec\Matcher\MatcherOptions;
+use JsonSpec\MatcherOptions;
 
 class MatcherOptionsFactory
 {

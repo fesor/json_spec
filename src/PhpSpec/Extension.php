@@ -2,6 +2,7 @@
 
 namespace JsonSpec\PhpSpec;
 
+use JsonSpec\JsonSpecMatcher;
 use Seld\JsonLint\JsonParser;
 use JsonSpec\Helper\JsonHelper;
 use JsonSpec\PhpSpec\Runner\Maintainer\DelayedMatcherMaintainer;
@@ -25,8 +26,7 @@ class Extension implements ExtensionInterface
 
         $container->setShared('runner.maintainers.json_spec_maintainer', function (ServiceContainer $c) {
             return new JsonSpecMaintainer(
-                $c->get('json_spec.helper.json'),
-                $c->get('json_spec.matcher_options_factory')
+                $c->get('json_spec.matcher')
             );
         });
 
@@ -65,6 +65,10 @@ class Extension implements ExtensionInterface
 
         $container->setShared('json_spec.helper.json', function (ServiceContainer $container) {
             return new JsonHelper($container->get('json_spec.json_lint'));
+        });
+
+        $container->setShared('json_spec.matcher', function (ServiceContainer $container) {
+            return new JsonSpecMatcher($container->get('json_spec.helper.json'), $container->get('json_spec.matcher_options_factory'));
         });
     }
 

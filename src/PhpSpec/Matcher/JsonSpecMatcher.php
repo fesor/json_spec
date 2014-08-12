@@ -2,18 +2,20 @@
 
 namespace JsonSpec\PhpSpec\Matcher;
 
+use \JsonSpec\JsonSpecMatcher as Matcher;
+
 abstract class JsonSpecMatcher implements DelayedMatcherInterface
 {
 
     /**
-     * @var \JsonSpec\Matcher\Matcher
+     * @var Matcher
      */
-    private $matcher;
+    protected $matcher;
 
     /**
-     * @param \JsonSpec\Matcher\Matcher $matcher
+     * @param Matcher $matcher
      */
-    public function __construct(\JsonSpec\Matcher\Matcher $matcher)
+    public function __construct(Matcher $matcher)
     {
         $this->matcher = $matcher;
     }
@@ -37,6 +39,14 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
      */
     abstract protected function createNegativeError($expected, $actual);
 
+
+    /**
+     * @param $subject
+     * @param $argument
+     * @return bool
+     */
+    abstract protected function match($subject, $argument);
+
     /**
      * @inheritdoc
      */
@@ -51,7 +61,7 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
      */
     public function positiveMatch($name, $subject, array $arguments)
     {
-        if (!$this->matcher->match($subject, $arguments[0])) {
+        if (!$this->match($subject, $arguments[0])) {
             throw $this->createPositiveError($arguments[0], $subject);
         }
     }
@@ -61,7 +71,7 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
      */
     public function negativeMatch($name, $subject, array $arguments)
     {
-        if ($this->matcher->match($subject, $arguments[0])) {
+        if ($this->match($subject, $arguments[0])) {
             throw $this->createNegativeError($arguments[0], $subject);
         }
     }
@@ -83,7 +93,7 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
     }
 
     /**
-     * @return \JsonSpec\Matcher\MatcherOptions
+     * @return \JsonSpec\MatcherOptions
      */
     protected function getOptions()
     {

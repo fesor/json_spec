@@ -2,10 +2,8 @@
 
 namespace JsonSpec\PhpSpec\Runner\Maintainer;
 
-use JsonSpec\Helper\JsonHelper;
+use JsonSpec\JsonSpecMatcher;
 use \JsonSpec\PhpSpec\Matcher;
-use \JsonSpec\Matcher as BaseMatcher;
-use JsonSpec\MatcherOptionsFactory;
 use PhpSpec\Loader\Node\ExampleNode;
 use PhpSpec\Runner\CollaboratorManager;
 use PhpSpec\Runner\Maintainer\MaintainerInterface;
@@ -16,23 +14,16 @@ class JsonSpecMaintainer implements MaintainerInterface
 {
 
     /**
-     * @var JsonHelper
+     * @var JsonSpecMatcher
      */
-    private $helper;
+    private $matcher;
 
     /**
-     * @var MatcherOptionsFactory
+     * @param JsonSpecMatcher $matcher
      */
-    private $optionsFactory;
-
-    /**
-     * @param JsonHelper            $helper
-     * @param MatcherOptionsFactory $optionsFactory
-     */
-    public function __construct(JsonHelper $helper, MatcherOptionsFactory $optionsFactory)
+    public function __construct(JsonSpecMatcher $matcher)
     {
-        $this->helper = $helper;
-        $this->optionsFactory = $optionsFactory;
+        $this->matcher = $matcher;
     }
 
     /**
@@ -55,21 +46,11 @@ class JsonSpecMaintainer implements MaintainerInterface
                             MatcherManager $matchers, CollaboratorManager $collaborators)
     {
         // add matchers
-        $matchers->add(new Matcher\BeJsonEqualMatcher($this->createMatcher('JsonSpec\\Matcher\\BeJsonEqualMatcher')));
-        $matchers->add(new Matcher\JsonHaveSizeMatcher($this->createMatcher('JsonSpec\\Matcher\\JsonHaveSizeMatcher')));
-        $matchers->add(new Matcher\JsonHaveTypeMatcher($this->createMatcher('JsonSpec\\Matcher\\JsonHaveTypeMatcher')));
-        $matchers->add(new Matcher\JsonIncludesMatcher($this->createMatcher('JsonSpec\\Matcher\\JsonIncludesMatcher')));
-        $matchers->add(new Matcher\JsonHavePathMatcher($this->createMatcher('JsonSpec\\Matcher\\JsonHavePathMatcher')));
-    }
-
-    private function createMatcher($className)
-    {
-        $matcher = new $className($this->helper);
-        if ($matcher instanceof BaseMatcher\Matcher) {
-            $matcher->setOptions($this->optionsFactory->createOptions());
-        }
-
-        return $matcher;
+        $matchers->add(new Matcher\BeJsonEqualMatcher($this->matcher));
+        $matchers->add(new Matcher\JsonHaveSizeMatcher($this->matcher));
+        $matchers->add(new Matcher\JsonHaveTypeMatcher($this->matcher));
+        $matchers->add(new Matcher\JsonIncludesMatcher($this->matcher));
+        $matchers->add(new Matcher\JsonHavePathMatcher($this->matcher));
     }
 
     /**

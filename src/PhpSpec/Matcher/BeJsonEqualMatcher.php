@@ -18,6 +18,14 @@ class BeJsonEqualMatcher extends JsonSpecMatcher
     /**
      * @inheritdoc
      */
+    protected function match($subject, $argument)
+    {
+        return $this->matcher->isEqual($subject, $argument);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function createPositiveError($expected, $actual)
     {
         return $this->createError('Expected equivalent JSON');

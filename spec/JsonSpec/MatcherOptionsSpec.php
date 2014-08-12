@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\JsonSpec\Matcher;
+namespace spec\JsonSpec;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

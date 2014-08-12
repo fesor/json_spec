@@ -4,6 +4,12 @@ namespace JsonSpec\PhpSpec\Matcher;
 
 use PhpSpec\Matcher\MatcherInterface;
 
+/**
+ * Interface DelayedMatcherInterface
+ * @package JsonSpec\PhpSpec\Matcher
+ *
+ * Allow to execute match later
+ */
 interface DelayedMatcherInterface extends MatcherInterface
 {
 

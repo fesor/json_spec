@@ -131,6 +131,12 @@ class JsonHelper
         return $data;
     }
 
+    /**
+     *
+     *
+     * @param $data
+     * @return array|object
+     */
     private function sortObjectKeys($data)
     {
         if (is_array($data)) {

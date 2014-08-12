@@ -18,6 +18,15 @@ class JsonIncludesMatcher extends JsonSpecMatcher
     /**
      * @inheritdoc
      */
+    protected function match($subject, $argument)
+    {
+        return $this->matcher->includes($subject, $argument);
+    }
+
+
+    /**
+     * @inheritdoc
+     */
     protected function createPositiveError($expected, $actual)
     {
         return $this->createError('Expected included JSON');

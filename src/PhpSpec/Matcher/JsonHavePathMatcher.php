@@ -18,6 +18,14 @@ class JsonHavePathMatcher extends JsonSpecMatcher
     /**
      * @inheritdoc
      */
+    protected function match($subject, $argument)
+    {
+        return $this->matcher->havePath($subject, $argument);
+    }
+
+    /**
+     * @inheritdoc
+     */
     protected function createPositiveError($expected, $actual)
     {
         return $this->createError(sprintf('Expected JSON path "%s"', $expected));

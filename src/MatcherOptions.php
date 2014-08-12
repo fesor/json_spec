@@ -1,6 +1,6 @@
 <?php
 
-namespace JsonSpec\Matcher;
+namespace JsonSpec;
 
 class MatcherOptions
 {
