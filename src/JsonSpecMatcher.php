@@ -147,9 +147,14 @@ class JsonSpecMatcher
     private function isIncludes($data, $json)
     {
 
+        $parsedJson = $this->jsonHelper->parse($json);
         $normalizedData = $this->jsonHelper->generateNormalizedJson($data);
         if (!is_object($data) && !is_array($data)) {
-            return  $normalizedData === $json;
+            if (is_string($data) && is_string($parsedJson)) {
+                return false !== strpos($data, $parsedJson);
+            }
+
+            return $normalizedData === $json;
         }
 
         if ($normalizedData === $json) {
@@ -161,13 +166,7 @@ class JsonSpecMatcher
                 return true;
             }
 
-            foreach (get_object_vars($data) as $value) {
-                if ($this->isIncludes($value, $json)) {
-                    return true;
-                }
-            }
-
-            return false;
+            $data = get_object_vars($data);
         }
 
         if (is_array($data)) {

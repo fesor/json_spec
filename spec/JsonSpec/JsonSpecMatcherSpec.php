@@ -200,6 +200,74 @@ class JsonSpecMatcherSpec extends ObjectBehavior
     //</editor-fold>
 
     // <editor-fold desc="includes spec">
+    public function it_matches_included_array_elements()
+    {
+        $json = '["one",1,1.0,true,false,null]';
+        $this->includes($json, '"one"')->shouldReturn(true);
+        $this->includes($json, '1')->shouldReturn(true);
+        $this->includes($json, '1.0')->shouldReturn(true);
+        $this->includes($json, 'true')->shouldReturn(true);
+        $this->includes($json, 'false')->shouldReturn(true);
+        $this->includes($json, 'null')->shouldReturn(true);
+    }
 
+    public function it_matches_an_array_included_in_an_array()
+    {
+        $json = '[[1,2,3],[4,5,6]]';
+        $this->includes($json, '[1, 2, 3]')->shouldReturn(true);
+        $this->includes($json, '[4, 5, 6]')->shouldReturn(true);
+    }
+
+    public function it_matches_a_hash_included_in_an_array()
+    {
+        $json = '[{"one":1},{"two":2}]';
+        $this->includes($json, '{"one":1}')->shouldReturn(true);
+        $this->includes($json, '{"two":2}')->shouldReturn(true);
+    }
+
+    public function it_matches_included_hash_values()
+    {
+        $json = '{"string":"one","integer":1,"float":1.0,"true":true,"false":false,"null":null}';
+        $this->includes($json, '"one"')->shouldReturn(true);
+        $this->includes($json, '1')->shouldReturn(true);
+        $this->includes($json, '1.0')->shouldReturn(true);
+        $this->includes($json, 'true')->shouldReturn(true);
+        $this->includes($json, 'false')->shouldReturn(true);
+        $this->includes($json, 'null')->shouldReturn(true);
+    }
+
+    public function it_matches_a_hash_included_in_a_hash()
+    {
+        $json = '{"one":{"two":3},"four":{"five":6}}';
+        $this->includes($json, '{"two":3}')->shouldReturn(true);
+        $this->includes($json, '{"five":6}')->shouldReturn(true);
+    }
+
+    public function it_matches_an_array_included_in_a_hash()
+    {
+        $json = '{"one":[2,3],"four":[5,6]}';
+        $this->includes($json, '[2,3]')->shouldReturn(true);
+        $this->includes($json, '[5,6]')->shouldReturn(true);
+    }
+
+    public function it_matches_a_substring()
+    {
+        $json = '"json"';
+        $this->includes($json, '"js"')->shouldReturn(true);
+        $this->includes($json, '"json"')->shouldReturn(true);
+    }
+
+    public function it_matches_t_a_path(MatcherOptions $options)
+    {
+        $json = '{"one":{"two":[3,4]}}';
+        $options->getPath()->willReturn('one');
+        $this->includes($json, '[3,4]')->shouldReturn(true);
+    }
+
+    public function it_ignores_excluded_keys()
+    {
+        $json = '[{"id":1,"two":3}]';
+        $this->includes($json, '{"two":3}')->shouldReturn(true);
+    }
     // </editor-fold>
 }
