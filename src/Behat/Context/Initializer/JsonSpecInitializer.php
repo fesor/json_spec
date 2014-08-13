@@ -23,7 +23,6 @@ class JsonSpecInitializer implements ContextInitializer
         $this->jsonConsumer = $jsonConsumer;
     }
 
-
     /**
      * @inheritdoc
      */
@@ -35,6 +34,5 @@ class JsonSpecInitializer implements ContextInitializer
 
         $context->setJsonConsumer($this->jsonConsumer);
     }
-
 
 }

@@ -39,7 +39,6 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
      */
     abstract protected function createNegativeError($expected, $actual);
 
-
     /**
      * @param $subject
      * @param $argument

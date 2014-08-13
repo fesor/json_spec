@@ -14,5 +14,4 @@ class ContextProvider implements JsonProvider
         // TODO: Implement getJson() method.
     }
 
-
 }

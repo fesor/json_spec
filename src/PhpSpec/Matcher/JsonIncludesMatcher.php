@@ -23,7 +23,6 @@ class JsonIncludesMatcher extends JsonSpecMatcher
         return $this->matcher->includes($subject, $argument);
     }
 
-
     /**
      * @inheritdoc
      */

@@ -3,7 +3,6 @@
 namespace spec\JsonSpec\Helper;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class MemoryHelperSpec extends ObjectBehavior
 {

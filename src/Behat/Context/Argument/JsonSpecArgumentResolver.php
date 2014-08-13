@@ -48,7 +48,7 @@ class JsonSpecArgumentResolver implements ArgumentResolver
      * @param MatcherOptionsFactory $optionsFactory
      * @param MemoryHelper          $memory
      * @param JsonHelper            $helper
-     * @param JsonProvider            $jsonProvider
+     * @param JsonProvider          $jsonProvider
      */
     public function __construct(
         MatcherOptionsFactory $optionsFactory,

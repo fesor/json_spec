@@ -23,7 +23,6 @@ class JsonHaveSizeMatcher extends JsonSpecMatcher implements DelayedMatcherInter
         return $this->matcher->haveSize($subject, $argument);
     }
 
-
     /**
      * @inheritdoc
      */

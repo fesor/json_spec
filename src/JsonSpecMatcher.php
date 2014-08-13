@@ -24,7 +24,7 @@ class JsonSpecMatcher
     private $currentOptions;
 
     /**
-     * @param JsonHelper $jsonHelper
+     * @param JsonHelper            $jsonHelper
      * @param MatcherOptionsFactory $optionsFactory
      */
     public function __construct(JsonHelper $jsonHelper, MatcherOptionsFactory $optionsFactory)
@@ -43,8 +43,8 @@ class JsonSpecMatcher
     }
 
     /**
-     * @param string $actual
-     * @param string $expected
+     * @param  string $actual
+     * @param  string $expected
      * @return bool
      */
     public function isEqual($actual, $expected)
@@ -56,8 +56,8 @@ class JsonSpecMatcher
     }
 
     /**
-     * @param string $json
-     * @param string|null $path
+     * @param  string      $json
+     * @param  string|null $path
      * @return bool
      */
     public function havePath($json, $path)
@@ -76,8 +76,8 @@ class JsonSpecMatcher
     }
 
     /**
-     * @param string $json
-     * @param integer $expectedSize
+     * @param  string  $json
+     * @param  integer $expectedSize
      * @return bool
      */
     public function haveSize($json, $expectedSize)
@@ -96,8 +96,8 @@ class JsonSpecMatcher
     }
 
     /**
-     * @param string $json
-     * @param string $type
+     * @param  string $json
+     * @param  string $type
      * @return bool
      */
     public function haveType($json, $type)
@@ -112,8 +112,8 @@ class JsonSpecMatcher
     }
 
     /**
-     * @param string $json
-     * @param string $expected
+     * @param  string $json
+     * @param  string $expected
      * @return bool
      */
     public function includes($json, $expected)

@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 class MatcherOptionsFactorySpec extends ObjectBehavior
 {
 
-    function let()
+    public function let()
     {
         $this->beConstructedWith(array('id'));
     }

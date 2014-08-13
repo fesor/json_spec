@@ -3,7 +3,6 @@
 namespace JsonSpec\Behat\Context;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use JsonSpec\Behat\Provider\JsonProvider;
@@ -61,7 +60,7 @@ class JsonSpecContext implements Context
      * @param Matcher\JsonHaveTypeMatcher $haveJsonType
      * @param Matcher\JsonIncludesMatcher $includeJson
      * @param MemoryHelper                $memoryHelper
-     * fixme: remove contructor...
+     *                                                  fixme: remove contructor...
      */
     public function __construct(
         Matcher\BeJsonEqualMatcher $beJsonEqual,
@@ -146,7 +145,7 @@ class JsonSpecContext implements Context
             $this->memoryHelper->remember($this->jsonProvider->getJson()),
             $base
         );
-        foreach($table->getRows() as $row) {
+        foreach ($table->getRows() as $row) {
             if (count ($row) == 2) {
                 $this->checkEqualityInline(ltrim($base . '/' .$row[0], '/'), false, $row[1]);
             } else {

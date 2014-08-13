@@ -3,29 +3,28 @@
 namespace spec\JsonSpec;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class MatcherOptionsSpec extends ObjectBehavior
 {
-    function let()
+    public function let()
     {
         $this->beConstructedWith(array('id', 'created_at'));
     }
 
-    function it_allows_to_define_json_path()
+    public function it_allows_to_define_json_path()
     {
         $this->atPath('json/path');
         $this->getPath()->shouldBe('json/path');
     }
 
-    function it_allows_to_add_excluded_kes()
+    public function it_allows_to_add_excluded_kes()
     {
         $this->getExcludedKeys()->shouldHaveCount(2);
         $this->excluding('custom', 'key');
         $this->getExcludedKeys()->shouldHaveCount(4);
     }
 
-    function it_allows_to_include_some_keys()
+    public function it_allows_to_include_some_keys()
     {
         $this->getExcludedKeys()->shouldHaveCount(2);
         $this->including('id');

@@ -29,13 +29,11 @@ class GuzzleClient extends Client
         return $this->lastResponse;
     }
 
-
     public function send(RequestInterface $request)
     {
         $this->lastResponse = parent::send($request);
 
         return $this->lastResponse;
     }
-
 
 }
