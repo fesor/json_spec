@@ -28,7 +28,7 @@ class JsonHaveSizeMatcher extends JsonSpecMatcher implements DelayedMatcherInter
      */
     protected function createPositiveError($expected, $actual)
     {
-        $this->createError(sprintf('Expected JSON value size to be %d', $expected));
+        return $this->createError(sprintf('Expected JSON value size to be %d', $expected));
     }
 
     /**
@@ -36,7 +36,7 @@ class JsonHaveSizeMatcher extends JsonSpecMatcher implements DelayedMatcherInter
      */
     protected function createNegativeError($expected, $actual)
     {
-        $this->createError(sprintf('Expected JSON value size to not be %d', $expected));
+        return $this->createError(sprintf('Expected JSON value size to not be %d', $expected));
     }
 
     /**
