@@ -132,26 +132,28 @@ class JsonHelper
     }
 
     /**
-     *
+     * Recursively sorts objects keys
      *
      * @param $data
      * @return array|object
      */
     private function sortObjectKeys($data)
     {
-        if (is_array($data)) {
-            return array_map(function ($data) {
-                return $this->sortObjectKeys($data);
-            }, $data);
+        if (!is_array($data) && !is_object($data)) {
+            return $data;
         }
 
+        $orderedData = $data;
         if (is_object($data)) {
-            $values = get_object_vars($data);
-            ksort($values);
-
-            return (object) $values;
+            $orderedData = get_object_vars($data);
+            ksort($orderedData);
         }
 
-        return $data;
+        foreach ($orderedData as &$value) {
+            $value = $this->sortObjectKeys($value);
+        }
+
+        return is_object($data) ?
+            (object) $orderedData : $orderedData;
     }
 }

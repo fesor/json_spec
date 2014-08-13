@@ -65,10 +65,13 @@ class JsonHelperSpec extends ObjectBehavior
         $normalizedJson =
         '{
     "json": "spec",
-    "laser": "lemon"
+    "laser": {
+        "banana": "watermelon",
+        "lemon": "orange"
+    }
 }';
 
-        $this->normalize('{"laser":"lemon","json":"spec"}')->shouldBe(rtrim($normalizedJson));
+        $this->normalize('{"laser":{"lemon": "orange", "banana": "watermelon"},"json":"spec"}')->shouldBe(rtrim($normalizedJson));
     }
 
     public function it_normalize_json_value()
