@@ -255,7 +255,7 @@ class DelayedSubject implements ArrayAccess, WrapperInterface
     private function makeSureWeHaveASubject()
     {
         if (null === $this->subject && $this->wrappedObject->getClassname()) {
-            $instantiator = new Instantiator;
+            $instantiator = new Instantiator();
 
             return $instantiator->instantiate($this->wrappedObject->getClassname());
         }

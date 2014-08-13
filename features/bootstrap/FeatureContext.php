@@ -1,15 +1,15 @@
 <?php
 
-use Behat\Behat\Context\SnippetAcceptingContext;
+use \Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
 use \JsonSpec\Behat\Context\JsonConsumerAware;
 use \JsonSpec\Behat\Consumer\JsonConsumer;
+use \JsonSpec\Behat\Context\JsonSpecContext;
 
 /**
  * Behat context class.
  */
-class FeatureContext implements SnippetAcceptingContext, JsonConsumerAware
+class FeatureContext extends BehatContext implements JsonConsumerAware
 {
     /**
      * @var JsonConsumer
@@ -20,6 +20,14 @@ class FeatureContext implements SnippetAcceptingContext, JsonConsumerAware
      * @var string
      */
     private $json;
+
+    /**
+     * Attach sub-contexts
+     */
+    public function __construct()
+    {
+        $this->useContext('json_spec', new JsonSpecContext());
+    }
 
     /**
      * @Given the JSON is:
