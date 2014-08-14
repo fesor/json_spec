@@ -32,7 +32,7 @@ class FeatureContext extends BehatContext implements JsonConsumerAware
     /**
      * @Given the JSON is:
      */
-    function jsonIs(PyStringNode $json)
+    public function jsonIs(PyStringNode $json)
     {
         $this->json = $json->getRaw();
     }
@@ -40,7 +40,7 @@ class FeatureContext extends BehatContext implements JsonConsumerAware
     /**
      * @Given I get the JSON
      */
-    function getJson()
+    public function getJson()
     {
         $this->jsonConsumer->setJson($this->json);
     }
@@ -52,6 +52,5 @@ class FeatureContext extends BehatContext implements JsonConsumerAware
     {
         $this->jsonConsumer = $consumer;
     }
-
 
 }
