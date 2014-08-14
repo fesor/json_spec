@@ -125,11 +125,33 @@ class DefinitionDispatcher extends BaseDispatcher
     private function prepareCallbackArgumentsFixed(ContextInterface $context, \ReflectionFunctionAbstract $refl,
                                                    array $arguments, array $multiline)
     {
-        if (!$context instanceof JsonSpecContext) {
+        if ($refl->class !== 'JsonSpec\\Behat\\Context\\JsonSpecContext') {
             return $this->prepareCallbackArguments($context, $refl, $arguments, $multiline);
         }
 
-        return $this->prepareCallbackArguments($context, $refl, $arguments, $multiline);
+        $parametersRefl = $refl->getParameters();
+
+        if ($refl->isClosure()) {
+            array_shift($parametersRefl);
+        }
+        if (!empty($multiline)) {
+            array_pop($parametersRefl);
+        }
+
+        $resulting = array();
+        foreach ($parametersRefl as $num => $parameterRefl) {
+            if (array_key_exists($parameterRefl->getName(), $arguments)) {
+                $resulting[] = $arguments[$parameterRefl->getName()];
+            } elseif (isset($arguments[$num])) {
+                $resulting[] = $arguments[$num];
+            }
+        }
+
+        foreach ($multiline as $argument) {
+            $resulting[] = $argument;
+        }
+
+        return $resulting;
     }
 
 }

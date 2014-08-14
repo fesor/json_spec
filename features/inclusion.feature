@@ -145,9 +145,9 @@ Feature: Inclusion
 
   Scenario: Excluded value
     When I get the JSON
-    Then the JSON should include "2011-07-08 02:27:34"
-    And the JSON should include 1
-    And the JSON should include "2011-07-08 02:28:50"
+    Then the JSON should not include "2011-07-08 02:27:34"
+    And the JSON should not include 1
+    And the JSON should not include "2011-07-08 02:28:50"
 
   Scenario: Nested exclusions
     When I get the JSON

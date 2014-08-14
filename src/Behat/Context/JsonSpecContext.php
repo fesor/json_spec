@@ -81,7 +81,7 @@ class JsonSpecContext implements ExtendedContextInterface
     }
 
     /**
-     * @Then /^the (?:JSON|json)(?: response)?(?: at "(.*)")? should( not)? be(:)$/
+     * @Then /^the (?:JSON|json)(?: response)?(?: at "(?<path>.*)")? should(?<isNegative> not)? be(:)$/
      */
     public function checkEquality($path = null, $isNegative = null, PyStringNode $json = null)
     {
