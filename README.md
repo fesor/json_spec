@@ -89,8 +89,6 @@ Each of JsonSpec matchers deal with JSON "paths." These are simple strings of "/
 We could access the first friend's first name with the path `"friends/0/first_name"`.
 
 ## Behat
-**Note:** This library is working only with Behat 3. If you are using Behat 2.4.*, please check [branch v0.1](https://github.com/fesor/json_spec/tree/v0.1).
-
 json_spec provides Behat context which implements steps utilizing json_spec matchers. This is perfect for testing your app's JSON API.
 
 In order to use Behat context you should add it as subcontext:
