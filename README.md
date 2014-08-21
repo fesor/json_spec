@@ -12,8 +12,8 @@ This library provides an extensions for PhpSpec and Behat, which aims to solve t
 
 JsonSpec extension provides five new PhpSpec matchers:
 
-- `beJsonEqual`
-- `includeJson`
+- `beJsonEqual`, `beJsonEqualFile`
+- `includeJson`, `includeJsonFile`
 - `haveJsonPath`
 - `haveJsonType`
 - `haveJsonSize`
