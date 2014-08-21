@@ -6,6 +6,7 @@ use Behat\Behat\Context\ExtendedContextInterface;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use JsonSpec\Behat\Provider\JsonProvider;
+use JsonSpec\Helper\FileHelper;
 use JsonSpec\Helper\JsonHelper;
 use JsonSpec\Helper\MemoryHelper;
 use JsonSpec\JsonSpecMatcher;
@@ -38,6 +39,11 @@ class JsonSpecContext implements ExtendedContextInterface
     private $jsonHelper;
 
     /**
+     * @var FileHelper
+     */
+    private $fileHelper;
+
+    /**
      * @var ExtendedContextInterface
      */
     private $mainContext;
@@ -56,18 +62,21 @@ class JsonSpecContext implements ExtendedContextInterface
      * @param JsonProvider    $jsonProvider
      * @param JsonSpecMatcher $matcher
      * @param MemoryHelper    $memoryHelper
+     * @param FileHelper      $fileHelper
      * @param JsonHelper      $jsonHelper
      */
     public function init(
         JsonProvider $jsonProvider,
         JsonSpecMatcher $matcher,
         MemoryHelper $memoryHelper,
+        FileHelper $fileHelper,
         JsonHelper $jsonHelper
     )
     {
         $this->jsonProvider = $jsonProvider;
         $this->matcher = $matcher;
         $this->memoryHelper = $memoryHelper;
+        $this->fileHelper = $fileHelper;
         $this->jsonHelper = $jsonHelper;
     }
 
@@ -86,6 +95,14 @@ class JsonSpecContext implements ExtendedContextInterface
     public function checkEquality($path = null, $isNegative = null, PyStringNode $json = null)
     {
         $this->checkEqualityInline($path, $isNegative, $json->getRaw());
+    }
+
+    /**
+     * @Then /^the (?:JSON|json)(?: response)?(?: at "(?<path>.*)")? should(?<isNegative> not)? be file "(.+)"$/
+     */
+    public function checkEqualityWithFileContents($path = null, $isNegative = null, $jsonFile)
+    {
+        $this->checkEqualityInline($path, $isNegative, $this->fileHelper->loadJson($jsonFile));
     }
 
     /**
@@ -110,6 +127,14 @@ class JsonSpecContext implements ExtendedContextInterface
     public function checkInclusion($path, $isNegative, $json)
     {
         $this->checkInclusionInline($path, $isNegative, $json);
+    }
+
+    /**
+     * @Then /^the (?:JSON|json)(?: response)?(?: at "(.*)")? should( not)? include file "(.+)"$/
+     */
+    public function checkInclusionOfFile($path, $isNegative, $jsonFile)
+    {
+        $this->checkInclusionInline($path, $isNegative, $this->fileHelper->loadJson($jsonFile));
     }
 
     /**

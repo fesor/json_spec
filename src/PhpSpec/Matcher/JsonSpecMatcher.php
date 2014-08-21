@@ -26,25 +26,26 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
     abstract protected function getSupportedNames();
 
     /**
-     * @param $expected
-     * @param $actual
+     * @param  string $expected
+     * @param  string $actual
      * @return mixed
      */
     abstract protected function createPositiveError($expected, $actual);
 
     /**
-     * @param $expected
-     * @param $actual
+     * @param  string $expected
+     * @param  string $actual
      * @return mixed
      */
     abstract protected function createNegativeError($expected, $actual);
 
     /**
-     * @param $subject
-     * @param $argument
+     * @param  string $subject
+     * @param  string $argument
+     * @param  string $matcher
      * @return bool
      */
-    abstract protected function match($subject, $argument);
+    abstract protected function match($subject, $argument, $matcher = null);
 
     /**
      * @inheritdoc
@@ -60,7 +61,7 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
      */
     public function positiveMatch($name, $subject, array $arguments)
     {
-        if (!$this->match($subject, $arguments[0])) {
+        if (!$this->match($subject, $arguments[0], $name)) {
             throw $this->createPositiveError($arguments[0], $subject);
         }
     }

@@ -2,4 +2,5 @@ default:
     extensions:
         JsonSpec\Behat\Extension:
             excluded_keys: [id, created_at, updated_at]
+            json_directory: './spec/support/files'
 

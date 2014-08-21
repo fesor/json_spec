@@ -18,7 +18,7 @@ class JsonHaveTypeMatcher extends JsonSpecMatcher
     /**
      * @inheritdoc
      */
-    protected function match($subject, $argument)
+    protected function match($subject, $argument, $matcher = null)
     {
         return $this->matcher->haveType($subject, $argument);
     }

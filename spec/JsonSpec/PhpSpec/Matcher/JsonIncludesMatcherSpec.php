@@ -20,6 +20,16 @@ class JsonIncludesMatcherSpec extends ObjectBehavior
         $this->beConstructedWith($matcher);
     }
 
+    public function it_supports_direct_comparison()
+    {
+        $this->supports('includeJson', '', array(''));
+    }
+
+    public function it_supports_loading_from_file()
+    {
+        $this->supports('includeJsonFile', '', array(''));
+    }
+
     public function it_delegates_matching_to_json_spec_matcher()
     {
         $this->positive('["json", "spec"]', '"spec"');

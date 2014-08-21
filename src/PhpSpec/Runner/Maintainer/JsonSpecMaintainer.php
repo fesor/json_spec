@@ -2,6 +2,7 @@
 
 namespace JsonSpec\PhpSpec\Runner\Maintainer;
 
+use JsonSpec\Helper\FileHelper;
 use JsonSpec\JsonSpecMatcher;
 use \JsonSpec\PhpSpec\Matcher;
 use PhpSpec\Loader\Node\ExampleNode;
@@ -19,11 +20,17 @@ class JsonSpecMaintainer implements MaintainerInterface
     private $matcher;
 
     /**
+     * @var FileHelper
+     */
+    private $fileHelper;
+
+    /**
      * @param JsonSpecMatcher $matcher
      */
-    public function __construct(JsonSpecMatcher $matcher)
+    public function __construct(JsonSpecMatcher $matcher, FileHelper $fileHelper)
     {
         $this->matcher = $matcher;
+        $this->fileHelper = $fileHelper;
     }
 
     /**
@@ -46,11 +53,11 @@ class JsonSpecMaintainer implements MaintainerInterface
                             MatcherManager $matchers, CollaboratorManager $collaborators)
     {
         // add matchers
-        $matchers->add(new Matcher\BeJsonEqualMatcher($this->matcher));
-        $matchers->add(new Matcher\JsonHaveSizeMatcher($this->matcher));
-        $matchers->add(new Matcher\JsonHaveTypeMatcher($this->matcher));
-        $matchers->add(new Matcher\JsonIncludesMatcher($this->matcher));
-        $matchers->add(new Matcher\JsonHavePathMatcher($this->matcher));
+        $matchers->add($this->prepareMatcher(new Matcher\BeJsonEqualMatcher($this->matcher)));
+        $matchers->add($this->prepareMatcher(new Matcher\JsonHaveSizeMatcher($this->matcher)));
+        $matchers->add($this->prepareMatcher(new Matcher\JsonHaveTypeMatcher($this->matcher)));
+        $matchers->add($this->prepareMatcher(new Matcher\JsonIncludesMatcher($this->matcher)));
+        $matchers->add($this->prepareMatcher(new Matcher\JsonHavePathMatcher($this->matcher)));
     }
 
     /**
@@ -70,6 +77,15 @@ class JsonSpecMaintainer implements MaintainerInterface
     public function getPriority()
     {
         return 50;
+    }
+
+    private function prepareMatcher($matcher)
+    {
+        if ($matcher instanceof FileHelperAware) {
+            $matcher->setFileHelper($this->fileHelper);
+        }
+
+        return $matcher;
     }
 
 }

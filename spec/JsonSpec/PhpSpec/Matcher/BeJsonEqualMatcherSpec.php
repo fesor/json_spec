@@ -17,6 +17,16 @@ class BeJsonEqualMatcherSpec extends ObjectBehavior
         $this->beConstructedWith($matcher);
     }
 
+    public function it_supports_direct_comparison()
+    {
+        $this->supports('beJsonEqual', '', array(''));
+    }
+
+    public function it_supports_loading_from_file()
+    {
+        $this->supports('beJsonEqualFile', '', array(''));
+    }
+
     public function it_delegates_matching_to_json_spec_matcher()
     {
         $this->positive('{"json": "spec"}', '{"json": "spec"}');

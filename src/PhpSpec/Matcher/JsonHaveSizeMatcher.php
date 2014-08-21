@@ -18,7 +18,7 @@ class JsonHaveSizeMatcher extends JsonSpecMatcher implements DelayedMatcherInter
     /**
      * @inheritdoc
      */
-    protected function match($subject, $argument)
+    protected function match($subject, $argument, $matcher = null)
     {
         return $this->matcher->haveSize($subject, $argument);
     }

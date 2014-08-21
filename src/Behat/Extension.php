@@ -17,6 +17,7 @@ class Extension implements ExtensionInterface
     {
         $builder
             ->children()
+                ->scalarNode('json_directory')->defaultNull()->end()
                 ->arrayNode('excluded_keys')
                     ->addDefaultChildrenIfNoneSet()
                     ->prototype('scalar')->defaultValue('id')->end()
@@ -30,6 +31,7 @@ class Extension implements ExtensionInterface
     public function load(array $config, ContainerBuilder $container)
     {
         $container->setParameter('json_spec.excluded_keys', $config['excluded_keys']);
+        $container->setParameter('json_spec.json_directory', $config['json_directory']);
         // replace buggy definition dispatcher with fixes one
         $container->setParameter('behat.definition.dispatcher.class', 'JsonSpec\\Behat\\Definition\\DefinitionDispatcher');
 
@@ -58,6 +60,11 @@ class Extension implements ExtensionInterface
 
         $definition = new Definition('JsonSpec\\Helper\\MemoryHelper');
         $container->setDefinition('json_spec.helper.memory_helper', $definition);
+
+        $definition = new Definition('JsonSpec\\Helper\\FileHelper', array(
+            '%json_spec.json_directory%'
+        ));
+        $container->setDefinition('json_spec.helper.file_helper', $definition);
 
         $definition = new Definition('JsonSpec\\MatcherOptionsFactory', array(
             '%json_spec.excluded_keys%'
@@ -89,6 +96,7 @@ class Extension implements ExtensionInterface
             new Reference('json_spec.provider.json_provider'),
             new Reference('json_spec.matcher'),
             new Reference('json_spec.helper.json_helper'),
+            new Reference('json_spec.helper.file_helper'),
             new Reference('json_spec.helper.memory_helper'),
         ));
         $definition->addTag('behat.context.initializer');

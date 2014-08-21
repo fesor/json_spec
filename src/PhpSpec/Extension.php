@@ -2,6 +2,7 @@
 
 namespace JsonSpec\PhpSpec;
 
+use JsonSpec\Helper\FileHelper;
 use JsonSpec\JsonSpecMatcher;
 use Seld\JsonLint\JsonParser;
 use JsonSpec\Helper\JsonHelper;
@@ -26,7 +27,8 @@ class Extension implements ExtensionInterface
 
         $container->setShared('runner.maintainers.json_spec_maintainer', function (ServiceContainer $c) {
             return new JsonSpecMaintainer(
-                $c->get('json_spec.matcher')
+                $c->get('json_spec.matcher'),
+                $c->get('json_spec.file_helper')
             );
         });
 
@@ -50,6 +52,10 @@ class Extension implements ExtensionInterface
                 $excludedKeys = $json_spec['excluded_keys'];
             }
             $c->setParam('json_spec.excluded_keys', $excludedKeys);
+
+            $jsonDirectory = isset($json_spec['json_directory']) ?
+                $json_spec['json_directory'] : null;
+            $c->setParam('json_spec.json_directory', $jsonDirectory);
         });
     }
 
@@ -61,6 +67,10 @@ class Extension implements ExtensionInterface
 
         $container->setShared('json_spec.matcher_options_factory', function (ServiceContainer $container) {
             return new MatcherOptionsFactory($container->getParam('json_spec.excluded_keys'));
+        });
+
+        $container->setShared('json_spec.file_helper', function (ServiceContainer $container) {
+            return new FileHelper($container->getParam('json_spec.json_directory'));
         });
 
         $container->setShared('json_spec.helper.json', function (ServiceContainer $container) {
