@@ -2,7 +2,7 @@
 
 namespace JsonSpec\Behat\Context;
 
-use Behat\Behat\Context\ExtendedContextInterface;
+use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use JsonSpec\Behat\Provider\JsonProvider;
@@ -15,7 +15,7 @@ use JsonSpec\JsonSpecMatcher;
  * Class JsonSpecContext
  * @package JsonSpec\Behat\Context
  */
-class JsonSpecContext implements ExtendedContextInterface
+class JsonSpecContext implements Context
 {
 
     /**
@@ -42,21 +42,6 @@ class JsonSpecContext implements ExtendedContextInterface
      * @var FileHelper
      */
     private $fileHelper;
-
-    /**
-     * @var ExtendedContextInterface
-     */
-    private $mainContext;
-
-    /**
-     * @var ExtendedContextInterface[]
-     */
-    private $subContexts;
-
-    public function __construct()
-    {
-        $this->subContexts = array();
-    }
 
     /**
      * @param JsonProvider    $jsonProvider
@@ -90,15 +75,15 @@ class JsonSpecContext implements ExtendedContextInterface
     }
 
     /**
-     * @Then /^the (?:JSON|json)(?: response)?(?: at "(?<path>.*)")? should(?<isNegative> not)? be(:)$/
+     * @Then /^the (?:JSON|json)(?: response)?(?: at "(.*)")? should( not)? be(:)$/
      */
-    public function checkEquality($path = null, $isNegative = null, PyStringNode $json = null)
+    public function checkEquality($path, $isNegative, PyStringNode $json)
     {
         $this->checkEqualityInline($path, $isNegative, $json->getRaw());
     }
 
     /**
-     * @Then /^the (?:JSON|json)(?: response)?(?: at "(?<path>.*)")? should(?<isNegative> not)? be file "(.+)"$/
+     * @Then /^the (?:JSON|json)(?: response)?(?: at "(.*)")? should( not)? be file "(.+)"/
      */
     public function checkEqualityWithFileContents($path = null, $isNegative = null, $jsonFile)
     {
@@ -124,9 +109,9 @@ class JsonSpecContext implements ExtendedContextInterface
     /**
      * @Then /^the (?:JSON|json)(?: response)?(?: at "(.*)")? should( not)? include(:)$/
      */
-    public function checkInclusion($path, $isNegative, $json)
+    public function checkInclusion($path, $isNegative, PyStringNode $json)
     {
-        $this->checkInclusionInline($path, $isNegative, $json);
+        $this->checkInclusionInline($path, $isNegative, $json->getRaw());
     }
 
     /**
@@ -205,56 +190,6 @@ class JsonSpecContext implements ExtendedContextInterface
             throw new \RuntimeException(sprintf('Expected JSON%s to have size "%d"', $isNegative ?
                 ' not' : '', $size));
         }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setParentContext(ExtendedContextInterface $parentContext)
-    {
-        $this->mainContext = $parentContext;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getMainContext()
-    {
-        return $this->mainContext;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSubcontext($alias)
-    {
-        if (!isset($this->subContexts[$alias])) {
-            throw new \InvalidArgumentException(sprintf('Undefined context with alias \'%s\'', $alias));
-        }
-
-        return $this->subContexts[$alias];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSubcontexts()
-    {
-        return $this->subContexts;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getSubcontextByClassName($className)
-    {
-        foreach ($this->subContexts as $context) {
-            if ($context instanceof $className) {
-                return $context;
-            }
-        }
-
-        throw new \InvalidArgumentException(sprintf('Undefined context with class name \'%s\'', $alias));
     }
 
 }

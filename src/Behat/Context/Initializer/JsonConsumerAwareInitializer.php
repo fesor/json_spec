@@ -2,16 +2,16 @@
 
 namespace JsonSpec\Behat\Context\Initializer;
 
+use Behat\Behat\Context\Context;
+use Behat\Behat\Context\Initializer\ContextInitializer;
 use JsonSpec\Behat\Context\JsonConsumerAware;
-use Behat\Behat\Context\ContextInterface;
-use Behat\Behat\Context\Initializer\InitializerInterface;
 use JsonSpec\Behat\Consumer\JsonConsumer;
 
 /**
  * Class JsonConsumerAwareInitializer
  * @package JsonSpec\Behat\Context\Initializer
  */
-class JsonConsumerAwareInitializer implements InitializerInterface
+class JsonConsumerAwareInitializer implements ContextInitializer
 {
 
     /**
@@ -28,26 +28,27 @@ class JsonConsumerAwareInitializer implements InitializerInterface
     }
 
     /**
-     * Checks if initializer supports provided context.
-     *
-     * @param ContextInterface $context
-     *
-     * @return Boolean
+     * @inheritdoc
      */
-    public function supports(ContextInterface $context)
+    public function initializeContext(Context $context)
     {
-        return $context instanceof JsonConsumerAware;
+        if (!$this->supports($context)) {
+            return;
+        }
+
+        $context->setJsonConsumer($this->jsonConsumer);
     }
 
     /**
-     * Initializes provided context.
+     * Checks if initializer supports provided context.
      *
-     * @param ContextInterface $context
+     * @param Context $context
+     *
+     * @return boolean
      */
-    public function initialize(ContextInterface $context)
+    private function supports(Context $context)
     {
-        /** @var JsonConsumerAware $context */
-        $context->setJsonConsumer($this->jsonConsumer);
+        return $context instanceof JsonConsumerAware;
     }
 
 }

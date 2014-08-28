@@ -2,38 +2,49 @@
 
 namespace JsonSpec\Behat;
 
-use Behat\Behat\Extension\ExtensionInterface;
+use Behat\Behat\Context\ServiceContainer\ContextExtension;
+use \Behat\Testwork\ServiceContainer\Extension as BehatExtension;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-class Extension implements ExtensionInterface
+class Extension implements BehatExtension
 {
+
     /**
      * @inheritdoc
      */
-    public function getConfig(ArrayNodeDefinition $builder)
+    public function getConfigKey()
+    {
+        return 'json_spec';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function configure(ArrayNodeDefinition $builder)
     {
         $builder
             ->children()
-                ->scalarNode('json_directory')->defaultNull()->end()
                 ->arrayNode('excluded_keys')
-                    ->addDefaultChildrenIfNoneSet()
-                    ->prototype('scalar')->defaultValue('id')->end()
-            ->end()
+                ->prototype('scalar')
+                    ->example(array('id', 'created_at'))
+                    ->end()
+                ->defaultValue(array('id', 'created_at', 'updated_at'))
+                ->end()
+            ->scalarNode('json_directory')->defaultNull()->end()
         ->end();
     }
 
     /**
      * @inheritdoc
      */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(ContainerBuilder $container, array $config)
     {
         $container->setParameter('json_spec.excluded_keys', $config['excluded_keys']);
         $container->setParameter('json_spec.json_directory', $config['json_directory']);
-        // replace buggy definition dispatcher with fixes one
-        $container->setParameter('behat.definition.dispatcher.class', 'JsonSpec\\Behat\\Definition\\DefinitionDispatcher');
 
         $this->registerHelpers($container);
         $this->registerJsonProvider($container);
@@ -43,11 +54,16 @@ class Extension implements ExtensionInterface
     /**
      * @inheritdoc
      */
-    public function getCompilerPasses()
-    {
-        return array();
-    }
+    public function initialize(ExtensionManager $extensionManager) {}
 
+    /**
+     * @inheritdoc
+     */
+    public function process(ContainerBuilder $container) {}
+
+    /**
+     * @param ContainerBuilder $container
+     */
     private function registerHelpers(ContainerBuilder $container)
     {
         $definition = new Definition('Seld\\JsonLint\\JsonParser');
@@ -78,18 +94,24 @@ class Extension implements ExtensionInterface
         $container->setDefinition('json_spec.matcher', $definition);
     }
 
+    /**
+     * @param ContainerBuilder $container
+     */
     private function registerJsonProvider(ContainerBuilder $container)
     {
         $definition = new Definition('JsonSpec\\Behat\\Consumer\\JsonConsumer');
         $container->setDefinition('json_spec.provider.json_provider', $definition);
     }
 
+    /**
+     * @param ContainerBuilder $container
+     */
     private function registerContextInitializers(ContainerBuilder $container)
     {
         $definition = new Definition('JsonSpec\\Behat\\Context\\Initializer\\JsonConsumerAwareInitializer', array(
             new Reference('json_spec.provider.json_provider'),
         ));
-        $definition->addTag('behat.context.initializer');
+        $definition->addTag(ContextExtension::INITIALIZER_TAG);
         $container->setDefinition('json_spec.json_consumer_aware_initializer', $definition);
 
         $definition = new Definition('JsonSpec\\Behat\\Context\\Initializer\\JsonSpecContextInitializer', array(
@@ -99,7 +121,7 @@ class Extension implements ExtensionInterface
             new Reference('json_spec.helper.file_helper'),
             new Reference('json_spec.helper.memory_helper'),
         ));
-        $definition->addTag('behat.context.initializer');
+        $definition->addTag(ContextExtension::INITIALIZER_TAG);
         $container->setDefinition('json_spec.context_initializer', $definition);
     }
 

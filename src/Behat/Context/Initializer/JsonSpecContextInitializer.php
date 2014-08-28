@@ -2,8 +2,8 @@
 
 namespace JsonSpec\Behat\Context\Initializer;
 
-use Behat\Behat\Context\ContextInterface;
-use Behat\Behat\Context\Initializer\InitializerInterface;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Context\Initializer\ContextInitializer;
 use JsonSpec\Behat\Context\JsonSpecContext;
 use JsonSpec\Behat\Provider\JsonProvider;
 use JsonSpec\Helper\FileHelper;
@@ -11,7 +11,7 @@ use JsonSpec\Helper\JsonHelper;
 use JsonSpec\Helper\MemoryHelper;
 use JsonSpec\JsonSpecMatcher;
 
-class JsonSpecContextInitializer implements InitializerInterface
+class JsonSpecContextInitializer implements ContextInitializer
 {
 
     /**
@@ -62,25 +62,28 @@ class JsonSpecContextInitializer implements InitializerInterface
     }
 
     /**
-     * Checks if initializer supports provided context.
-     *
-     * @param ContextInterface $context
-     *
-     * @return Boolean
+     * @inheritdoc
      */
-    public function supports(ContextInterface $context)
+    public function initializeContext(Context $context)
     {
-        return $context instanceof JsonSpecContext;
+        if (!$this->supports($context)) {
+            return;
+        }
+
+        $context->init($this->jsonProvider, $this->jsonSpecMatcher, $this->memoryHelper, $this->fileHelper, $this->jsonHelper);
     }
 
+
     /**
-     * Initializes provided context.
+     * Checks if initializer supports provided context.
      *
-     * @param ContextInterface $context
+     * @param Context $context
+     *
+     * @return boolean
      */
-    public function initialize(ContextInterface $context)
+    private function supports(Context $context)
     {
-        $context->init($this->jsonProvider, $this->jsonSpecMatcher, $this->memoryHelper, $this->fileHelper, $this->jsonHelper);
+        return $context instanceof JsonSpecContext;
     }
 
 }
