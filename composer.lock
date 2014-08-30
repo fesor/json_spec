@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "981f00069ae5e7c39e27b7b0e7feda86",
+    "hash": "33cf7850fdafd0009d95e1a6808826e0",
     "packages": [
         {
             "name": "seld/jsonlint",
@@ -228,16 +228,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "2.0.2",
+            "version": "2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "0bca477a34baea39add016af90046f002a175619"
+                "reference": "38743b677965c48a637097b2746a281264ae2347"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/0bca477a34baea39add016af90046f002a175619",
-                "reference": "0bca477a34baea39add016af90046f002a175619",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/38743b677965c48a637097b2746a281264ae2347",
+                "reference": "38743b677965c48a637097b2746a281264ae2347",
                 "shasum": ""
             },
             "require": {
@@ -273,7 +273,7 @@
                     "email": "mike.vanriel@naenius.com"
                 }
             ],
-            "time": "2014-03-28 09:21:30"
+            "time": "2014-08-09 10:27:07"
         },
         {
             "name": "phpspec/php-diff",
@@ -913,6 +913,7 @@
         "phpspec/phpspec": 20,
         "behat/behat": 0
     },
+    "prefer-stable": false,
     "platform": {
         "php": ">=5.4.0"
     },

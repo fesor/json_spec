@@ -85,7 +85,7 @@ class DefinitionDispatcher extends BaseDispatcher
     }
 
     /**
-     * Note: there is a bug in behat < 3.11
+     * Note: there is a bug in behat < 3.13
      * This is simple fix for it
      *
      * Merges found arguments with multiliners and maps them to the function callback signature.
