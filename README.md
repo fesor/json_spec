@@ -91,9 +91,40 @@ We could access the first friend's first name with the path `"friends/0/first_na
 ## Behat
 json_spec provides Behat context which implements steps utilizing json_spec matchers. This is perfect for testing your app's JSON API.
 
-In order to use Behat context you should add it as subcontext:
+In order to use json_spec with behat you should enable json_spec behat extension and add context provided with json_spec in your ```behat.yml```. For example:
+```
+default:
+    suites:
+        default:
+            contexts:
+                - FeatureContext
+                - JsonSpec\Behat\Context\JsonSpecContext
+    extensions:
+        JsonSpec\Behat\Extension:
+```
+
+Also not that json_spec should have access to responses. To make it so, just implement ```JsonConsumerAware``` interface for your context:
+
 ```php
-$this->useContext('json_spec', new \JsonSpec\Behat\Context\JsonSpecContext());
+use \JsonSpec\Behat\Context\JsonConsumerAware;
+use \Behat\Behat\Context\Context;
+
+class MyRestApiFeatureContext implements Context, JsonConsumerAware
+{
+    /**
+     * @var \JsonSpec\Behat\Consumer\JsonConsumer
+     */
+    private $jsonConsumer;
+
+    /**
+     * @When /^I request "([^"]*)"$/
+     */
+    public function iRequest($pageUrl)
+    {
+        // ... make request and get response body as string
+        $this->jsonConsumer->setJson($responseBody);
+    }
+}
 ```
 
 Now, you can use the json_spec steps in your features:
