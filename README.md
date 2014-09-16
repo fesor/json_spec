@@ -1,6 +1,8 @@
 Json Spec
 ===================
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fesor/json_spec/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fesor/json_spec/?branch=master) 
+
 If you working with JSON-based REST APIs there are several issues:
 
 - You can't simple check is a response is equal to given string as there is things like server-generated IDs
