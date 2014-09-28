@@ -1,7 +1,7 @@
 Json Spec
 ===================
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fesor/json_spec/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fesor/json_spec/?branch=master) 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fesor/json_spec/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fesor/json_spec/?branch=master)
 
 If you working with JSON-based REST APIs there are several issues:
 
@@ -105,7 +105,9 @@ default:
         JsonSpec\Behat\Extension:
 ```
 
-Also not that json_spec should have access to responses. To make it so, just implement ```JsonConsumerAware``` interface for your context:
+To make `json_spec` work, it should have access to response body. If you are using [behat/web-api-extension](https://github.com/Behat/WebApiExtension) then just check that `json_spec` extension is enabled somewhere after it and that's all. `json_spec` will wrap Guzzle and will remember every response to use it for getting JSON.
+
+If you are using your own context for interaction with server (Guzzle, curl, etc), then you need to implement JsonConsumerAware interface for your context:
 
 ```php
 use \JsonSpec\Behat\Context\JsonConsumerAware;
@@ -125,6 +127,17 @@ class MyRestApiFeatureContext implements Context, JsonConsumerAware
     {
         // ... make request and get response body as string
         $this->jsonConsumer->setJson($responseBody);
+    }
+
+    /**
+     * @afterScenario
+     */
+    public function tearDown()
+    {
+        // we need to clear data ofter each scenario
+        // if you need several responses in one scenario
+        // then you can always use memoization
+        $this->jsonConsumer->clear();
     }
 }
 ```

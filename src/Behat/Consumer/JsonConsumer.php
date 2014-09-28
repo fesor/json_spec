@@ -29,4 +29,21 @@ class JsonConsumer implements JsonProvider
         return $this->lastJson;
     }
 
+
+    /**
+     * @inheritdoc
+     */
+    public function clear()
+    {
+        $this->lastJson = null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPriority()
+    {
+        return 50;
+    }
+
 }

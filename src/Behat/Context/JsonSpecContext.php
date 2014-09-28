@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use JsonSpec\Behat\Provider\JsonProvider;
+use JsonSpec\Behat\Provider\JsonProviderVoter;
 use JsonSpec\Helper\FileHelper;
 use JsonSpec\Helper\JsonHelper;
 use JsonSpec\Helper\MemoryHelper;
@@ -24,7 +25,7 @@ class JsonSpecContext implements Context
     private $memoryHelper;
 
     /**
-     * @var JsonProvider
+     * @var JsonProviderVoter
      */
     private $jsonProvider;
 
@@ -44,14 +45,14 @@ class JsonSpecContext implements Context
     private $fileHelper;
 
     /**
-     * @param JsonProvider    $jsonProvider
+     * @param JsonProviderVoter    $jsonProvider
      * @param JsonSpecMatcher $matcher
      * @param MemoryHelper    $memoryHelper
      * @param FileHelper      $fileHelper
      * @param JsonHelper      $jsonHelper
      */
     public function init(
-        JsonProvider $jsonProvider,
+        JsonProviderVoter $jsonProvider,
         JsonSpecMatcher $matcher,
         MemoryHelper $memoryHelper,
         FileHelper $fileHelper,

@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\ContextInitializer;
 use JsonSpec\Behat\Context\JsonSpecContext;
 use JsonSpec\Behat\Provider\JsonProvider;
+use JsonSpec\Behat\Provider\JsonProviderVoter;
 use JsonSpec\Helper\FileHelper;
 use JsonSpec\Helper\JsonHelper;
 use JsonSpec\Helper\MemoryHelper;
@@ -35,19 +36,19 @@ class JsonSpecContextInitializer implements ContextInitializer
     private $memoryHelper;
 
     /**
-     * @var JsonProvider
+     * @var JsonProviderVoter
      */
     private $jsonProvider;
 
     /**
-     * @param JsonProvider    $jsonProvider
+     * @param JsonProviderVoter    $jsonProvider
      * @param JsonSpecMatcher $matcher
      * @param JsonHelper      $jsonHelper
      * @param FileHelper      $fileHelper
      * @param MemoryHelper    $memoryHelper
      */
     public function __construct(
-        JsonProvider $jsonProvider,
+        JsonProviderVoter $jsonProvider,
         JsonSpecMatcher $matcher,
         JsonHelper $jsonHelper,
         FileHelper $fileHelper,

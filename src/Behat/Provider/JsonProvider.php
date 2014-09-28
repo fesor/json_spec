@@ -16,4 +16,16 @@ interface JsonProvider
      */
     public function getJson();
 
+    /**
+     * Returns priority of provider
+     *
+     * @return integer
+     */
+    public function getPriority();
+
+    /**
+     * Clears last used json
+     */
+    public function clear();
+
 }

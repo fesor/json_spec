@@ -17,9 +17,14 @@ class WebApiProvider implements JsonProvider
     private $client;
 
     /**
+     * @var string
+     */
+    private $currentJson;
+
+    /**
      * @param GuzzleClient $client
      */
-    public function __constructor(GuzzleClient $client)
+    public function __construct(GuzzleClient $client)
     {
         $this->client = $client;
     }
@@ -29,7 +34,32 @@ class WebApiProvider implements JsonProvider
      */
     public function getJson()
     {
-        return (string) $this->client->getLastResponse()->getBody()->getContents();
+        if (empty($this->currentJson)) {
+            $lastResponse = $this->client->getLastResponse();
+            if ($lastResponse) {
+                $this->currentJson = (string) $this->client->getLastResponse()->getBody();
+            } else {
+                $this->currentJson = '';
+            }
+        }
+        return $this->currentJson;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function clear()
+    {
+        $this->currentJson = '';
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function getPriority()
+    {
+        return 10;
     }
 
 }
