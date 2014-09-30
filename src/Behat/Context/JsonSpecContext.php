@@ -143,6 +143,8 @@ class JsonSpecContext implements Context
             $this->memoryHelper->remember($this->jsonProvider->getJson()),
             $base
         );
+        $this->matcher->getOptions()->atPath($base);
+
         foreach ($table->getRows() as $row) {
             if (count ($row) == 2) {
                 $this->checkEqualityInline(ltrim($base . '/' .$row[0], '/'), false, $row[1]);
