@@ -29,8 +29,13 @@ Feature: Common actions
     }
     """
 
-  Scenario: Mix formats
+  Scenario: Mix formats equivalence with inclusion table
     When I get the JSON
     Then the JSON at "created_at" should be "2011-07-08 02:27:34"
     And the JSON should have the following:
       | hash/json |
+
+  Scenario: Mix formats equivalence with inclusion inline
+    When I get the JSON
+    Then the JSON at "created_at" should be "2011-07-08 02:27:34"
+    And the JSON should have "negative"
