@@ -143,7 +143,6 @@ class JsonSpecContext implements Context
             $this->memoryHelper->remember($this->jsonProvider->getJson()),
             $base
         );
-        $this->matcher->getOptions()->atPath($base);
 
         foreach ($table->getRows() as $row) {
             if (count ($row) == 2) {
@@ -162,8 +161,6 @@ class JsonSpecContext implements Context
     public function hasKeysInline($isNegative, $path)
     {
         $json = $this->memoryHelper->remember($this->jsonProvider->getJson());
-        // Reset path to root if has been setting in previous step
-        $this->matcher->getOptions()->atPath('');
 
         if ($this->matcher->havePath($json, $path) xor !$isNegative) {
             throw new \RuntimeException(sprintf('Expected JSON%s to have path "%s"', $isNegative ?
@@ -195,6 +192,14 @@ class JsonSpecContext implements Context
             throw new \RuntimeException(sprintf('Expected JSON%s to have size "%d"', $isNegative ?
                 ' not' : '', $size));
         }
+    }
+
+    /**
+     * @afterStep
+     */
+    public function resetOptions()
+    {
+        $this->matcher->getOptions();
     }
 
 }
