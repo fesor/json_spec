@@ -10,7 +10,11 @@
     ],
     "minimum-stability": "stable",
     "autoload": {
-        "psr-4": {"JsonSpec\\": "src/"}
+        "psr-4": {
+          "JsonSpec\\Behat\\": "extensions/behat/src/",
+          "JsonSpec\\PhpSpec\\": "extensions/phpspec/src/",
+          "JsonSpec\\": "src/"
+        }
     },
     "config": {
         "bin-dir": "bin"

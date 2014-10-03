@@ -8,7 +8,7 @@ use JsonSpec\Behat\Context\JsonSpecContext;
 use JsonSpec\Behat\Provider\JsonProvider;
 use JsonSpec\Helper\FileHelper;
 use JsonSpec\Helper\JsonHelper;
-use JsonSpec\Helper\MemoryHelper;
+use JsonSpec\Behat\Helper\MemoryHelper;
 use JsonSpec\JsonSpecMatcher;
 
 class JsonSpecContextInitializer implements ContextInitializer

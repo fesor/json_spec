@@ -1,6 +1,6 @@
 <?php
 
-namespace JsonSpec\Helper;
+namespace JsonSpec\Behat\Helper;
 
 class MemoryHelper
 {

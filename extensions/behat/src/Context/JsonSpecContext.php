@@ -8,7 +8,7 @@ use Behat\Gherkin\Node\TableNode;
 use JsonSpec\Behat\Provider\JsonProvider;
 use JsonSpec\Helper\FileHelper;
 use JsonSpec\Helper\JsonHelper;
-use JsonSpec\Helper\MemoryHelper;
+use JsonSpec\Behat\Helper\MemoryHelper;
 use JsonSpec\JsonSpecMatcher;
 
 /**

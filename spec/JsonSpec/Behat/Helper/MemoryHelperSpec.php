@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\JsonSpec\Helper;
+namespace spec\JsonSpec\Behat\Helper;
 
 use PhpSpec\ObjectBehavior;
 

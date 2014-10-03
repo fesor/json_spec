@@ -74,7 +74,7 @@ class Extension implements BehatExtension
         ));
         $container->setDefinition('json_spec.helper.json_helper', $definition);
 
-        $definition = new Definition('JsonSpec\\Helper\\MemoryHelper');
+        $definition = new Definition('JsonSpec\\Behat\\Helper\\MemoryHelper');
         $container->setDefinition('json_spec.helper.memory_helper', $definition);
 
         $definition = new Definition('JsonSpec\\Helper\\FileHelper', array(
