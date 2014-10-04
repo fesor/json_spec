@@ -10,5 +10,5 @@ before_script:
     - composer install
 
 script:
-  - phpspec run
-  - behat
+  - bin/phpspec run
+  - bin/behat

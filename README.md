@@ -1,7 +1,7 @@
 Json Spec
 ===================
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fesor/json_spec/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fesor/json_spec/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fesor/json_spec/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fesor/json_spec/?branch=master) [![Build Status](https://travis-ci.org/fesor/json_spec.svg?branch=master)](https://travis-ci.org/fesor/json_spec)
 
 If you working with JSON-based REST APIs there are several issues:
 
