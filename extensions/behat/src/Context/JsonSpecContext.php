@@ -50,7 +50,7 @@ class JsonSpecContext implements Context
      * @param FileHelper      $fileHelper
      * @param JsonHelper      $jsonHelper
      */
-    public function init(
+    public function __construct(
         JsonProvider $jsonProvider,
         JsonSpecMatcher $matcher,
         MemoryHelper $memoryHelper,

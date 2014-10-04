@@ -3,7 +3,7 @@ default:
         default:
             contexts:
                 - FeatureContext
-                - JsonSpec\Behat\Context\JsonSpecContext
+                - json_spec
     extensions:
         JsonSpec\Behat\Extension:
             excluded_keys: [id, created_at, updated_at]

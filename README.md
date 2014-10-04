@@ -1,7 +1,7 @@
 Json Spec
 ===================
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fesor/json_spec/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fesor/json_spec/?branch=master) 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fesor/json_spec/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fesor/json_spec/?branch=master)
 
 If you working with JSON-based REST APIs there are several issues:
 
@@ -100,9 +100,9 @@ default:
         default:
             contexts:
                 - FeatureContext
-                - JsonSpec\Behat\Context\JsonSpecContext
+                - json_spec
     extensions:
-        JsonSpec\Behat\Extension:
+        JsonSpec\Behat\Extension: ~
 ```
 
 Also not that json_spec should have access to responses. To make it so, just implement ```JsonConsumerAware``` interface for your context:
