@@ -4,7 +4,6 @@ namespace JsonSpec\Behat\Context\ArgumentResolver;
 
 use Behat\Behat\Context\Argument\ArgumentResolver;
 use JsonSpec\Behat\Helper\MemoryHelper;
-use JsonSpec\Behat\Provider\JsonProvider;
 use JsonSpec\Helper\FileHelper;
 use JsonSpec\Helper\JsonHelper;
 use JsonSpec\JsonSpecMatcher;
@@ -19,14 +18,12 @@ class DependencyResolver implements ArgumentResolver
     private $dependencies;
 
     /**
-     * @param JsonProvider    $jsonProvider
      * @param JsonSpecMatcher $matcher
      * @param JsonHelper      $jsonHelper
      * @param FileHelper      $fileHelper
      * @param MemoryHelper    $memoryHelper
      */
     public function __construct(
-        JsonProvider $jsonProvider,
         JsonSpecMatcher $matcher,
         JsonHelper $jsonHelper,
         FileHelper $fileHelper,
@@ -34,7 +31,6 @@ class DependencyResolver implements ArgumentResolver
     )
     {
         $this->dependencies = [
-            $jsonProvider,
             $matcher,
             $jsonHelper,
             $fileHelper,

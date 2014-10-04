@@ -2,31 +2,18 @@
 
 namespace JsonSpec\Behat\Consumer;
 
-use JsonSpec\Behat\Provider\JsonProvider;
+use JsonSpec\Behat\JsonProvider\JsonHolder;
 
-class JsonConsumer implements JsonProvider
+/**
+ * This interface is just for BC vs < 0.3 version
+ * @deprecated will be removed in version 0.3
+ */
+interface JsonConsumer
 {
-    /**
-     * @var string
-     */
-    protected $lastJson;
 
     /**
-     * Set last json response
-     *
      * @param string $json
      */
-    public function setJson($json)
-    {
-        $this->lastJson = $json;
-    }
-
-    /**
-     * @return string
-     */
-    public function getJson()
-    {
-        return $this->lastJson;
-    }
+    public function setJson($json);
 
 }

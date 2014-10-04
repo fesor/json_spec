@@ -16,6 +16,11 @@ class Extension implements BehatExtension
 {
 
     /**
+     * @var ExtensionManager
+     */
+    private $extensionManager;
+
+    /**
      * @inheritdoc
      */
     public function getConfigKey()
@@ -43,6 +48,14 @@ class Extension implements BehatExtension
     /**
      * @inheritdoc
      */
+    public function initialize(ExtensionManager $extensionManager)
+    {
+        $this->extensionManager = $extensionManager;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function load(ContainerBuilder $container, array $config)
     {
         $container->setParameter('json_spec.excluded_keys', $config['excluded_keys']);
@@ -50,12 +63,11 @@ class Extension implements BehatExtension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/Resources/services'));
         $loader->load('services.yml');
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function initialize(ExtensionManager $extensionManager) {}
+        if (null !== $this->extensionManager->getExtension('mink')) {
+            $loader->load('mink_integration.yml');
+        }
+    }
 
     /**
      * @inheritdoc

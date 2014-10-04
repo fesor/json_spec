@@ -21,19 +21,18 @@ services:
     class: JsonSpec\JsonSpecMatcher
     arguments: [@json_spec.helper.json_helper, @json_spec.matcher_options_factory]
 
-  json_spec.provider.json_provider:
-    class: JsonSpec\Behat\Consumer\JsonConsumer
+  json_spec.json_holder:
+    class: JsonSpec\Behat\JsonProvider\JsonHolder
 
   json_spec.json_consumer_aware_initializer:
-    class: JsonSpec\Behat\Context\Initializer\JsonConsumerAwareInitializer
-    arguments: [@json_spec.provider.json_provider]
+    class: JsonSpec\Behat\Context\Initializer\JsonHolderAwareInitializer
+    arguments: [@json_spec.json_holder]
     tags:
       - {name: context.initializer}
 
   json_spec.dependency_resolver:
     class: JsonSpec\Behat\Context\ArgumentResolver\DependencyResolver
     arguments:
-     - @json_spec.provider.json_provider
      - @json_spec.matcher
      - @json_spec.helper.json_helper
      - @json_spec.helper.file_helper

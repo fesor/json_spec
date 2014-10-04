@@ -5,7 +5,7 @@ namespace JsonSpec\Behat\Context;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use JsonSpec\Behat\Provider\JsonProvider;
+use JsonSpec\Behat\JsonProvider\JsonHolder;
 use JsonSpec\Helper\FileHelper;
 use JsonSpec\Helper\JsonHelper;
 use JsonSpec\Behat\Helper\MemoryHelper;
@@ -15,7 +15,7 @@ use JsonSpec\JsonSpecMatcher;
  * Class JsonSpecContext
  * @package JsonSpec\Behat\Context
  */
-class JsonSpecContext implements Context
+class JsonSpecContext implements Context, JsonHolderAware
 {
 
     /**
@@ -24,9 +24,9 @@ class JsonSpecContext implements Context
     private $memoryHelper;
 
     /**
-     * @var JsonProvider
+     * @var JsonHolder
      */
-    private $jsonProvider;
+    private $jsonHolder;
 
     /**
      * @var JsonSpecMatcher
@@ -44,21 +44,18 @@ class JsonSpecContext implements Context
     private $fileHelper;
 
     /**
-     * @param JsonProvider    $jsonProvider
      * @param JsonSpecMatcher $matcher
      * @param MemoryHelper    $memoryHelper
      * @param FileHelper      $fileHelper
      * @param JsonHelper      $jsonHelper
      */
     public function __construct(
-        JsonProvider $jsonProvider,
         JsonSpecMatcher $matcher,
         MemoryHelper $memoryHelper,
         FileHelper $fileHelper,
         JsonHelper $jsonHelper
     )
     {
-        $this->jsonProvider = $jsonProvider;
         $this->matcher = $matcher;
         $this->memoryHelper = $memoryHelper;
         $this->fileHelper = $fileHelper;
@@ -70,7 +67,7 @@ class JsonSpecContext implements Context
      */
     public function keepJson($path, $key)
     {
-        $json = $this->jsonProvider->getJson();
+        $json = $this->jsonHolder->getJson();
         $this->memoryHelper->memorize($key, $this->jsonHelper->normalize($json, $path));
     }
 
@@ -98,7 +95,7 @@ class JsonSpecContext implements Context
         $options = $this->matcher->getOptions();
         $options->atPath($path);
         $matches = $this->matcher->isEqual(
-            $this->memoryHelper->remember($this->jsonProvider->getJson()),
+            $this->memoryHelper->remember($this->jsonHolder->getJson()),
             $this->memoryHelper->remember($json)
         );
         if ($matches xor !$isNegative) {
@@ -127,7 +124,7 @@ class JsonSpecContext implements Context
      */
     public function checkInclusionInline($path, $isNegative, $json)
     {
-        $actual = $this->memoryHelper->remember($this->jsonProvider->getJson());
+        $actual = $this->memoryHelper->remember($this->jsonHolder->getJson());
         $this->matcher->getOptions()->atPath($path);
         if ($this->matcher->includes($actual, $this->memoryHelper->remember($json)) xor !$isNegative) {
             throw new \RuntimeException(sprintf('Expected JSON to be %s', $isNegative ? 'included' : 'excluded'));
@@ -140,7 +137,7 @@ class JsonSpecContext implements Context
     public function hasKeys($base, TableNode $table)
     {
         $actual = $this->jsonHelper->normalize(
-            $this->memoryHelper->remember($this->jsonProvider->getJson()),
+            $this->memoryHelper->remember($this->jsonHolder->getJson()),
             $base
         );
 
@@ -160,7 +157,7 @@ class JsonSpecContext implements Context
      */
     public function hasKeysInline($isNegative, $path)
     {
-        $json = $this->memoryHelper->remember($this->jsonProvider->getJson());
+        $json = $this->memoryHelper->remember($this->jsonHolder->getJson());
 
         if ($this->matcher->havePath($json, $path) xor !$isNegative) {
             throw new \RuntimeException(sprintf('Expected JSON%s to have path "%s"', $isNegative ?
@@ -173,7 +170,7 @@ class JsonSpecContext implements Context
      */
     public function haveType($path, $isNegative, $type)
     {
-        $json = $this->memoryHelper->remember($this->jsonProvider->getJson());
+        $json = $this->memoryHelper->remember($this->jsonHolder->getJson());
         $this->matcher->getOptions()->atPath($path);
         if ($this->matcher->haveType($json, $type) xor !$isNegative) {
             throw new \RuntimeException(sprintf('Expected JSON%s to have type "%s"', $isNegative ?
@@ -186,7 +183,7 @@ class JsonSpecContext implements Context
      */
     public function haveSize($path, $isNegative, $size)
     {
-        $json = $this->memoryHelper->remember($this->jsonProvider->getJson());
+        $json = $this->memoryHelper->remember($this->jsonHolder->getJson());
         $this->matcher->getOptions()->atPath($path);
         if ($this->matcher->haveSize($json, intval($size, 10)) xor !$isNegative) {
             throw new \RuntimeException(sprintf('Expected JSON%s to have size "%d"', $isNegative ?
@@ -201,5 +198,14 @@ class JsonSpecContext implements Context
     {
         $this->matcher->getOptions();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function setJsonHolder(JsonHolder $holder)
+    {
+        $this->jsonHolder = $holder;
+    }
+
 
 }
