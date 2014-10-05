@@ -5,10 +5,22 @@ Json Spec
 
 If you working with JSON-based REST APIs there are several issues:
 
-- You can't simple check is a response is equal to given string as there is things like server-generated IDs
+- You can't simple check is a response is equal to given string as there is things like server-generated IDs or keys sorting
 - Matching the whole responses breaks DRY for the spec
 
-This library provides an extensions for PhpSpec and Behat, which aims to solve this issues.
+`json_spec` solves this problems be providing JSON normalization, key exclusion and json paths. Lets see a simple example of checking JSON equality:
+
+|In your specification       | In response                            |
+|----------------------------| -------------                          |
+|                            |                                        |
+|{                           | {                                      |
+|   "first_name": "Luke",    |    "id": 1421,                         |
+|   "last_name": "Skywalker" |    "created_at": "1977-05-25 00:00:00" |
+|}                           |    "last_name": "Skywalker",           |
+|                            |    "first_name": "Luke",               |
+|                            | }                                      |
+
+Before asserting, `json_spec` will exclude keys `id`, `created_at` and `updated_at` from response from response JSON (List of excluded keys is configurable). Then it will normalize JSON (reorder keys, pretty-print) and after, just check for string equality. That's all. Also you can check JSON by given path instead of describing whole response in your specification.
 
 ## PhpSpec
 
@@ -105,18 +117,37 @@ default:
         JsonSpec\Behat\Extension: ~
 ```
 
-Also not that json_spec should have access to responses. To make it so, just implement ```JsonConsumerAware``` interface for your context:
+One note. `json_spec` should have access to responses. If you are using Mink, that it's just fine. `json_spec` will get responses from Mink. This means that all you need to do to start working, is just to enable MinkExtension in your `behat.yml`:
+```
+default:
+    suites:
+        default:
+            contexts:
+                - FeatureContext
+                - json_spec
+    extensions:
+        JsonSpec\Behat\Extension: ~
+        Behat\MinkExtension:
+            base_url:  'http://localhost:8047'
+            sessions:
+                default:
+                    goutte: ~
+```
+
+That's all, now `json_spec` have access to all responses. You may also want to use `behatch:rest` context from [sanpii/behatch-contexts](https://github.com/sanpii/behatch-contexts) instead of mink context.
+
+If you are using your own context, which not using Mink, then just implement ```JsonHolderAware``` interface for your context:
 
 ```php
-use \JsonSpec\Behat\Context\JsonConsumerAware;
+use \JsonSpec\Behat\Context\JsonHolderAware;
 use \Behat\Behat\Context\Context;
 
-class MyRestApiFeatureContext implements Context, JsonConsumerAware
+class MyRestApiFeatureContext implements Context, JsonHolderAware
 {
     /**
-     * @var \JsonSpec\Behat\Consumer\JsonConsumer
+     * @var \JsonSpec\Behat\JsonProvider\JsonHolder
      */
-    private $jsonConsumer;
+    private $jsonHolder;
 
     /**
      * @When /^I request "([^"]*)"$/
@@ -124,7 +155,7 @@ class MyRestApiFeatureContext implements Context, JsonConsumerAware
     public function iRequest($pageUrl)
     {
         // ... make request and get response body as string
-        $this->jsonConsumer->setJson($responseBody);
+        $this->jsonHolder->setJson($responseBody);
     }
 }
 ```
