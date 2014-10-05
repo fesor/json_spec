@@ -8,17 +8,25 @@ If you working with JSON-based REST APIs there are several issues:
 - You can't simple check is a response is equal to given string as there is things like server-generated IDs or keys sorting
 - Matching the whole responses breaks DRY for the spec
 
-`json_spec` solves this problems be providing JSON normalization, key exclusion and json paths. Lets see a simple example of checking JSON equality:
+`json_spec` solves this problems be providing JSON normalization, key exclusion and json paths.
 
-|In your specification       | In response                            |
-|----------------------------| -------------                          |
-|                            |                                        |
-|{                           | {                                      |
-|   "first_name": "Luke",    |    "id": 1421,                         |
-|   "last_name": "Skywalker" |    "created_at": "1977-05-25 00:00:00" |
-|}                           |    "last_name": "Skywalker",           |
-|                            |    "first_name": "Luke",               |
-|                            | }                                      |
+From `json_spec` point of view, JSON documents:
+```
+{
+   "first_name": "Luke",
+   "last_name": "Skywalker"
+}
+```
+and
+```
+{
+   "id": 1421,
+   "created_at": "1977-05-25 00:00:00"
+   "last_name": "Skywalker",
+   "first_name": "Luke",
+}
+```
+are equal.
 
 Before asserting, `json_spec` will exclude keys `id`, `created_at` and `updated_at` from response from response JSON (List of excluded keys is configurable). Then it will normalize JSON (reorder keys, pretty-print) and after, just check for string equality. That's all. Also you can check JSON by given path instead of describing whole response in your specification.
 
