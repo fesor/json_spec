@@ -352,6 +352,8 @@ You can also remember JSON inline:
 Then the JSON response at "0/first_name" should be {$FIRST_NAME}
 ```
 
+Also starting from version `0.2.3` you can inject memory helper into your feature context to define some variables. To do so, your context should implement `MemoryHelperAware` interface.
+
 ### More
 
 Check out the [specs](https://github.com/fesor/json_spec/blob/master/spec)

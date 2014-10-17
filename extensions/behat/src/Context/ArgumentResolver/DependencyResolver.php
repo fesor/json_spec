@@ -21,20 +21,17 @@ class DependencyResolver implements ArgumentResolver
      * @param JsonSpecMatcher $matcher
      * @param JsonHelper      $jsonHelper
      * @param FileHelper      $fileHelper
-     * @param MemoryHelper    $memoryHelper
      */
     public function __construct(
         JsonSpecMatcher $matcher,
         JsonHelper $jsonHelper,
-        FileHelper $fileHelper,
-        MemoryHelper $memoryHelper
+        FileHelper $fileHelper
     )
     {
         $this->dependencies = [
             $matcher,
             $jsonHelper,
             $fileHelper,
-            $memoryHelper,
         ];
     }
 

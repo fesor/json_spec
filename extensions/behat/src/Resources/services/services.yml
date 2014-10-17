@@ -30,13 +30,18 @@ services:
     tags:
       - {name: context.initializer}
 
+  json_spec.memory_helper_aware_initializer:
+    class: JsonSpec\Behat\Context\Initializer\MemoryHelperAwareInitializer
+    arguments: [@json_spec.helper.memory_helper]
+    tags:
+      - {name: context.initializer}
+
   json_spec.dependency_resolver:
     class: JsonSpec\Behat\Context\ArgumentResolver\DependencyResolver
     arguments:
      - @json_spec.matcher
      - @json_spec.helper.json_helper
      - @json_spec.helper.file_helper
-     - @json_spec.helper.memory_helper
     tags:
       - {name: context.argument_resolver}
 

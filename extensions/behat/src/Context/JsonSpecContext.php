@@ -5,6 +5,7 @@ namespace JsonSpec\Behat\Context;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use JsonSpec\Behat\Context\Initializer\MemoryHelperAware;
 use JsonSpec\Behat\JsonProvider\JsonHolder;
 use JsonSpec\Helper\FileHelper;
 use JsonSpec\Helper\JsonHelper;
@@ -15,7 +16,7 @@ use JsonSpec\JsonSpecMatcher;
  * Class JsonSpecContext
  * @package JsonSpec\Behat\Context
  */
-class JsonSpecContext implements Context, JsonHolderAware
+class JsonSpecContext implements Context, JsonHolderAware, MemoryHelperAware
 {
 
     /**
@@ -51,13 +52,11 @@ class JsonSpecContext implements Context, JsonHolderAware
      */
     public function __construct(
         JsonSpecMatcher $matcher,
-        MemoryHelper $memoryHelper,
         FileHelper $fileHelper,
         JsonHelper $jsonHelper
     )
     {
         $this->matcher = $matcher;
-        $this->memoryHelper = $memoryHelper;
         $this->fileHelper = $fileHelper;
         $this->jsonHelper = $jsonHelper;
     }
@@ -124,10 +123,11 @@ class JsonSpecContext implements Context, JsonHolderAware
      */
     public function checkInclusionInline($path, $isNegative, $json)
     {
+        $isNegative = !!$isNegative;
         $actual = $this->memoryHelper->remember($this->jsonHolder->getJson());
         $this->matcher->getOptions()->atPath($path);
         if ($this->matcher->includes($actual, $this->memoryHelper->remember($json)) xor !$isNegative) {
-            throw new \RuntimeException(sprintf('Expected JSON to be %s', $isNegative ? 'included' : 'excluded'));
+            throw new \RuntimeException(sprintf('Expected JSON to be %s', $isNegative ?  'excluded' : 'included'));
         }
     }
 
@@ -192,6 +192,14 @@ class JsonSpecContext implements Context, JsonHolderAware
     }
 
     /**
+     * @Then print last JSON response
+     */
+    public function printLastJsonResponse()
+    {
+        echo (string) $this->jsonHolder->getJson();
+    }
+
+    /**
      * @afterStep
      */
     public function resetOptions()
@@ -205,6 +213,14 @@ class JsonSpecContext implements Context, JsonHolderAware
     public function setJsonHolder(JsonHolder $holder)
     {
         $this->jsonHolder = $holder;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setMemoryHelper(MemoryHelper $memoryHelper)
+    {
+        $this->memoryHelper = $memoryHelper;
     }
 
 
