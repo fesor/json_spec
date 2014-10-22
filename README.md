@@ -10,25 +10,36 @@ If you working with JSON-based REST APIs there are several issues:
 
 `json_spec` solves this problems be providing JSON normalization, key exclusion and json paths.
 
-From `json_spec` point of view, JSON documents:
-```
-{
-   "first_name": "Luke",
-   "last_name": "Skywalker"
-}
-```
-and
-```
+Let's see simple example:
+
+<table>
+  <tr>
+    <td>
+      <pre>
+<code>
 {
    "id": 1421,
    "created_at": "1977-05-25 00:00:00"
    "last_name": "Skywalker",
    "first_name": "Luke",
 }
-```
-are equal.
+        </code>
+      </pre>
+    </td>
+    <td>
+      <pre>
+<code>
+{
+   "first_name": "Luke",
+   "last_name": "Skywalker"
+}
+        </code>
+      </pre>
+    </td>
+  </tr>
+</table>
 
-Before asserting, `json_spec` will exclude keys `id`, `created_at` and `updated_at` from response from response JSON (List of excluded keys is configurable). Then it will normalize JSON (reorder keys, pretty-print) and after, just check for string equality. That's all. Also you can check JSON by given path instead of describing whole response in your specification.
+`json_spec` will assume that this JSON documents are equal. Before asserting, `json_spec` will exclude keys `id`, `created_at` and `updated_at` from response JSON (List of excluded keys is configurable). Then it will normalize JSON (reorder keys, pretty-print) and after, just check for string equality. That's all. Also you can check JSON by given path instead of describing whole response in your specification.
 
 ## PhpSpec
 
