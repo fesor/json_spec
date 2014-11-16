@@ -52,6 +52,13 @@ class JsonSpecMatcherSpec extends ObjectBehavior
         $this->isEqual('{"id": 1, "json":["spec"]}', '{"id": 2, "json":["spec"]}')->shouldBe(true);
     }
 
+    public function it_not_ignores_excluded_by_default_hash_keys_if_it_setted_as_included()
+    {
+        $this->isEqual('{"id": 1, "json":["spec"]}', '{"id": 2, "json":["spec"]}', [
+            'including' => ['id']
+        ])->shouldBe(false);
+    }
+
     public function it_ignores_custom_excluded_hash_keys()
     {
         $this->isEqual('{"json":"spec","ignore":"please"}', '{"json":"spec"}', [

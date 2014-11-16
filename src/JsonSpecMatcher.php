@@ -10,6 +10,7 @@ class JsonSpecMatcher
 
     const OPTION_PATH = 'path';
     const OPTION_EXCLUDE_KEYS = 'excluding';
+    const OPTION_INCLUDE_KEYS = 'including';
 
     /**
      * @var JsonHelper
@@ -57,7 +58,7 @@ class JsonSpecMatcher
     public function havePath($json, $path, array $options = [])
     {
         // get base path
-        $basePath = $this->option($options, static::OPTION_PATH);
+        $basePath = $this->getPath($options);
         $path = ltrim($basePath . '/' . $path, '/');
 
         try {
@@ -77,7 +78,7 @@ class JsonSpecMatcher
      */
     public function haveSize($json, $expectedSize, array $options = [])
     {
-        $data = $this->jsonHelper->parse($json, $this->option($options, static::OPTION_PATH));
+        $data = $this->jsonHelper->parse($json, $this->getPath($options));
 
         if (!is_array($data) && !is_object($data)) {
             return false;
@@ -97,7 +98,7 @@ class JsonSpecMatcher
      */
     public function haveType($json, $type, array $options = [])
     {
-        $data = $this->jsonHelper->parse($json, $this->option($options, static::OPTION_PATH));
+        $data = $this->jsonHelper->parse($json, $this->getPath($options));
 
         if ($type == 'float') {
             $type = 'double';
@@ -128,8 +129,8 @@ class JsonSpecMatcher
     {
         return $this->jsonHelper->generateNormalizedJson(
             $this->jsonHelper->excludeKeys(
-                $this->jsonHelper->parse($json, $this->option($options, static::OPTION_PATH)),
-                $this->option($options, static::OPTION_EXCLUDE_KEYS, $this->excludeKeys)
+                $this->jsonHelper->parse($json, $this->getPath($options)),
+                $this->getExcludedKeys($options)
             )
         );
     }
@@ -173,6 +174,19 @@ class JsonSpecMatcher
         }
 
         return false;
+    }
+
+    private function getPath(array $options)
+    {
+        return $this->option($options, static::OPTION_PATH, null);
+    }
+
+    private function getExcludedKeys(array $options)
+    {
+        $excludedKeys = $this->option($options, static::OPTION_EXCLUDE_KEYS, $this->excludeKeys);
+        $includedKeys = $this->option($options, static::OPTION_INCLUDE_KEYS, []);
+
+        return array_diff($excludedKeys, $includedKeys);
     }
 
     private function option(array $options, $optionName, $default = null) {
