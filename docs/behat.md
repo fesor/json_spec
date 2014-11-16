@@ -1,4 +1,5 @@
-## Using json_spec with Behat
+Using json_spec with Behat
+===========================
 
 json_spec provides Behat context which implements steps utilizing json_spec matchers. This is perfect for testing your app's JSON API.
 

@@ -1,4 +1,5 @@
-## Using json_spec with PhpSpec
+Using json_spec with PhpSpec
+=============================
 
 JsonSpec extension provides five new PhpSpec matchers:
 
