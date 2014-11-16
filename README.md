@@ -7,7 +7,7 @@ Json Spec provides set of easy-to-use matcher that should help you to validate d
 
 If you working with JSON-based REST APIs there are several issues:
 
-- You can't simple check is a response is equal to given string as there is things like server-generated IDs or keys sorting.
+- You can't simply check is a response is equal to given string as there are things like server-generated IDs or keys sorting.
 - Key ordering should be the same both for your API and for expected JSON.
 - Matching the whole responses breaks DRY for the spec
 
