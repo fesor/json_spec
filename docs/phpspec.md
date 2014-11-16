@@ -28,17 +28,17 @@ class UserSpec extends ObjectBehavior
     function it_includes_the_ID()
     {
         $this->toJson()->shouldHaveJsonPath('id');
-        $this->toJson()->shouldHaveJsonType('integer', ['path' => 'id']);
+        $this->toJson()->shouldHaveJsonType('integer', ['at' => 'id']);
     }
 
     function it_includes_friends()
     {
-        $this->toJson()->shouldHaveJsonSize(0, ['path' => 'friends']);
+        $this->toJson()->shouldHaveJsonSize(0, ['at' => 'friends']);
 
         $friend = new User("Catie" , "Richert");
         $this->addFriend($friend);
 
-        $this->toJson()->shouldHaveJsonSize(1, ['path' => 'friends']);
+        $this->toJson()->shouldHaveJsonSize(1, ['at' => 'friends']);
         $this->toJson()->shouldIncludeJson($friend->toJson());
     }
 

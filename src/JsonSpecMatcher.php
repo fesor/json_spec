@@ -8,7 +8,7 @@ use JsonSpec\Helper\JsonHelper;
 class JsonSpecMatcher
 {
 
-    const OPTION_PATH = 'path';
+    const OPTION_PATH = 'at';
     const OPTION_EXCLUDE_KEYS = 'excluding';
     const OPTION_INCLUDE_KEYS = 'including';
 

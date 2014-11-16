@@ -44,7 +44,7 @@ class JsonSpecMatcherSpec extends ObjectBehavior
 
     public function it_matches_at_a_path()
     {
-        $this->isEqual('{"json":["spec"]}', '"spec"', ['path' => 'json/0'])->shouldBe(true);
+        $this->isEqual('{"json":["spec"]}', '"spec"', ['at' => 'json/0'])->shouldBe(true);
     }
 
     public function it_ignores_excluded_by_default_hash_keys()
@@ -121,7 +121,7 @@ class JsonSpecMatcherSpec extends ObjectBehavior
 
     public function it_matches_hash_keys_with_given_base_path()
     {
-        $this->havePath('{"one":{"two":{"three":4}}}', 'two/three', ['path' => 'one'])->shouldBe(true);
+        $this->havePath('{"one":{"two":{"three":4}}}', 'two/three', ['at' => 'one'])->shouldBe(true);
     }
     //</editor-fold>
 
@@ -148,7 +148,7 @@ class JsonSpecMatcherSpec extends ObjectBehavior
 
     public function it_matches_size_at_a_path()
     {
-        $this->haveSize('{"one":[1,2,3]}', 3, ['path' => 'one'])->shouldBe(true);
+        $this->haveSize('{"one":[1,2,3]}', 3, ['at' => 'one'])->shouldBe(true);
     }
     //</editor-fold>
 
@@ -166,13 +166,13 @@ class JsonSpecMatcherSpec extends ObjectBehavior
     public function it_matches_type_at_a_path()
     {
         $this->haveType('{"root":[]}', 'array', [
-            'path' => 'root'
+            'at' => 'root'
         ])->shouldBe(true);
     }
 
     public function it_matches_strings()
     {
-        $this->haveType('["json_spec"]', 'string', ['path' => '0'])->shouldBe(true);
+        $this->haveType('["json_spec"]', 'string', ['at' => '0'])->shouldBe(true);
     }
 
     public function it_matches_a_valid_JSON_value_yet_invalid_JSON_document()
@@ -264,7 +264,7 @@ class JsonSpecMatcherSpec extends ObjectBehavior
     public function it_matches_t_a_path()
     {
         $json = '{"one":{"two":[3,4]}}';
-        $this->includes($json, '[3,4]', ['path' => 'one'])->shouldReturn(true);
+        $this->includes($json, '[3,4]', ['at' => 'one'])->shouldReturn(true);
     }
 
     public function it_ignores_excluded_keys()
