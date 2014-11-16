@@ -47,9 +47,9 @@ class BeJsonEqualMatcherSpec extends ObjectBehavior
         $this->negative('{"json": "spec"}', '{"spec": "json"}');
     }
 
-    private function positive($actual, $expected, $exception = null)
+    private function positive($actual, $expected, $exception = null, array $options = [])
     {
-        $this->matcherMock->isEqual($actual, $expected)->willReturn($exception === null);
+        $this->matcherMock->isEqual($actual, $expected, $options)->willReturn($exception === null);
         if ($exception === null) {
             $this->shouldNotThrow()->duringPositiveMatch('beJsonEqual', $actual, array($expected));
         } else {
@@ -57,9 +57,9 @@ class BeJsonEqualMatcherSpec extends ObjectBehavior
         }
     }
 
-    private function negative($actual, $expected, $exception = null)
+    private function negative($actual, $expected, $exception = null, array $options = [])
     {
-        $this->matcherMock->isEqual($actual, $expected)->willReturn($exception !== null);
+        $this->matcherMock->isEqual($actual, $expected, $options)->willReturn($exception !== null);
         if ($exception === null) {
             $this->shouldNotThrow()->duringNegativeMatch('beJsonEqual', $actual, array($expected));
         } else {

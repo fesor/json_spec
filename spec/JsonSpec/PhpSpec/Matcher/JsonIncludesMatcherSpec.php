@@ -3,7 +3,6 @@
 namespace spec\JsonSpec\PhpSpec\Matcher;
 
 use JsonSpec\JsonSpecMatcher;
-use JsonSpec\MatcherOptions;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 
@@ -50,11 +49,10 @@ class JsonIncludesMatcherSpec extends ObjectBehavior
         $this->negative('["json", "spec"]', '"foo"');
     }
 
-    private function positive($actual, $json, $exception = null)
+    private function positive($actual, $json, $exception = null, array $options = [])
     {
 
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->includes($actual, $json)->willReturn($exception === null);
+        $this->matcherMock->includes($actual, $json, $options)->willReturn($exception === null);
         if ($exception === null) {
             $this->shouldNotThrow()->duringPositiveMatch('jsonIncludes', $actual, array($json));
         } else {
@@ -62,10 +60,9 @@ class JsonIncludesMatcherSpec extends ObjectBehavior
         }
     }
 
-    private function negative($actual, $json, $exception = null)
+    private function negative($actual, $json, $exception = null, array $options = [])
     {
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->includes($actual, $json)->willReturn($exception !== null);
+        $this->matcherMock->includes($actual, $json, $options)->willReturn($exception !== null);
         if ($exception === null) {
             $this->shouldNotThrow()->duringNegativeMatch('jsonIncludes', $actual, array($json));
         } else {

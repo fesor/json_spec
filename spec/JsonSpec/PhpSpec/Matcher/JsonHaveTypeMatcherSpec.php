@@ -40,11 +40,10 @@ class JsonHaveTypeMatcherSpec extends ObjectBehavior
         $this->negative('"string"', 'integer');
     }
 
-    private function positive($actual, $type, $exception = null)
+    private function positive($actual, $type, $exception = null, array $options = [])
     {
 
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->haveType($actual, $type)->willReturn($exception === null);
+        $this->matcherMock->haveType($actual, $type, $options)->willReturn($exception === null);
 
         if ($exception === null) {
             $this->shouldNotThrow()->duringPositiveMatch('haveJsonType', $actual, array($type));
@@ -53,10 +52,9 @@ class JsonHaveTypeMatcherSpec extends ObjectBehavior
         }
     }
 
-    private function negative($actual, $type, $exception = null)
+    private function negative($actual, $type, $exception = null, array $options = [])
     {
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->haveType($actual, $type)->willReturn($exception !== null);
+        $this->matcherMock->haveType($actual, $type, $options)->willReturn($exception !== null);
 
         if ($exception === null) {
             $this->shouldNotThrow()->duringNegativeMatch('haveJsonType', $actual, array($type));

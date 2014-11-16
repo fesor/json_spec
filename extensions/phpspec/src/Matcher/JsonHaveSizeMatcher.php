@@ -4,7 +4,7 @@ namespace JsonSpec\PhpSpec\Matcher;
 
 use PhpSpec\Exception\Example\FailureException;
 
-class JsonHaveSizeMatcher extends JsonSpecMatcher implements DelayedMatcherInterface
+class JsonHaveSizeMatcher extends JsonSpecMatcher
 {
 
     /**
@@ -18,39 +18,25 @@ class JsonHaveSizeMatcher extends JsonSpecMatcher implements DelayedMatcherInter
     /**
      * @inheritdoc
      */
-    protected function match($subject, $argument, $matcher = null)
+    protected function match($subject, $argument, array $options, $matcher = null)
     {
-        return $this->matcher->haveSize($subject, $argument);
+        return $this->matcher->haveSize($subject, $argument, $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createPositiveError($expected, $actual)
+    protected function createPositiveError($expected, $actual, array $options)
     {
-        return $this->createError(sprintf('Expected JSON value size to be %d', $expected));
+        return $this->createError(sprintf('Expected JSON value size to be %d', $expected), $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createNegativeError($expected, $actual)
+    protected function createNegativeError($expected, $actual, array $options)
     {
-        return $this->createError(sprintf('Expected JSON value size to not be %d', $expected));
-    }
-
-    /**
-     * @param $message
-     * @return FailureException
-     */
-    private function createError($message)
-    {
-        $path = $this->getOptions()->getPath();
-        if ($path !== null) {
-            $message .= sprintf(' at path \'%s\'', $path);
-        }
-
-        return new FailureException($message);
+        return $this->createError(sprintf('Expected JSON value size to not be %d', $expected), $options);
     }
 
 }

@@ -3,7 +3,6 @@
 namespace spec\JsonSpec\PhpSpec\Matcher;
 
 use JsonSpec\JsonSpecMatcher;
-use JsonSpec\MatcherOptions;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 
@@ -40,11 +39,10 @@ class JsonHaveSizeMatcherSpec extends ObjectBehavior
         $this->negative('["json"]', 2);
     }
 
-    private function positive($actual, $size, $exception = null)
+    private function positive($actual, $size, $exception = null, array $options = [])
     {
 
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->haveSize($actual, $size)->willReturn($exception === null);
+        $this->matcherMock->haveSize($actual, $size, $options)->willReturn($exception === null);
         if ($exception === null) {
             $this->shouldNotThrow()->duringPositiveMatch('haveJsonType', $actual, array($size));
         } else {
@@ -52,10 +50,9 @@ class JsonHaveSizeMatcherSpec extends ObjectBehavior
         }
     }
 
-    private function negative($actual, $size, $exception = null)
+    private function negative($actual, $size, $exception = null, array $options = [])
     {
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->haveSize($actual, $size)->willReturn($exception !== null);
+        $this->matcherMock->haveSize($actual, $size, $options)->willReturn($exception !== null);
         if ($exception === null) {
             $this->shouldNotThrow()->duringNegativeMatch('haveJsonSize', $actual, array($size));
         } else {

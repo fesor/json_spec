@@ -3,8 +3,9 @@
 namespace JsonSpec\PhpSpec\Matcher;
 
 use \JsonSpec\JsonSpecMatcher as Matcher;
+use PhpSpec\Exception\Example\FailureException;
 
-abstract class JsonSpecMatcher implements DelayedMatcherInterface
+abstract class JsonSpecMatcher
 {
 
     /**
@@ -28,24 +29,27 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
     /**
      * @param  string $expected
      * @param  string $actual
+     * @param  array $options
      * @return mixed
      */
-    abstract protected function createPositiveError($expected, $actual);
+    abstract protected function createPositiveError($expected, $actual, array $options);
 
     /**
      * @param  string $expected
      * @param  string $actual
+     * @param  array $options
      * @return mixed
      */
-    abstract protected function createNegativeError($expected, $actual);
+    abstract protected function createNegativeError($expected, $actual, array $options);
 
     /**
      * @param  string $subject
      * @param  string $argument
+     * @param  array $options
      * @param  string $matcher
      * @return bool
      */
-    abstract protected function match($subject, $argument, $matcher = null);
+    abstract protected function match($subject, $argument, array $options, $matcher = null);
 
     /**
      * @inheritdoc
@@ -53,7 +57,10 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
     public function supports($name, $subject, array $arguments)
     {
         return in_array($name, $this->getSupportedNames())
-            && 1 === count($arguments);
+            && (1 === count($arguments)
+               || (2 === count($arguments) && is_array($arguments[1]))
+            )
+        ;
     }
 
     /**
@@ -61,8 +68,10 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
      */
     public function positiveMatch($name, $subject, array $arguments)
     {
-        if (!$this->match($subject, $arguments[0], $name)) {
-            throw $this->createPositiveError($arguments[0], $subject);
+        $options = 2 === count($arguments) ?
+            $arguments[1] : [];
+        if (!$this->match($subject, $arguments[0], $options, $name)) {
+            throw $this->createPositiveError($arguments[0], $subject, $options);
         }
     }
 
@@ -71,18 +80,13 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
      */
     public function negativeMatch($name, $subject, array $arguments)
     {
-        if ($this->match($subject, $arguments[0])) {
-            throw $this->createNegativeError($arguments[0], $subject);
+        $options = 2 === count($arguments) ?
+            $arguments[1] : [];
+        if ($this->match($subject, $arguments[0], $options, $name)) {
+            throw $this->createNegativeError($arguments[0], $subject, $options);
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function promise()
-    {
-        return $this->matcher->getOptions();
-    }
 
     /**
      * @inheritdoc
@@ -92,12 +96,16 @@ abstract class JsonSpecMatcher implements DelayedMatcherInterface
         return 50;
     }
 
-    /**
-     * @return \JsonSpec\MatcherOptions
-     */
-    protected function getOptions()
+    protected function createError($message, array $options)
     {
-        return $this->matcher->getOptions();
+        $path = array_key_exists(Matcher::OPTION_PATH, $options) ?
+            $options[Matcher::OPTION_PATH] : null;
+
+        if ($path !== null) {
+            $message .= sprintf(' at path \'%s\'', $path);
+        }
+
+        return new FailureException($message);
     }
 
 }

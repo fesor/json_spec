@@ -18,39 +18,25 @@ class JsonHaveTypeMatcher extends JsonSpecMatcher
     /**
      * @inheritdoc
      */
-    protected function match($subject, $argument, $matcher = null)
+    protected function match($subject, $argument, array $options, $matcher = null)
     {
-        return $this->matcher->haveType($subject, $argument);
+        return $this->matcher->haveType($subject, $argument, $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createPositiveError($expected, $actual)
+    protected function createPositiveError($expected, $actual, array $options)
     {
-        return $this->createError(sprintf('Expected JSON value type to be %s', $expected));
+        return $this->createError(sprintf('Expected JSON value type to be %s', $expected), $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createNegativeError($expected, $actual)
+    protected function createNegativeError($expected, $actual, array $options)
     {
-        return $this->createError(sprintf('Expected JSON value type to not be %s', $expected));
-    }
-
-    /**
-     * @param $message
-     * @return FailureException
-     */
-    private function createError($message)
-    {
-        $path = $this->getOptions()->getPath();
-        if ($path !== null) {
-            $message .= sprintf(' at path \'%s\'', $path);
-        }
-
-        return new FailureException($message);
+        return $this->createError(sprintf('Expected JSON value type to not be %s', $expected), $options);
     }
 
 }

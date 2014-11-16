@@ -1,7 +1,7 @@
 Using json_spec with PhpSpec
 =============================
 
-JsonSpec extension provides five new PhpSpec matchers:
+JsonSpec extension provides five (+ two aliases) new PhpSpec matchers:
 
 - `beJsonEqual`, `beJsonEqualFile`
 - `includeJson`, `includeJsonFile`
@@ -9,7 +9,7 @@ JsonSpec extension provides five new PhpSpec matchers:
 - `haveJsonType`
 - `haveJsonSize`
 
-You may use it in your specs as follow:
+Each matcher allow you to specify some options as second argument. For example you can specify path or excluded keys. You may use it in your specs as follow:
 ```php
 class UserSpec extends ObjectBehavior
 {
@@ -22,23 +22,23 @@ class UserSpec extends ObjectBehavior
     function it_includes_names()
     {
         $names = '{"first_name":"Steve","last_name":"Richert"}';
-        $this->toJson()->shouldBeJsonEqual($names)->excluding('friends');
+        $this->toJson()->shouldBeJsonEqual($names, ['excluding' => ['friends']]);
     }
 
     function it_includes_the_ID()
     {
         $this->toJson()->shouldHaveJsonPath('id');
-        $this->toJson()->shouldHaveJsonType('integer')->atPath('id');
+        $this->toJson()->shouldHaveJsonType('integer', ['path' => 'id']);
     }
 
     function it_includes_friends()
     {
-        $this->toJson()->shouldHaveJsonSize(0)->atPath('friends');
+        $this->toJson()->shouldHaveJsonSize(0, ['path' => 'friends']);
 
         $friend = new User("Catie" , "Richert");
         $this->addFriend($friend);
 
-        $this->toJson()->shouldHaveJsonSize(1)->atPath('friends');
+        $this->toJson()->shouldHaveJsonSize(1, ['path' => 'friends']);
         $this->toJson()->shouldIncludeJson($friend->toJson());
     }
 

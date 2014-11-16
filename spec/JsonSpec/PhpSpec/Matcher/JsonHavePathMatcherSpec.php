@@ -40,11 +40,10 @@ class JsonHavePathMatcherSpec extends ObjectBehavior
         $this->negative('{"json": ["spec"]}', 'json/1');
     }
 
-    private function positive($actual, $path, $exception = null)
+    private function positive($actual, $path, $exception = null, array $options = [])
     {
 
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->havePath($actual, $path)->willReturn($exception === null);
+        $this->matcherMock->havePath($actual, $path, $options)->willReturn($exception === null);
         if ($exception === null) {
             $this->shouldNotThrow()->duringPositiveMatch('haveJsonPath', $actual, array($path));
         } else {
@@ -52,10 +51,9 @@ class JsonHavePathMatcherSpec extends ObjectBehavior
         }
     }
 
-    private function negative($actual, $path, $exception = null)
+    private function negative($actual, $path, $exception = null, array $options = [])
     {
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->havePath($actual, $path)->willReturn($exception !== null);
+        $this->matcherMock->havePath($actual, $path, $options)->willReturn($exception !== null);
         if ($exception === null) {
             $this->shouldNotThrow()->duringNegativeMatch('haveJsonSize', $actual, array($path));
         } else {

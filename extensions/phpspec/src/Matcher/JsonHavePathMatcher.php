@@ -18,32 +18,33 @@ class JsonHavePathMatcher extends JsonSpecMatcher
     /**
      * @inheritdoc
      */
-    protected function match($subject, $argument, $matcher = null)
+    protected function match($subject, $argument, array $options, $matcher = null)
     {
-        return $this->matcher->havePath($subject, $argument);
+        return $this->matcher->havePath($subject, $argument, $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createPositiveError($expected, $actual)
+    protected function createPositiveError($expected, $actual, array $options)
     {
-        return $this->createError(sprintf('Expected JSON path "%s"', $expected));
+        return $this->createError(sprintf('Expected JSON path "%s"', $expected), $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createNegativeError($expected, $actual)
+    protected function createNegativeError($expected, $actual, array $options)
     {
-        return $this->createError(sprintf('Expected no JSON path "%s"', $expected));
+        return $this->createError(sprintf('Expected no JSON path "%s"', $expected), $options);
     }
 
     /**
-     * @param $message
+     * @param string $message
+     * @param array $options
      * @return FailureException
      */
-    private function createError($message)
+    protected function createError($message, array $options)
     {
         return new FailureException($message);
     }

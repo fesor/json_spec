@@ -33,36 +33,37 @@ class BeJsonEqualMatcher extends JsonSpecMatcher implements FileHelperAware
     /**
      * @inheritdoc
      */
-    protected function match($subject, $argument, $matcher = null)
+    protected function match($subject, $argument, array $options, $matcher = null)
     {
         if ('beJsonEqualFile' === $matcher) {
             $argument = $this->fileHelper->loadJson($argument);
         }
 
-        return $this->matcher->isEqual($subject, $argument);
+        return $this->matcher->isEqual($subject, $argument, $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createPositiveError($expected, $actual)
+    protected function createPositiveError($expected, $actual, array $options)
     {
-        return $this->createError('Expected equivalent JSON');
+        return $this->createError('Expected equivalent JSON', $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createNegativeError($expected, $actual)
+    protected function createNegativeError($expected, $actual, array $options)
     {
-        return $this->createError('Expected inequivalent JSON');
+        return $this->createError('Expected inequivalent JSON', $options);
     }
 
     /**
-     * @param $message
+     * @param string $message
+     * @param array $options
      * @return FailureException
      */
-    private function createError($message)
+    protected function createError($message, $options)
     {
         return new FailureException($message);
     }
