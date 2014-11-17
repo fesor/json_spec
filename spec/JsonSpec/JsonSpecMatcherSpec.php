@@ -150,6 +150,11 @@ class JsonSpecMatcherSpec extends ObjectBehavior
     {
         $this->haveSize('{"one":[1,2,3]}', 3, ['at' => 'one'])->shouldBe(true);
     }
+
+    public function it_cant_match_size_of_scalars()
+    {
+        $this->haveSize('{"one":[1,2,3]}', 3, ['at' => 'one/0'])->shouldBe(false);
+    }
     //</editor-fold>
 
     // <editor-fold desc="haveType spec">

@@ -58,14 +58,4 @@ class BeJsonEqualMatcher extends JsonSpecMatcher implements FileHelperAware
         return $this->createError('Expected inequivalent JSON', $options);
     }
 
-    /**
-     * @param string $message
-     * @param array $options
-     * @return FailureException
-     */
-    protected function createError($message, $options)
-    {
-        return new FailureException($message);
-    }
-
 }

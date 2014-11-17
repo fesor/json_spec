@@ -4,8 +4,9 @@ namespace JsonSpec\PhpSpec\Matcher;
 
 use \JsonSpec\JsonSpecMatcher as Matcher;
 use PhpSpec\Exception\Example\FailureException;
+use PhpSpec\Matcher\MatcherInterface;
 
-abstract class JsonSpecMatcher
+abstract class JsonSpecMatcher implements MatcherInterface
 {
 
     /**
@@ -57,9 +58,11 @@ abstract class JsonSpecMatcher
     public function supports($name, $subject, array $arguments)
     {
         return in_array($name, $this->getSupportedNames())
-            && (1 === count($arguments)
-               || (2 === count($arguments) && is_array($arguments[1]))
-            )
+            && is_string($subject)
+            && (
+                (1 === count($arguments) && is_string($arguments[0]))
+                || (2 === count($arguments) && is_array($arguments[1])
+            ))
         ;
     }
 

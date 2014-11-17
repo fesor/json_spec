@@ -158,10 +158,6 @@ class JsonSpecMatcher
         }
 
         if (is_object($data)) {
-            if ($this->jsonHelper->generateNormalizedJson($data) === $json) {
-                return true;
-            }
-
             $data = get_object_vars($data);
         }
 

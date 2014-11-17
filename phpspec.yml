@@ -1,5 +1,19 @@
 ---
 suites:
-      event_suite:
-        namespace: JsonSpec
-        psr4_prefix: JsonSpec
+  event_suite:
+    namespace: JsonSpec
+    psr4_prefix: JsonSpec
+code_coverage:
+  whitelist:
+    - src
+    - extensions/phpspec
+  blacklist_files:
+    - extensions/phpspec/src/Extension.php
+  format:
+    - clover
+    - html
+  output:
+    html: coverage
+    clover: coverage.xml
+extensions:
+  - PhpSpec\Extension\CodeCoverageExtension
