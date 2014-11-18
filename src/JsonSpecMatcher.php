@@ -8,49 +8,43 @@ use JsonSpec\Helper\JsonHelper;
 class JsonSpecMatcher
 {
 
+    const OPTION_PATH = 'at';
+    const OPTION_EXCLUDE_KEYS = 'excluding';
+    const OPTION_INCLUDE_KEYS = 'including';
+
     /**
      * @var JsonHelper
      */
     private $jsonHelper;
 
     /**
-     * @var MatcherOptionsFactory
+     * @var array
      */
-    private $optionsFactory;
-
-    /**
-     * @var MatcherOptions
-     */
-    private $currentOptions;
+    private $excludeKeys;
 
     /**
      * @param JsonHelper            $jsonHelper
-     * @param MatcherOptionsFactory $optionsFactory
+     * @param array $excludeKeys
      */
-    public function __construct(JsonHelper $jsonHelper, MatcherOptionsFactory $optionsFactory)
+    public function __construct(JsonHelper $jsonHelper, array $excludeKeys = [])
     {
         $this->jsonHelper = $jsonHelper;
-        $this->optionsFactory = $optionsFactory;
-        $this->currentOptions = $this->optionsFactory->createOptions();
-    }
-
-    /**
-     * @return MatcherOptions
-     */
-    public function getOptions()
-    {
-        return $this->currentOptions = $this->optionsFactory->createOptions();
+        $this->excludeKeys = $excludeKeys;
     }
 
     /**
      * @param  string $actual
      * @param  string $expected
+     * @param  array $options
      * @return bool
      */
-    public function isEqual($actual, $expected)
+    public function isEqual($actual, $expected, array $options = [])
     {
-        $actual = $this->scrub($actual, $this->currentOptions->getPath());
-        $expected = $this->scrub($expected);
+        $actual = $this->scrub($actual, $options);
+        $expected = $this->scrub($expected, array_diff_key(
+            // we should pass all options except `path`
+            $options, [static::OPTION_PATH => null]
+        ));
 
         return $actual === $expected;
     }
@@ -58,12 +52,13 @@ class JsonSpecMatcher
     /**
      * @param  string      $json
      * @param  string|null $path
+     * @param  array $options
      * @return bool
      */
-    public function havePath($json, $path)
+    public function havePath($json, $path, array $options = [])
     {
         // get base path
-        $basePath = $this->currentOptions->getPath();
+        $basePath = $this->getPath($options);
         $path = ltrim($basePath . '/' . $path, '/');
 
         try {
@@ -78,11 +73,12 @@ class JsonSpecMatcher
     /**
      * @param  string  $json
      * @param  integer $expectedSize
+     * @param  array $options
      * @return bool
      */
-    public function haveSize($json, $expectedSize)
+    public function haveSize($json, $expectedSize, array $options = [])
     {
-        $data = $this->jsonHelper->parse($json, $this->currentOptions->getPath());
+        $data = $this->jsonHelper->parse($json, $this->getPath($options));
 
         if (!is_array($data) && !is_object($data)) {
             return false;
@@ -100,9 +96,9 @@ class JsonSpecMatcher
      * @param  string $type
      * @return bool
      */
-    public function haveType($json, $type)
+    public function haveType($json, $type, array $options = [])
     {
-        $data = $this->jsonHelper->parse($json, $this->currentOptions->getPath());
+        $data = $this->jsonHelper->parse($json, $this->getPath($options));
 
         if ($type == 'float') {
             $type = 'double';
@@ -116,32 +112,35 @@ class JsonSpecMatcher
      * @param  string $expected
      * @return bool
      */
-    public function includes($json, $expected)
+    public function includes($json, $expected, array $options = [])
     {
-        $actual = $this->scrub($json, $this->currentOptions->getPath());
-        $expected = $this->scrub($expected);
+        $actual = $this->scrub($json, $options);
+        $expected = $this->scrub($expected, array_diff_key(
+            // we should pass all options except `path`
+            $options, [static::OPTION_PATH => null]
+        ));
 
         return $this->isIncludes($this->jsonHelper->parse($actual), $expected);
     }
 
     /**
-     * @param $json
-     * @param  null   $path
+     * @param string $json
+     * @param  array $options
      * @return string
      */
-    private function scrub($json, $path = null)
+    private function scrub($json, array $options = [])
     {
         return $this->jsonHelper->generateNormalizedJson(
             $this->jsonHelper->excludeKeys(
-                $this->jsonHelper->parse($json, $path),
-                $this->currentOptions->getExcludedKeys()
+                $this->jsonHelper->parse($json, $this->getPath($options)),
+                $this->getExcludedKeys($options)
             )
         );
     }
 
     /**
-     * @param $data
-     * @param $json
+     * @param string $data
+     * @param string $json
      * @return bool
      */
     private function isIncludes($data, $json)
@@ -162,10 +161,6 @@ class JsonSpecMatcher
         }
 
         if (is_object($data)) {
-            if ($this->jsonHelper->generateNormalizedJson($data) === $json) {
-                return true;
-            }
-
             $data = get_object_vars($data);
         }
 
@@ -178,6 +173,26 @@ class JsonSpecMatcher
         }
 
         return false;
+    }
+
+    private function getPath(array $options)
+    {
+        return $this->option($options, static::OPTION_PATH, null);
+    }
+
+    private function getExcludedKeys(array $options)
+    {
+        $excludedKeys = $this->option($options, static::OPTION_EXCLUDE_KEYS, []);
+        $includedKeys = $this->option($options, static::OPTION_INCLUDE_KEYS, []);
+
+        return array_diff(array_merge($this->excludeKeys, $excludedKeys), $includedKeys);
+    }
+
+    private function option(array $options, $optionName, $default = null) {
+
+        return array_key_exists($optionName, $options) ?
+            $options[$optionName] : $default
+        ;
     }
 
 }

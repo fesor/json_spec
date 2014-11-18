@@ -13,13 +13,9 @@ services:
     class: JsonSpec\Helper\FileHelper
     arguments: [%json_spec.json_directory%]
 
-  json_spec.matcher_options_factory:
-    class: JsonSpec\MatcherOptionsFactory
-    arguments: [%json_spec.excluded_keys%]
-
   json_spec.matcher:
     class: JsonSpec\JsonSpecMatcher
-    arguments: [@json_spec.helper.json_helper, @json_spec.matcher_options_factory]
+    arguments: [@json_spec.helper.json_helper, %json_spec.excluded_keys%]
 
   json_spec.json_holder:
     class: JsonSpec\Behat\JsonProvider\JsonHolder

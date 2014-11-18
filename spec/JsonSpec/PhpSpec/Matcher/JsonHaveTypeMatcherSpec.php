@@ -20,6 +20,27 @@ class JsonHaveTypeMatcherSpec extends ObjectBehavior
         $this->beConstructedWith($matcher);
     }
 
+    public function it_should_provide_matcher_priority()
+    {
+        $this->getPriority()->shouldBe(50);
+    }
+
+    public function it_supports_correct_names()
+    {
+        $json = '"json"';
+        $this->supports('haveJsonType', $json, [$json])->shouldBe(true);
+        $this->supports('wrong_name', $json, [$json])->shouldBe(false);
+    }
+
+    public function it_supports_correct_arguments()
+    {
+        $json = '"json"';
+        $this->supports('haveJsonType', $json, [$json])->shouldBe(true);
+        $this->supports('haveJsonType', $json, [$json, []])->shouldBe(true);
+        $this->supports('haveJsonType', $json, [[]])->shouldBe(false);
+        $this->supports('haveJsonType', $json, [$json, 'not_options'])->shouldBe(false);
+    }
+
     public function it_delegates_matching_to_json_spec_matcher()
     {
         $this->positive('"string"', 'string');
@@ -40,11 +61,10 @@ class JsonHaveTypeMatcherSpec extends ObjectBehavior
         $this->negative('"string"', 'integer');
     }
 
-    private function positive($actual, $type, $exception = null)
+    private function positive($actual, $type, $exception = null, array $options = [])
     {
 
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->haveType($actual, $type)->willReturn($exception === null);
+        $this->matcherMock->haveType($actual, $type, $options)->willReturn($exception === null);
 
         if ($exception === null) {
             $this->shouldNotThrow()->duringPositiveMatch('haveJsonType', $actual, array($type));
@@ -53,10 +73,9 @@ class JsonHaveTypeMatcherSpec extends ObjectBehavior
         }
     }
 
-    private function negative($actual, $type, $exception = null)
+    private function negative($actual, $type, $exception = null, array $options = [])
     {
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->haveType($actual, $type)->willReturn($exception !== null);
+        $this->matcherMock->haveType($actual, $type, $options)->willReturn($exception !== null);
 
         if ($exception === null) {
             $this->shouldNotThrow()->duringNegativeMatch('haveJsonType', $actual, array($type));

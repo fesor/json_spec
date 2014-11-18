@@ -33,43 +33,29 @@ class JsonIncludesMatcher extends JsonSpecMatcher implements FileHelperAware
     /**
      * @inheritdoc
      */
-    protected function match($subject, $argument, $matcher = null)
+    protected function match($subject, $argument, array $options, $matcher = null)
     {
         if ('includeJsonFile' === $matcher) {
             $argument = $this->fileHelper->loadJson($argument);
         }
 
-        return $this->matcher->includes($subject, $argument);
+        return $this->matcher->includes($subject, $argument, $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createPositiveError($expected, $actual)
+    protected function createPositiveError($expected, $actual, array $options)
     {
-        return $this->createError('Expected included JSON');
+        return $this->createError('Expected included JSON', $options);
     }
 
     /**
      * @inheritdoc
      */
-    protected function createNegativeError($expected, $actual)
+    protected function createNegativeError($expected, $actual, array $options)
     {
-        return $this->createError('Expected excluded JSON');
-    }
-
-    /**
-     * @param $message
-     * @return FailureException
-     */
-    private function createError($message)
-    {
-        $path = $this->getOptions()->getPath();
-        if ($path !== null) {
-            $message .= sprintf(' at path \'%s\'', $path);
-        }
-
-        return new FailureException($message);
+        return $this->createError('Expected excluded JSON', $options);
     }
 
 }

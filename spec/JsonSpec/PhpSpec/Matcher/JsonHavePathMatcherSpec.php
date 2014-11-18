@@ -20,6 +20,27 @@ class JsonHavePathMatcherSpec extends ObjectBehavior
         $this->beConstructedWith($matcher);
     }
 
+    public function it_should_provide_matcher_priority()
+    {
+        $this->getPriority()->shouldBe(50);
+    }
+
+    public function it_supports_correct_names()
+    {
+        $json = '"json"';
+        $this->supports('haveJsonPath', $json, [$json])->shouldBe(true);
+        $this->supports('wrong_name', $json, [$json])->shouldBe(false);
+    }
+
+    public function it_supports_correct_arguments()
+    {
+        $json = '"json"';
+        $this->supports('haveJsonPath', $json, [$json])->shouldBe(true);
+        $this->supports('haveJsonPath', $json, [$json, []])->shouldBe(true);
+        $this->supports('haveJsonPath', $json, [[]])->shouldBe(false);
+        $this->supports('haveJsonPath', $json, [$json, 'not_options'])->shouldBe(false);
+    }
+
     public function it_delegates_matching_to_json_spec_matcher()
     {
         $this->positive('{"json": ["spec"]}', 'json/0');
@@ -40,11 +61,10 @@ class JsonHavePathMatcherSpec extends ObjectBehavior
         $this->negative('{"json": ["spec"]}', 'json/1');
     }
 
-    private function positive($actual, $path, $exception = null)
+    private function positive($actual, $path, $exception = null, array $options = [])
     {
 
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->havePath($actual, $path)->willReturn($exception === null);
+        $this->matcherMock->havePath($actual, $path, $options)->willReturn($exception === null);
         if ($exception === null) {
             $this->shouldNotThrow()->duringPositiveMatch('haveJsonPath', $actual, array($path));
         } else {
@@ -52,12 +72,11 @@ class JsonHavePathMatcherSpec extends ObjectBehavior
         }
     }
 
-    private function negative($actual, $path, $exception = null)
+    private function negative($actual, $path, $exception = null, array $options = [])
     {
-        $this->matcherMock->getOptions()->willReturn(new MatcherOptions());
-        $this->matcherMock->havePath($actual, $path)->willReturn($exception !== null);
+        $this->matcherMock->havePath($actual, $path, $options)->willReturn($exception !== null);
         if ($exception === null) {
-            $this->shouldNotThrow()->duringNegativeMatch('haveJsonSize', $actual, array($path));
+            $this->shouldNotThrow()->duringNegativeMatch('haveJsonPath', $actual, array($path));
         } else {
             $this->shouldThrow($exception)->duringNegativeMatch('haveJsonSize', $actual, array($path));
         }

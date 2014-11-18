@@ -2,9 +2,7 @@
 
 namespace JsonSpec\Behat\JsonProvider;
 
-use JsonSpec\Behat\Consumer\JsonConsumer;
-
-class JsonHolder implements JsonConsumer
+class JsonHolder
 {
     /**
      * @var string

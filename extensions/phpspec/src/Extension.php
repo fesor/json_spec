@@ -31,15 +31,6 @@ class Extension implements ExtensionInterface
                 $c->get('json_spec.file_helper')
             );
         });
-
-        $container->setShared('runner.maintainers.delayed_matcher_maintainer', function (ServiceContainer $c) {
-            return new DelayedMatcherMaintainer(
-                $c->get('formatter.presenter'),
-                $c->get('unwrapper'),
-                $c->get('event_dispatcher')
-            );
-        });
-
     }
 
     private function configuration(ServiceContainer $container)
@@ -65,10 +56,6 @@ class Extension implements ExtensionInterface
             return new JsonParser();
         });
 
-        $container->setShared('json_spec.matcher_options_factory', function (ServiceContainer $container) {
-            return new MatcherOptionsFactory($container->getParam('json_spec.excluded_keys'));
-        });
-
         $container->setShared('json_spec.file_helper', function (ServiceContainer $container) {
             return new FileHelper($container->getParam('json_spec.json_directory'));
         });
@@ -78,7 +65,7 @@ class Extension implements ExtensionInterface
         });
 
         $container->setShared('json_spec.matcher', function (ServiceContainer $container) {
-            return new JsonSpecMatcher($container->get('json_spec.helper.json'), $container->get('json_spec.matcher_options_factory'));
+            return new JsonSpecMatcher($container->get('json_spec.helper.json'), $container->getParam('json_spec.excluded_keys'));
         });
     }
 
