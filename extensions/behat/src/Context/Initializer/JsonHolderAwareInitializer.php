@@ -4,8 +4,6 @@ namespace JsonSpec\Behat\Context\Initializer;
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\Initializer\ContextInitializer;
-use JsonSpec\Behat\Context\JsonConsumerAware;
-use JsonSpec\Behat\Consumer\JsonConsumer;
 use JsonSpec\Behat\Context\JsonHolderAware;
 use JsonSpec\Behat\JsonProvider\JsonHolder;
 
@@ -17,7 +15,7 @@ class JsonHolderAwareInitializer implements ContextInitializer
 {
 
     /**
-     * @var JsonConsumer
+     * @var JsonHolder
      */
     private $jsonHolder;
 
@@ -36,10 +34,6 @@ class JsonHolderAwareInitializer implements ContextInitializer
     {
         if ($context instanceof JsonHolderAware) {
             $context->setJsonHolder($this->jsonHolder);
-        }
-
-        if ($context instanceof JsonConsumerAware) {
-            $context->setJsonConsumer($this->jsonHolder);
         }
     }
 
