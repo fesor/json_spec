@@ -1,16 +1,18 @@
 language: php
 
 php:
-    - 5.4
-    - 5.5
-    - 5.6
-    - hhvm
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
 
 before_script:
-    - composer install --ignore-platform-reqs
+  - composer install --ignore-platform-reqs
+  - wget https://scrutinizer-ci.com/ocular.phar
 
 script:
   - bin/phpspec run
   - bin/behat
-  - wget https://scrutinizer-ci.com/ocular.phar
+
+after_script:
   - php ocular.phar code-coverage:upload --format=php-clover coverage.xml
