@@ -115,13 +115,16 @@ class JsonSpecMatcher
     public function includes($json, $expected, array $options = [])
     {
         $actual = $this->scrub($json, $options);
-        $expected = $this->scrub($expected);
+        $expected = $this->scrub($expected, array_diff_key(
+            // we should pass all options except `path`
+            $options, [static::OPTION_PATH => null]
+        ));
 
         return $this->isIncludes($this->jsonHelper->parse($actual), $expected);
     }
 
     /**
-     * @param $json
+     * @param string $json
      * @param  array $options
      * @return string
      */
@@ -136,8 +139,8 @@ class JsonSpecMatcher
     }
 
     /**
-     * @param $data
-     * @param $json
+     * @param string $data
+     * @param string $json
      * @return bool
      */
     private function isIncludes($data, $json)
@@ -179,10 +182,10 @@ class JsonSpecMatcher
 
     private function getExcludedKeys(array $options)
     {
-        $excludedKeys = $this->option($options, static::OPTION_EXCLUDE_KEYS, $this->excludeKeys);
+        $excludedKeys = $this->option($options, static::OPTION_EXCLUDE_KEYS, []);
         $includedKeys = $this->option($options, static::OPTION_INCLUDE_KEYS, []);
 
-        return array_diff($excludedKeys, $includedKeys);
+        return array_diff(array_merge($this->excludeKeys, $excludedKeys), $includedKeys);
     }
 
     private function option(array $options, $optionName, $default = null) {

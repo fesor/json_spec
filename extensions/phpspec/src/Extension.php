@@ -31,7 +31,6 @@ class Extension implements ExtensionInterface
                 $c->get('json_spec.file_helper')
             );
         });
-
     }
 
     private function configuration(ServiceContainer $container)

@@ -27,7 +27,7 @@
         "phpspec/phpspec": "2.1.*@dev",
         "behat/behat": "~3.0.13@stable",
         "fabpot/php-cs-fixer": "~0.5",
-        "henrikbjorn/phpspec-code-coverage": "~0.2"
+        "henrikbjorn/phpspec-code-coverage": "dev-master@dev"
     },
     "conflict": {
         "behat/behat": "<3.0.13"

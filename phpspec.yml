@@ -6,9 +6,10 @@ suites:
 code_coverage:
   whitelist:
     - src
-    - extensions/phpspec
+    - extensions
   blacklist_files:
     - extensions/phpspec/src/Extension.php
+    - extensions/behat/src/Extension.php
   format:
     - clover
     - html

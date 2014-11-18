@@ -34,10 +34,10 @@ class JsonHaveSizeMatcherSpec extends ObjectBehavior
     public function it_supports_correct_arguments()
     {
         $json = '"json"';
-        $this->supports('haveJsonSize', $json, [$json])->shouldBe(true);
-        $this->supports('haveJsonSize', $json, [$json, []])->shouldBe(true);
+        $this->supports('haveJsonSize', $json, [1])->shouldBe(true);
+        $this->supports('haveJsonSize', $json, [1, []])->shouldBe(true);
         $this->supports('haveJsonSize', $json, [[]])->shouldBe(false);
-        $this->supports('haveJsonSize', $json, [$json, 'not_options'])->shouldBe(false);
+        $this->supports('haveJsonSize', $json, [1, 'not_options'])->shouldBe(false);
     }
     public function it_delegates_matching_to_json_spec_matcher()
     {

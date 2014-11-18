@@ -60,7 +60,7 @@ abstract class JsonSpecMatcher implements MatcherInterface
         return in_array($name, $this->getSupportedNames())
             && is_string($subject)
             && (
-                (1 === count($arguments) && is_string($arguments[0]))
+                (1 === count($arguments) && is_scalar($arguments[0]))
                 || (2 === count($arguments) && is_array($arguments[1])
             ))
         ;

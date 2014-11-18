@@ -7,8 +7,10 @@ php:
     - hhvm
 
 before_script:
-    - composer install
+    - composer install --ignore-platform-reqs
 
 script:
   - bin/phpspec run
   - bin/behat
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.xml
