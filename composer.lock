@@ -4,25 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "47b8771f380d9cfdf15936da42df2cec",
+    "hash": "4bb741d104abe8389233e3a57babca78",
     "packages": [
         {
             "name": "fesor/json_matcher",
-            "version": "0.2",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fesor/json_matcher.git",
-                "reference": "5d95aff32764abda537158451025993b61cd43b0"
+                "reference": "d55737ffe8eb9a9664823202e40d94c9c7abb25f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fesor/json_matcher/zipball/5d95aff32764abda537158451025993b61cd43b0",
-                "reference": "5d95aff32764abda537158451025993b61cd43b0",
+                "url": "https://api.github.com/repos/fesor/json_matcher/zipball/d55737ffe8eb9a9664823202e40d94c9c7abb25f",
+                "reference": "d55737ffe8eb9a9664823202e40d94c9c7abb25f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.0",
-                "seld/jsonlint": "~1.1.2"
+                "php": ">=5.4.0"
             },
             "require-dev": {
                 "fabpot/php-cs-fixer": "~0.5",
@@ -47,54 +46,7 @@
                 }
             ],
             "description": "Collection if JSON matchers for painless usage",
-            "time": "2015-04-11 10:58:30"
-        },
-        {
-            "name": "seld/jsonlint",
-            "version": "1.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Seldaek/jsonlint.git",
-                "reference": "7cd4c4965e17e6e4c07f26d566619a4c76f8c672"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/7cd4c4965e17e6e4c07f26d566619a4c76f8c672",
-                "reference": "7cd4c4965e17e6e4c07f26d566619a4c76f8c672",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "bin": [
-                "bin/jsonlint"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Seld\\JsonLint": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "JSON Linter",
-            "keywords": [
-                "json",
-                "linter",
-                "parser",
-                "validator"
-            ],
-            "time": "2013-11-04 15:41:11"
+            "time": "2015-07-05 10:50:46"
         }
     ],
     "packages-dev": [

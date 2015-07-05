@@ -1,11 +1,7 @@
 services:
 
-  json_matcher.json_parser:
-    class: Seld\JsonLint\JsonParser
-
   json_matcher.json_helper:
     class: Fesor\JsonMatcher\Helper\JsonHelper
-    arguments: [@json_matcher.json_parser]
 
   json_matcher.factory:
     class: Fesor\JsonMatcher\JsonMatcherFactory
