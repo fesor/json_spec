@@ -68,8 +68,8 @@ default:
 
 json_spec provides you two ways of how you can use matchers:
 
-1) Using json_spec context, which implements steps for verifying json responses. This approach best fits for cases, when developers uses feature specs as API documentation and tests.
-2) Inject `JsonMatcherFactory` into your context, so you can use it in your step definitions.  This approach preferable since you can practice BDD with it. For more information about how to write feature specs please read [Modeling by examples](http://everzet.com/post/99045129766/introducing-modelling-by-example).
+- Using json_spec context, which implements steps for verifying json responses. This approach best fits for cases, when developers uses feature specs as API documentation and tests.
+- Inject `JsonMatcherFactory` into your context, so you can use it in your step definitions.  This approach preferable since you can practice BDD with it. For more information about how to write feature specs please read [Modeling by examples](http://everzet.com/post/99045129766/introducing-modelling-by-example).
 
 ### Using `json_spec` Context
 
