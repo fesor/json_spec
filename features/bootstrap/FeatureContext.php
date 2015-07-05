@@ -2,18 +2,19 @@
 
 use \Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
-use \JsonSpec\Behat\Context\JsonConsumerAware;
-use \JsonSpec\Behat\Consumer\JsonConsumer;
+use \JsonSpec\Behat\Context\JsonHolderAware;
+use \JsonSpec\Behat\JsonProvider\JsonHolder;
 
 /**
  * Behat context class.
  */
-class FeatureContext implements Context, JsonConsumerAware
+class FeatureContext implements Context, JsonHolderAware
 {
+
     /**
-     * @var JsonConsumer
+     * @var JsonHolder
      */
-    private $jsonConsumer;
+    private $jsonHolder;
 
     /**
      * @var string
@@ -33,15 +34,15 @@ class FeatureContext implements Context, JsonConsumerAware
      */
     public function getJson()
     {
-        $this->jsonConsumer->setJson($this->json);
+        $this->jsonHolder->setJson($this->json);
     }
 
     /**
      * @inheritdoc
      */
-    public function setJsonConsumer(JsonConsumer $consumer)
+    public function setJsonHolder(JsonHolder $holder)
     {
-        $this->jsonConsumer = $consumer;
+        $this->jsonHolder = $holder;
     }
 
 }

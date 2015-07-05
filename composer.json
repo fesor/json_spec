@@ -11,8 +11,6 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-          "JsonSpec\\Behat\\": "extensions/behat/src/",
-          "JsonSpec\\PhpSpec\\": "extensions/phpspec/src/",
           "JsonSpec\\": "src/"
         }
     },
@@ -21,7 +19,7 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "seld/jsonlint": "~1.1.2"
+        "fesor/json_matcher": "~0.2.0"
     },
     "require-dev": {
         "phpspec/phpspec": "2.1.*@dev",
