@@ -1,5 +1,5 @@
 ---
 suites:
-      event_suite:
+    default_suite:
         namespace: JsonSpec
         psr4_prefix: JsonSpec
