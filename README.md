@@ -50,11 +50,8 @@ To install `json_spec` you may want to use composer:
 ```
 composer require --dev fesor/json_spec
 ```
-## Usage
 
-json_spec provides Behat context which implements steps utilizing `json_matcher` matchers. This is perfect for testing your app's JSON API.
-
-In order to use json_spec you should enable json_spec behat extension and add context provided with json_spec in your ```behat.yml```. For example:
+After that you should enable `json_spec` behat extension and optionally add context provided with json_spec in your ```behat.yml```. For example:
 ```
 default:
     suites:
@@ -65,6 +62,18 @@ default:
     extensions:
         JsonSpec\Behat\Extension: ~
 ```
+
+
+## Usage
+
+json_spec provides you two ways of how you can use matchers:
+
+1) Using json_spec context, which implements steps for verifying json responses. This approach best fits for cases, when developers uses feature specs as API documentation and tests.
+2) Inject `JsonMatcherFactory` into your context, so you can use it in your step definitions.  This approach preferable since you can practice BDD with it. For more information about how to write feature specs please read [Modeling by examples](http://everzet.com/post/99045129766/introducing-modelling-by-example).
+
+### Using `json_spec` Context
+
+json_spec provides Behat context which implements steps utilizing all matchers provided by `json_matcher`. This is perfect for testing your app's JSON API.
 
 One note. `json_spec` should have access to responses. If you are using Mink, that it's just fine. `json_spec` will get responses from Mink. This means that all you need to do to start working, is just to enable MinkExtension in your `behat.yml`:
 ```
@@ -295,11 +304,38 @@ Then the JSON response at "0/first_name" should be {$FIRST_NAME}
 
 Also starting from version `0.2.3` you can inject memory helper into your feature context to define some variables. To do so, your context should implement `MemoryHelperAware` interface.
 
-### More Examples
+#### More Examples
 
-Check out the [specs](https://github.com/fesor/json_spec/blob/master/spec)
-and [features](https://github.com/fesor/json_spec/blob/master/features) to see all the
-various ways you can use json_spec.
+Check out the [features](https://github.com/fesor/json_spec/blob/master/features) to see all the various ways you can use json_spec.
+
+### Using json matcher in your step definitions
+
+To inject JsonMatcherFactory you can just implement `JsonMatcherAware` interface in your context, or just use `JsonMatcherAwareTrait`:
+
+```gherkin
+Scenario: User should be able to add another user in friend list
+    Given I signed in as Bob
+      And I view Alice's profile
+    When I add her to my friends list
+    Then Alice should appear in my friend list
+```
+
+```php
+use JsonMatcherAwareTrait;
+
+/**
+ * @Then :user should appear in my friend list
+ */
+function userShouldAppearInFriendList(User $user)
+{
+    $this
+       ->json($this->lastResponse)
+       ->haveSize(1)
+       ->includes($this->serialize($user, ['short_profile'])
+    ;
+}
+
+```
 
 ## Contributing
 If you come across any issues, please [tell me](https://github.com/fesor/json_spec/issues) . Pull requests (with tests) are appreciated. No pull request is too small. Please help with:
