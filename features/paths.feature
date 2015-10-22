@@ -51,6 +51,10 @@ Feature: Paths
     And the JSON should have "hash/odd/0"
     And the JSON should have "hash/odd/1"
 
+  Scenario: Check path not exists
+    When I get the JSON
+    Then the JSON should not have "not_existing"
+
   Scenario: Ignored paths
     When I get the JSON
     Then the JSON should have "id"
