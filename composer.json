@@ -19,7 +19,7 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "fesor/json_matcher": "~0.2.1"
+        "fesor/json_matcher": "~0.2.3"
     },
     "require-dev": {
         "phpspec/phpspec": "2.1.*@dev",
