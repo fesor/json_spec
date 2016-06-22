@@ -1,6 +1,6 @@
 services:
   json_spec.mink_json_provider:
     class: JsonSpec\Behat\JsonProvider\MinkJsonProvider
-    arguments: [@json_spec.json_holder, @mink]
+    arguments: ["@json_spec.json_holder", "@mink"]
     tags:
       - { name: event_dispatcher.subscriber, priority: 0 }
