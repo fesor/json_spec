@@ -5,14 +5,14 @@ services:
 
   json_matcher.factory:
     class: Fesor\JsonMatcher\JsonMatcherFactory
-    arguments: ["@json_matcher.json_helper", "%json_spec.excluded_keys%"]
+    arguments: ["@json_matcher.json_helper", %json_spec.excluded_keys%]
 
   json_spec.helper.memory_helper:
     class: JsonSpec\Behat\Helper\MemoryHelper
 
   json_spec.helper.json_loader:
     class: JsonSpec\JsonLoader
-    arguments: ["%json_spec.json_directory%"]
+    arguments: [%json_spec.json_directory%]
 
   json_spec.json_holder:
     class: JsonSpec\Behat\JsonProvider\JsonHolder
